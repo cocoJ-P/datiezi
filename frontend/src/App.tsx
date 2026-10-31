@@ -1,9 +1,11 @@
 import { useState } from "react"
+import { DiagnosisPage } from "./events/DiagnosisPage"
+import { HealthPage } from "./health/HealthPage"
+import { EventsPage } from "./events/EventsPage"
 import { EquipmentMonitoringPage } from "./pages/EquipmentMonitoringPage"
 import { KnowledgeGraphPage } from "./pages/KnowledgeGraphPage"
 import { PortalPage } from "./pages/PortalPage"
-
-type PageId = "portal" | "graph" | "monitor"
+import { RouteProvider, useRoute, type PageId } from "./routing"
 
 const NAV_GROUPS: { label: string; items: { label: string; icon: string; page?: PageId }[] }[] = [
   {
@@ -11,14 +13,14 @@ const NAV_GROUPS: { label: string; items: { label: string; icon: string; page?: 
     items: [
       { label: "产线总览", icon: "overview", page: "portal" },
       { label: "设备运行监测", icon: "monitor", page: "monitor" },
-      { label: "设备健康中心", icon: "health" },
-      { label: "事件与日志", icon: "log" },
+      { label: "设备健康中心", icon: "health", page: "health" },
+      { label: "事件与日志", icon: "log", page: "events" },
     ],
   },
   {
     label: "智能分析",
     items: [
-      { label: "智能诊断工作台", icon: "workbench" },
+      { label: "智能诊断工作台", icon: "workbench", page: "diagnosis" },
       { label: "知识图谱", icon: "graph", page: "graph" },
       { label: "报告中心", icon: "report" },
     ],
@@ -103,12 +105,24 @@ function NavIcon({ name }: { name: string }) {
 }
 
 export default function App() {
+  return (
+    <RouteProvider>
+      <AppShell />
+    </RouteProvider>
+  )
+}
+
+function AppShell() {
+  const { route, navigate } = useRoute()
   const [page, setPage] = useState<PageId>("portal")
+  if (page !== route.page) {
+    setPage(route.page)
+  }
 
   return (
     <div className="app-shell app-shell-light">
       <aside className="app-rail">
-        <button type="button" className="brand" onClick={() => setPage("portal")}>
+        <button type="button" className="brand" onClick={() => navigate({ page: "portal" })}>
           <NavIcon name="brand" />
           <span className="brand-name">钢铁设备故障预测与诊断</span>
         </button>
@@ -122,7 +136,7 @@ export default function App() {
                   type="button"
                   className="nav-button"
                   aria-current={item.page && page === item.page ? "page" : undefined}
-                  onClick={item.page ? () => setPage(item.page as PageId) : undefined}
+                  onClick={item.page ? () => navigate({ page: item.page as PageId }) : undefined}
                 >
                   <NavIcon name={item.icon} />
                   {item.label}
@@ -136,6 +150,9 @@ export default function App() {
         {page === "portal" && <PortalPage />}
         {page === "monitor" && <EquipmentMonitoringPage />}
         {page === "graph" && <KnowledgeGraphPage />}
+        {page === "events" && <EventsPage />}
+        {page === "diagnosis" && <DiagnosisPage />}
+        {page === "health" && <HealthPage />}
       </div>
     </div>
   )

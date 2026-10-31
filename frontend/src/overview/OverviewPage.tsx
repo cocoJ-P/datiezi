@@ -15,7 +15,11 @@ export function OverviewPage() {
       <OverviewHeader />
       <div className="ov-workspace">
         <PhysicalSystemPanel line={DEMO_LINE} selection={selection} onSelect={setSelection} />
-        <ScadaPanel line={DEMO_LINE} selection={selection} onAlarm={(equipmentId) => setSelection({ type: "equipment", id: equipmentId })} />
+        <ScadaPanel
+          line={DEMO_LINE}
+          selection={selection}
+          onOverview={() => setSelection({ type: "overview" })}
+        />
       </div>
       <DataStatusBar line={DEMO_LINE} />
     </main>
