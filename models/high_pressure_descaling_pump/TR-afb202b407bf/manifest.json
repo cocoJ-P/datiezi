@@ -1,0 +1,66 @@
+{
+  "model_bundle_id": "TR-afb202b407bf",
+  "equipment_type": "high_pressure_descaling_pump",
+  "dataset_id": "high_pressure_descaling_pump_dev",
+  "dataset_revision_id": "rev1",
+  "feature_schema_version": "high_pressure_descaling_pump_features_v1",
+  "training_run_id": "TR-afb202b407bf",
+  "created_at": "2026-11-02T10:50:18Z",
+  "random_seed": 42,
+  "class_labels": {
+    "binary": [
+      "正常",
+      "非正常"
+    ],
+    "multiclass": [
+      "正常",
+      "轴承磨损",
+      "转子不平衡"
+    ],
+    "normal_label": "正常"
+  },
+  "training_config_hash": "b270f5dda6a3e12ba33a8dc83da3586bd04c144fb7088d60e823e7612d7d64d7",
+  "source_data_hash": "68fc5ca93ba677dfd6631a6c0352b5bf5c2776c17e16ea5f8d5e9f42f90a58e9",
+  "dependency_versions": {
+    "scikit-learn": "1.5.2",
+    "catboost": "1.2.7",
+    "numpy": "1.26.4",
+    "scipy": "1.14.1",
+    "joblib": "1.4.2",
+    "pandas": "2.2.3"
+  },
+  "calibration_status": {
+    "binary": "applied",
+    "multiclass": "unverified",
+    "overall": "partial"
+  },
+  "evaluation_summary": {
+    "binary_accuracy": 1.0,
+    "multiclass_accuracy": 0.9983333333333333,
+    "binary_macro_f1": 1.0,
+    "multiclass_macro_f1": 0.9983227111222437,
+    "conflict_count": 1
+  },
+  "artifact_hashes": {
+    "binary_calibrator.joblib": "9b09e691e8894de5f33145866ab3a454cfee408451137c2c1c608c33fcf13636",
+    "binary_model.joblib": "3c8715d6149614d4e3d05d2be83a52a02654c23db5088c07e579534a5bbeb950",
+    "feature_schema.json": "8ed257a1d54698199e60db09078e07acff3499291da966d78bb5a5dce8a96405",
+    "label_map.json": "477c31e04a589e27ad7c320e32bd6408024bbf71bf98e20ac3d3920a98788474",
+    "metrics.json": "63fdedfdce19c62eb1f3b086e86613f4b575853e864d9f89142d4c583a62c156",
+    "multiclass_calibration.json": "16e94873dd0385e15058f950775837e897a9e065ca9b78e660d3c935c2d953f6",
+    "multiclass_model.cbm": "569f03255ee6cf23a3c21773c2fecf75cd4bef3a5fb26f70a49d61492990a6ce",
+    "split_ids.json": "fb116ea4cc392fe30e18ddd4642f6216fe869f8fcc5d6af74012af28781b8936",
+    "test_predictions.csv": "4d171f6d5cd6af3f6dec1ff5fa25789b7232ebb4ff2615ea26914e730d259362",
+    "training_config.json": "30ffc82235e66930f300aa6b5946b3d84e9d18438579f359f06bfddaeec0a9cf"
+  },
+  "status": "candidate",
+  "binary_calibration": {
+    "method": "sigmoid_platt_manual",
+    "status": "applied",
+    "reason": "使用手动 Platt 校准，仅拟合校准集概率，不重训基模型。",
+    "params": {
+      "method": "sigmoid",
+      "backend": "manual_logistic"
+    }
+  }
+}

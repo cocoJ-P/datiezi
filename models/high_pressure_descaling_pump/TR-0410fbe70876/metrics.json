@@ -1,0 +1,258 @@
+{
+  "binary": {
+    "raw": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "macro_f1": 1.0,
+      "log_loss": 0.010153345088212412,
+      "confusion_matrix": [
+        [
+          304,
+          0
+        ],
+        [
+          0,
+          296
+        ]
+      ],
+      "classification_report": {
+        "正常": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 304.0
+        },
+        "非正常": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 296.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 600.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 600.0
+        }
+      },
+      "brier_score": 0.0014788801147282188
+    },
+    "final": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "macro_f1": 1.0,
+      "log_loss": 0.02712166065429173,
+      "confusion_matrix": [
+        [
+          304,
+          0
+        ],
+        [
+          0,
+          296
+        ]
+      ],
+      "classification_report": {
+        "正常": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 304.0
+        },
+        "非正常": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 296.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 600.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 600.0
+        }
+      },
+      "brier_score": 0.0009614637872191574
+    }
+  },
+  "multiclass": {
+    "raw": {
+      "accuracy": 0.9983333333333333,
+      "precision_macro": 0.9989071038251366,
+      "recall_macro": 0.9977477477477477,
+      "macro_f1": 0.9983227111222437,
+      "log_loss": 0.0029212705483985767,
+      "confusion_matrix": [
+        [
+          304,
+          0,
+          0
+        ],
+        [
+          0,
+          148,
+          0
+        ],
+        [
+          1,
+          0,
+          147
+        ]
+      ],
+      "classification_report": {
+        "正常": {
+          "precision": 0.9967213114754099,
+          "recall": 1.0,
+          "f1-score": 0.9983579638752053,
+          "support": 304.0
+        },
+        "轴承磨损": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 148.0
+        },
+        "转子不平衡": {
+          "precision": 1.0,
+          "recall": 0.9932432432432432,
+          "f1-score": 0.9966101694915255,
+          "support": 148.0
+        },
+        "accuracy": 0.9983333333333333,
+        "macro avg": {
+          "precision": 0.9989071038251366,
+          "recall": 0.9977477477477477,
+          "f1-score": 0.9983227111222437,
+          "support": 600.0
+        },
+        "weighted avg": {
+          "precision": 0.9983387978142076,
+          "recall": 0.9983333333333333,
+          "f1-score": 0.9983318768380136,
+          "support": 600.0
+        }
+      },
+      "brier_score": 0.0013812255617937782,
+      "brier_definition": "mean_sum_squared_error_one_hot_vs_proba"
+    },
+    "final": {
+      "accuracy": 0.9983333333333333,
+      "precision_macro": 0.9989071038251366,
+      "recall_macro": 0.9977477477477477,
+      "macro_f1": 0.9983227111222437,
+      "log_loss": 0.0029212705483985676,
+      "confusion_matrix": [
+        [
+          304,
+          0,
+          0
+        ],
+        [
+          0,
+          148,
+          0
+        ],
+        [
+          1,
+          0,
+          147
+        ]
+      ],
+      "classification_report": {
+        "正常": {
+          "precision": 0.9967213114754099,
+          "recall": 1.0,
+          "f1-score": 0.9983579638752053,
+          "support": 304.0
+        },
+        "轴承磨损": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 148.0
+        },
+        "转子不平衡": {
+          "precision": 1.0,
+          "recall": 0.9932432432432432,
+          "f1-score": 0.9966101694915255,
+          "support": 148.0
+        },
+        "accuracy": 0.9983333333333333,
+        "macro avg": {
+          "precision": 0.9989071038251366,
+          "recall": 0.9977477477477477,
+          "f1-score": 0.9983227111222437,
+          "support": 600.0
+        },
+        "weighted avg": {
+          "precision": 0.9983387978142076,
+          "recall": 0.9983333333333333,
+          "f1-score": 0.9983318768380136,
+          "support": 600.0
+        }
+      },
+      "brier_score": 0.0013812255617937782,
+      "brier_definition": "mean_sum_squared_error_one_hot_vs_proba"
+    }
+  },
+  "consistency": {
+    "agreement_rate": 0.9983333333333333,
+    "conflict_count": 1,
+    "mean_probability_gap": 0.026474774019118557,
+    "max_probability_gap": 0.450224997066197,
+    "probability_gap_percentiles": {
+      "p50": 0.024180256222534724,
+      "p90": 0.025299853342132014,
+      "p99": 0.09217670265002444
+    },
+    "conflict_record_ids": [
+      "REC-DP-20260314-03928"
+    ],
+    "note": "两模型一致只代表模型一致性，不代表独立物理证据验证。"
+  },
+  "binary_error_record_ids": [],
+  "multiclass_error_record_ids": [
+    "REC-DP-20260314-03928"
+  ],
+  "disclaimer": "这是固定比赛数据集的内部测试结果，不代表真实工业场景泛化能力。",
+  "data_audit": {
+    "record_count": 4000,
+    "class_counts": {
+      "正常": 2026,
+      "轴承磨损": 986,
+      "转子不平衡": 988
+    },
+    "binary_counts": {
+      "正常": 2026,
+      "非正常": 1974
+    },
+    "warnings": [
+      "设备状态与故障类型原始字段值不同：1974"
+    ],
+    "status_mismatch_count": 0,
+    "status_fault_audit": {
+      "both_normal": 2026,
+      "both_abnormal": 1974,
+      "status_abnormal_fault_normal": 0,
+      "status_normal_fault_abnormal": 0,
+      "semantic_conflict_count": 0,
+      "raw_value_different_count": 1974
+    }
+  }
+}

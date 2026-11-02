@@ -66,6 +66,7 @@ from app.services.official_dataset import (
     list_devices,
     search_records,
 )
+from app.l1_api import register_l1_routes
 from app.services.vibration_analysis import analyze_vibration
 from app.services.vibration_csv import MAX_CSV_BYTES, VibrationCsvError, read_vibration_column
 
@@ -73,13 +74,45 @@ from app.services.vibration_csv import MAX_CSV_BYTES, VibrationCsvError, read_vi
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     """只在服务进程启动时做本地工具自检，不在导入模块或处理请求时执行。"""
+    from dataclasses import replace
+
     from app.services.startup_tool_selftest import run_startup_selftest
+    from l2.inference.config import load_config
+    from l2.inference.model_manager import MODEL_MANAGER
+    from l2.management.database import init_db
+    from l2.management.service import MANAGEMENT_SERVICE
 
     recover_abandoned_tasks()
     run_startup_selftest()
+    l2_config = load_config()
+    if l2_config.enabled:
+        try:
+            init_db(MANAGEMENT_SERVICE.config.db_path)
+            actives = MANAGEMENT_SERVICE.resolve_all_startup_actives()
+            loaded_any = False
+            for active in actives:
+                eq = str(active["equipment_type"])
+                startup_cfg = replace(
+                    l2_config,
+                    equipment_type=eq,
+                    model_bundle_id=active["model_bundle_id"],
+                    model_bundle_path=Path(active["bundle_path"]),
+                )
+                try:
+                    MODEL_MANAGER.load_equipment(eq, startup_cfg)
+                    loaded_any = True
+                except Exception as exc:  # noqa: BLE001 - 单设备失败不阻断其他设备
+                    MODEL_MANAGER.mark_error(str(exc), equipment_type=eq)
+            if not loaded_any:
+                # 尚无任何 Active：兼容开发环境，加载环境变量指定的 Candidate
+                MODEL_MANAGER.load(l2_config)
+        except Exception as exc:  # noqa: BLE001 - 启动阶段必须明确失败原因
+            MODEL_MANAGER.mark_error(str(exc))
+            raise RuntimeError(f"L2 模型加载失败：{exc}") from exc
     try:
         yield
     finally:
+        MODEL_MANAGER.unload()
         shutdown_automatic_monitoring()
 
 
@@ -1969,3 +2002,12 @@ def monitoring_auto_status(
     if not isinstance(result, dict):
         raise HTTPException(status_code=500, detail="自动监测没有返回有效状态。")
     return result
+
+
+register_l1_routes(app)
+
+from l2.inference.router import router as l2_router
+from l2.management.router import router as l2_management_router
+
+app.include_router(l2_router)
+app.include_router(l2_management_router)

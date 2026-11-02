@@ -1,0 +1,61 @@
+{
+  "version": "main_mill_motor_features_v1",
+  "feature_columns": [
+    "转速(rpm)",
+    "电机电流(A)",
+    "X向振动(mm/s)",
+    "Y向振动(mm/s)",
+    "驱动端轴承温度(°C)",
+    "非驱动端轴承温度(°C)",
+    "包络谱峰值(g)",
+    "BPFO幅值(g)",
+    "BPFI幅值(g)",
+    "BSF幅值(g)",
+    "啮合频率幅值(g)",
+    "1X转频幅值(mm/s)"
+  ],
+  "feature_ids": [
+    "rotational_speed",
+    "motor_current",
+    "vibration_x",
+    "vibration_y",
+    "bearing_temperature_drive_end",
+    "bearing_temperature_non_drive_end",
+    "envelope_peak",
+    "bpfo_amplitude",
+    "bpfi_amplitude",
+    "bsf_amplitude",
+    "gear_mesh_amplitude",
+    "amplitude_1x"
+  ],
+  "multiclass_labels": [
+    "正常",
+    "轴承磨损",
+    "转子不平衡",
+    "润滑故障",
+    "齿轮异常"
+  ],
+  "binary_labels": [
+    "正常",
+    "非正常"
+  ],
+  "leakage_columns": [
+    "优先级",
+    "建议措施",
+    "影响程度",
+    "故障严重度",
+    "故障位置",
+    "故障类型",
+    "数据集划分",
+    "根因分析",
+    "记录编号",
+    "设备状态",
+    "设备类别",
+    "设备编号",
+    "诊断置信度",
+    "采集时间",
+    "频谱描述"
+  ],
+  "record_id_column": "记录编号",
+  "fault_type_column": "故障类型"
+}

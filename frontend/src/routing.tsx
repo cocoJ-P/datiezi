@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
+import { diagnosisTabQuery } from "./events/diagnosisNav"
 
 export type PageId = "portal" | "graph" | "monitor" | "events" | "diagnosis" | "health"
 
@@ -9,6 +10,10 @@ export type AppRoute = {
   range?: string
   equipmentId?: string
   diagnosisId?: string
+  tab?: string
+  runId?: string
+  engine?: string
+  scope?: "global"
 }
 
 const RouteContext = createContext<{ route: AppRoute; navigate: (next: AppRoute, mode?: "push" | "replace") => void } | null>(null)
@@ -32,7 +37,16 @@ export function readRoute(location: Location = window.location): AppRoute {
     range: pick("range"),
     equipmentId: pick("equipmentId"),
     diagnosisId: pick("diagnosisId"),
+    tab: diagnosisTabQuery(params.get("tab")),
+    runId: routeToken(params.get("runId")),
+    engine: routeToken(params.get("engine")),
+    scope: params.get("scope") === "global" ? "global" : undefined,
   }
+}
+
+function routeToken(value: string | null): string | undefined {
+  if (!value || !/^[A-Za-z0-9_-]{1,40}$/.test(value)) return undefined
+  return value
 }
 
 export function toHref(route: AppRoute): string {
@@ -42,6 +56,10 @@ export function toHref(route: AppRoute): string {
   if (route.range) params.set("range", route.range)
   if (route.equipmentId) params.set("equipmentId", route.equipmentId)
   if (route.diagnosisId) params.set("diagnosisId", route.diagnosisId)
+  if (route.page === "diagnosis" && route.tab && route.tab !== "overview" && route.tab !== "result") params.set("tab", route.tab)
+  if (route.page === "diagnosis" && route.runId) params.set("runId", route.runId)
+  if (route.page === "diagnosis" && route.engine) params.set("engine", route.engine)
+  if (route.page === "diagnosis" && route.scope === "global") params.set("scope", "global")
   const path = route.page === "portal" ? "/" : `/${route.page}`
   const query = params.toString()
   return query ? `${path}?${query}` : path

@@ -1,0 +1,28 @@
+mappings:
+  - match:
+      filename_contains: 高压除鳞泵
+    equipment_type: high_pressure_descaling_pump
+  - match:
+      category_equals: 高压除鳞泵
+    equipment_type: high_pressure_descaling_pump
+  - match:
+      dataset_id: DS-cc8b0f82a47f
+    equipment_type: high_pressure_descaling_pump
+  - match:
+      filename_contains: 主轧机电机
+    equipment_type: main_mill_motor
+  - match:
+      category_equals: 主轧机电机
+    equipment_type: main_mill_motor
+  - match:
+      sheet_contains: 主轧机电机
+    equipment_type: main_mill_motor
+
+# 已确认的特征桥接：仅在 L1 已发布字段缺失、且不得静默填零时使用。
+feature_bridges:
+  high_pressure_descaling_pump:
+    - target_feature_id: vibration_rms
+      method: rms_from_axes
+      source_feature_ids: [vibration_x, vibration_y]
+      confirmed: true
+      note: "源表 vibration_rms 在 P3 仍为 needs_confirmation；开发发布用 X/Y 合成 RMS，不得填零。"

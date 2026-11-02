@@ -1,0 +1,109 @@
+equipment_type: high_pressure_descaling_pump
+display_name: 高压除鳞泵
+schema_version: high_pressure_descaling_pump_features_v1
+record_id_field: 记录编号
+equipment_id_field: 设备编号
+timestamp_field: 采集时间
+status_field: 设备状态
+normal_label: 正常
+abnormal_label: 非正常
+target_field: 故障类型
+training_config: backend/l2/training/config/high_pressure_descaling_pump.yaml
+
+features:
+  - name: 转速(rpm)
+    dtype: float
+    unit: rpm
+    required: true
+    feature_id: rotational_speed
+  - name: 转频(Hz)
+    dtype: float
+    unit: Hz
+    required: true
+    feature_id: rotational_frequency
+  - name: 电机电流(A)
+    dtype: float
+    unit: A
+    required: true
+    feature_id: motor_current
+  - name: X向振动(mm/s)
+    dtype: float
+    unit: mm/s
+    required: true
+    feature_id: vibration_x
+  - name: Y向振动(mm/s)
+    dtype: float
+    unit: mm/s
+    required: true
+    feature_id: vibration_y
+  - name: 最大振动(mm/s)
+    dtype: float
+    unit: mm/s
+    required: true
+    feature_id: vibration_max
+  - name: 振动均方根
+    dtype: float
+    unit: null
+    required: true
+    feature_id: vibration_rms
+  - name: 驱动端轴承温度(°C)
+    dtype: float
+    unit: "°C"
+    required: true
+    feature_id: bearing_temperature_drive_end
+  - name: 非驱动端轴承温度(°C)
+    dtype: float
+    unit: "°C"
+    required: true
+    feature_id: bearing_temperature_non_drive_end
+  - name: 包络谱峰值(g)
+    dtype: float
+    unit: g
+    required: true
+    feature_id: envelope_peak
+  - name: BPFO幅值(g)
+    dtype: float
+    unit: g
+    required: true
+    feature_id: bpfo_amplitude
+  - name: BPFI幅值(g)
+    dtype: float
+    unit: g
+    required: true
+    feature_id: bpfi_amplitude
+  - name: BSF幅值(g)
+    dtype: float
+    unit: g
+    required: true
+    feature_id: bsf_amplitude
+  - name: 1X转频幅值(mm/s)
+    dtype: float
+    unit: mm/s
+    required: true
+    feature_id: amplitude_1x
+
+class_labels:
+  - 正常
+  - 轴承磨损
+  - 转子不平衡
+
+binary_labels:
+  - 正常
+  - 非正常
+
+leakage_columns:
+  - 记录编号
+  - 设备编号
+  - 采集时间
+  - 设备状态
+  - 故障类型
+  - 故障严重度
+  - 故障位置
+  - 诊断置信度
+  - 频谱描述
+  - 根因分析
+  - 建议措施
+  - 优先级
+  - 影响程度
+  - 数据集划分
+  - 设备类别

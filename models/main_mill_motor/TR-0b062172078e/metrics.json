@@ -1,0 +1,313 @@
+{
+  "binary": {
+    "raw": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "macro_f1": 1.0,
+      "log_loss": 0.0009406723439068361,
+      "confusion_matrix": [
+        [
+          304,
+          0
+        ],
+        [
+          0,
+          296
+        ]
+      ],
+      "classification_report": {
+        "正常": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 304.0
+        },
+        "非正常": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 296.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 600.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 600.0
+        }
+      },
+      "brier_score": 5.372930597167616e-05
+    },
+    "final": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "macro_f1": 1.0,
+      "log_loss": 0.024899700389794433,
+      "confusion_matrix": [
+        [
+          304,
+          0
+        ],
+        [
+          0,
+          296
+        ]
+      ],
+      "classification_report": {
+        "正常": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 304.0
+        },
+        "非正常": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 296.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 600.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 600.0
+        }
+      },
+      "brier_score": 0.0006090594824346181
+    }
+  },
+  "multiclass": {
+    "raw": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "macro_f1": 1.0,
+      "log_loss": 0.0008865470373291572,
+      "confusion_matrix": [
+        [
+          304,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          119,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          71,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          48,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          58
+        ]
+      ],
+      "classification_report": {
+        "正常": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 304.0
+        },
+        "轴承磨损": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 119.0
+        },
+        "转子不平衡": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 71.0
+        },
+        "润滑故障": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 48.0
+        },
+        "齿轮异常": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 58.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 600.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 600.0
+        }
+      },
+      "brier_score": 1.979645315797906e-05,
+      "brier_definition": "mean_sum_squared_error_one_hot_vs_proba"
+    },
+    "final": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "macro_f1": 1.0,
+      "log_loss": 0.0008865470373291472,
+      "confusion_matrix": [
+        [
+          304,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          119,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          71,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          48,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          58
+        ]
+      ],
+      "classification_report": {
+        "正常": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 304.0
+        },
+        "轴承磨损": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 119.0
+        },
+        "转子不平衡": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 71.0
+        },
+        "润滑故障": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 48.0
+        },
+        "齿轮异常": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 58.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 600.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 600.0
+        }
+      },
+      "brier_score": 1.979645315797906e-05,
+      "brier_definition": "mean_sum_squared_error_one_hot_vs_proba"
+    }
+  },
+  "consistency": {
+    "agreement_rate": 1.0,
+    "conflict_count": 0,
+    "mean_probability_gap": 0.024325237767357257,
+    "max_probability_gap": 0.06805563492809008,
+    "probability_gap_percentiles": {
+      "p50": 0.02419883137558798,
+      "p90": 0.024664319315001702,
+      "p99": 0.027668247354868468
+    },
+    "conflict_record_ids": [],
+    "note": "两模型一致只代表模型一致性，不代表独立物理证据验证。"
+  },
+  "binary_error_record_ids": [],
+  "multiclass_error_record_ids": [],
+  "disclaimer": "这是固定比赛数据集的内部测试结果，不代表真实工业场景泛化能力。",
+  "data_audit": {
+    "record_count": 4000,
+    "class_counts": {
+      "正常": 2028,
+      "轴承磨损": 793,
+      "转子不平衡": 474,
+      "润滑故障": 320,
+      "齿轮异常": 385
+    },
+    "binary_counts": {
+      "正常": 2028,
+      "非正常": 1972
+    },
+    "warnings": [
+      "设备状态与故障类型不一致：2287",
+      "设备状态与故障类型不一致记录数：2287"
+    ],
+    "status_mismatch_count": 2287
+  }
+}

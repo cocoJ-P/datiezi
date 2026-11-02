@@ -1,0 +1,9 @@
+{
+  "method": "temperature_scaling",
+  "status": "unverified",
+  "reason": "校准集全部正确分类；温度缩放易导致极端概率，保留 temperature=1.0。",
+  "temperature": 1.0,
+  "params": {
+    "temperature": 1.0
+  }
+}

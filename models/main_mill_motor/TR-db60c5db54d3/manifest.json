@@ -1,0 +1,67 @@
+{
+  "model_bundle_id": "TR-db60c5db54d3",
+  "equipment_type": "main_mill_motor",
+  "dataset_id": "main_mill_motor_train_xlsx",
+  "dataset_revision_id": "rev1",
+  "feature_schema_version": "main_mill_motor_features_v1",
+  "training_run_id": "TR-db60c5db54d3",
+  "created_at": "2026-11-02T10:36:07Z",
+  "random_seed": 42,
+  "class_labels": {
+    "binary": [
+      "正常",
+      "非正常"
+    ],
+    "multiclass": [
+      "正常",
+      "轴承磨损",
+      "转子不平衡",
+      "润滑故障",
+      "齿轮异常"
+    ]
+  },
+  "training_config_hash": "c7cc5ab8e1f48b4b591a42effd43a9f2f2527152577697d8aaf724c786443d86",
+  "source_data_hash": "47609f5fcc89e34ddc7b0a2fcbef773cb4cbdad568fa03ff5b05f95f41b685ff",
+  "dependency_versions": {
+    "scikit-learn": "1.5.2",
+    "catboost": "1.2.7",
+    "numpy": "1.26.4",
+    "scipy": "1.14.1",
+    "joblib": "1.4.2",
+    "pandas": "2.2.3"
+  },
+  "calibration_status": {
+    "binary": "applied",
+    "multiclass": "unverified",
+    "overall": "partial"
+  },
+  "evaluation_summary": {
+    "binary_accuracy": 1.0,
+    "multiclass_accuracy": 1.0,
+    "binary_macro_f1": 1.0,
+    "multiclass_macro_f1": 1.0,
+    "conflict_count": 0
+  },
+  "artifact_hashes": {
+    "binary_calibrator.joblib": "d426cd64e176763b4993f1652e63cd970bcde1f5156f730baae453f16d887674",
+    "binary_model.joblib": "9f5b2e874ddedef6c6cc29b2a9415b7a02b4b11f48854afb8aa883099861b6d7",
+    "feature_schema.json": "4fb64995b884caa3542d1acdc7fe19925d3b7e0827f377d5cae8a171909f4127",
+    "label_map.json": "124ccd48380b222377d7a6d95db09ba482d65c611a0601cb0509fa25de58bbe1",
+    "metrics.json": "da3d7edd69f6fc0145d06afd21d0fe03dc22ae4e66f8a311d305b87972f9b018",
+    "multiclass_calibration.json": "16e94873dd0385e15058f950775837e897a9e065ca9b78e660d3c935c2d953f6",
+    "multiclass_model.cbm": "d22f016d42c1a957f72e0b05202bf60b90f60e5c819a0359e3ace64a824d02bd",
+    "split_ids.json": "5ca9acb83cc749ce5bbeb68cbe6b5260d969aca9ca0bbe6ddbfa172f7a3c9f31",
+    "test_predictions.csv": "d3217b2332448d3fcea379463926638e4ee395c78edce4e12905a003670195ea",
+    "training_config.json": "905809844c68e5bc0ba6fcfa99b09e3009e7da301d5efc55923cad418a50166f"
+  },
+  "status": "candidate",
+  "binary_calibration": {
+    "method": "sigmoid_platt_manual",
+    "status": "applied",
+    "reason": "使用手动 Platt 校准，仅拟合校准集概率，不重训基模型。",
+    "params": {
+      "method": "sigmoid",
+      "backend": "manual_logistic"
+    }
+  }
+}

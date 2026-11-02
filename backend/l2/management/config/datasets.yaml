@@ -1,0 +1,11 @@
+datasets:
+  main_mill_motor_dev:
+    equipment_type: main_mill_motor
+    features_path: data/l2_dev/main_mill_motor/features.csv
+    labels_path: data/l2_dev/main_mill_motor/labels.csv
+    dataset_revision_id: rev1
+  high_pressure_descaling_pump_dev:
+    equipment_type: high_pressure_descaling_pump
+    features_path: data/l2_dev/high_pressure_descaling_pump/features.csv
+    labels_path: data/l2_dev/high_pressure_descaling_pump/labels.csv
+    dataset_revision_id: rev1
