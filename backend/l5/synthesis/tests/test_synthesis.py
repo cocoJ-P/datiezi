@@ -69,6 +69,25 @@ class ComparisonTests(unittest.TestCase):
         )
         row = next(r for r in det["field_comparisons"] if r["field"] == "根因分析")
         self.assertEqual(row["l4_root_cause_confirmation"], "unconfirmed")
+        # L5 模板 + L4 unconfirmed 且无反证 → 不得自动 conflicting
+        self.assertEqual(row["consistency"], "insufficient_evidence")
+
+    def test_root_cause_explicit_contradict_is_conflicting(self):
+        det = run_deterministic_comparison(
+            prediction={"predictions": {"根因分析": "轴承保持架断裂"}},
+            l4_reasoning={
+                "root_cause_confirmation": "unconfirmed",
+                "candidate_reviews": [
+                    {
+                        "cause_name": "转子不平衡",
+                        "contradicting_evidence": ["EV-x"],
+                        "validity_status": "mechanism_only",
+                    }
+                ],
+            },
+        )
+        row = next(r for r in det["field_comparisons"] if r["field"] == "根因分析")
+        self.assertEqual(row["consistency"], "conflicting")
 
 
 class SynthesisAgentValidationTests(unittest.TestCase):
@@ -125,6 +144,84 @@ class FeatureIndexTests(unittest.TestCase):
         for t in TARGET_COLUMNS:
             self.assertNotIn(t, hit["features"])
             self.assertNotIn(t, hit)
+        self.assertFalse((hit.get("provenance") or {}).get("exposes_targets"))
+
+
+class FeaturePerturbationTests(unittest.TestCase):
+    def test_same_features_different_record_id_same_prediction(self):
+        from l5.synthesis.features import lookup_observation_features
+        from l5.synthesis.prediction_overlay import try_predict_for_context
+
+        hit = lookup_observation_features("REC-DP-20260314-00162")
+        self.assertIsNotNone(hit)
+        feats = dict(hit["features"])
+        cat = hit["equipment_category"]
+        ctx_a = {
+            "record_id": "FAKE-ID-A",
+            "equipment_category": cat,
+            "observation_features": feats,
+        }
+        ctx_b = {
+            "record_id": "FAKE-ID-B",
+            "equipment_category": cat,
+            "observation_features": feats,
+        }
+        pa, ea = try_predict_for_context(ctx_a, allow_dataset_observation_backfill=False)
+        pb, eb = try_predict_for_context(ctx_b, allow_dataset_observation_backfill=False)
+        self.assertIsNone(ea)
+        self.assertIsNone(eb)
+        self.assertEqual(pa["predictions"], pb["predictions"])
+        self.assertEqual(pa["model_input_fingerprint"], pb["model_input_fingerprint"])
+
+    def test_same_record_id_different_obs_uses_live_not_history(self):
+        from l5.synthesis.features import lookup_observation_features
+        from l5.synthesis.prediction_overlay import try_predict_for_context
+
+        hit = lookup_observation_features("REC-DP-20260314-00162")
+        self.assertIsNotNone(hit)
+        # 完整 live 扰动：不走回填，必须用本次输入
+        live_full = dict(hit["features"])
+        live_full["X向振动(mm/s)"] = float(live_full["X向振动(mm/s)"]) + 3.5
+        ctx_live = {
+            "record_id": "REC-DP-20260314-00162",
+            "equipment_category": hit["equipment_category"],
+            "observation_features": live_full,
+        }
+        pred_live, err_live = try_predict_for_context(ctx_live, allow_dataset_observation_backfill=True)
+        self.assertIsNone(err_live)
+        ctx_hist = {
+            "record_id": "REC-DP-20260314-00162",
+            "equipment_category": hit["equipment_category"],
+            "observation_features": dict(hit["features"]),
+        }
+        pred_hist, _ = try_predict_for_context(ctx_hist, allow_dataset_observation_backfill=True)
+        self.assertNotEqual(pred_live["model_input_fingerprint"], pred_hist["model_input_fingerprint"])
+
+        # 部分 live 与历史共同特征冲突 → 拒绝静默合并
+        partial = {
+            "转速(rpm)": float(hit["features"]["转速(rpm)"]) + 100.0,
+            "转频(Hz)": hit["features"]["转频(Hz)"],
+        }
+        ctx_partial = {
+            "record_id": "REC-DP-20260314-00162",
+            "equipment_category": hit["equipment_category"],
+            "observation_features": partial,
+        }
+        pred_conflict, err = try_predict_for_context(ctx_partial, allow_dataset_observation_backfill=True)
+        self.assertIsNone(pred_conflict)
+        self.assertIn("feature_conflict", err or "")
+
+    def test_missing_features_without_legal_source_fails(self):
+        from l5.synthesis.prediction_overlay import try_predict_for_context
+
+        ctx = {
+            "record_id": "REC-DOES-NOT-EXIST-999",
+            "equipment_category": "高压除鳞泵",
+            "observation_features": {"转速(rpm)": 3000},
+        }
+        pred, err = try_predict_for_context(ctx, allow_dataset_observation_backfill=True)
+        self.assertIsNone(pred)
+        self.assertTrue(err)
 
 
 class BundleLoadTests(unittest.TestCase):

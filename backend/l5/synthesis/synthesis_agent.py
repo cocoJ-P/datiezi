@@ -15,6 +15,7 @@ SYSTEM = (
     "你将收到：L5 监督预测十字段、Diagnosis Agent（L3）摘要、Causal Agent（L4）摘要、确定性对照结果。"
     "任务：评价一致性，列出冲突与证据不足，不得编造测量值或伪造 evidence/knowledge ID。"
     "不得把 L5 模板根因写成已确认根因；不得修改 L4 root_cause_confirmation。"
+    "L5 根因模板 + L4 unconfirmed 且无明确反证时，应倾向 insufficient_evidence，不要仅因文本不重叠就标 conflicting。"
     "不得使用或索要数据集真实答案标签。"
     "只输出一个 JSON 对象，字段："
     "overall_consistency(consistent|partially_consistent|conflicting|insufficient_evidence),"

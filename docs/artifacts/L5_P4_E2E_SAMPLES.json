@@ -1,0 +1,341 @@
+{
+  "model_id": "L5P-f037a960e2e1",
+  "note": "test_file_observations_not_independent_blind_eval",
+  "equipment": [
+    {
+      "equipment": "主轧机电机",
+      "statuses": [
+        "危险",
+        "报警",
+        "正常",
+        "预警"
+      ],
+      "samples": [
+        {
+          "record_id": "REC-MA-20260314-00001",
+          "设备状态": "正常",
+          "故障类型": "正常",
+          "故障位置": "-",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "90397468a8c5735e60f3253d27b97142ee5b18f07cc62a2d2d2fd4dbacc53f75"
+        },
+        {
+          "record_id": "REC-MA-20260314-00003",
+          "设备状态": "预警",
+          "故障类型": "轴承磨损",
+          "故障位置": "驱动端轴承",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "209008870dce0ebb41d629f41abd66a1a1b1ab26a84b069ac8f7e1647b8fb102"
+        },
+        {
+          "record_id": "REC-MA-20260314-00005",
+          "设备状态": "报警",
+          "故障类型": "转子不平衡",
+          "故障位置": "驱动端轴承",
+          "优先级": "P2",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "26cc6228cdabbc7400045ee4a7a3d1ecb7bd97a358c80fe5681e5cc92d556eda"
+        },
+        {
+          "record_id": "REC-MA-20260316-00034",
+          "设备状态": "危险",
+          "故障类型": "转子不平衡",
+          "故障位置": "非驱动端轴承",
+          "优先级": "P0",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "aede0ddb5c3fdb4438377e8e7ef88ffed7921614e022d423c9b34892e1a81e41"
+        },
+        {
+          "record_id": "REC-MA-20260314-00002",
+          "设备状态": "正常",
+          "故障类型": "正常",
+          "故障位置": "-",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "907920e19e6b2ea06e2cf46ce94bced4108a083f5df41824d02dcfba6161ede8"
+        }
+      ]
+    },
+    {
+      "equipment": "主减速机/齿轮箱",
+      "statuses": [
+        "危险",
+        "报警",
+        "正常",
+        "预警"
+      ],
+      "samples": [
+        {
+          "record_id": "REC-GE-20260314-00007",
+          "设备状态": "正常",
+          "故障类型": "正常",
+          "故障位置": "-",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "c743a02bc928214996904c861562edcedd291e50f887e775a7e30f3dba856ce3"
+        },
+        {
+          "record_id": "REC-GE-20260314-00001",
+          "设备状态": "预警",
+          "故障类型": "润滑故障",
+          "故障位置": "输出轴",
+          "优先级": "P2",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "3236e0d37e8773e33ee35a110fd36a5a85387546a5b60a865aa29dc52e1f8765"
+        },
+        {
+          "record_id": "REC-GE-20260314-00013",
+          "设备状态": "报警",
+          "故障类型": "转子不平衡",
+          "故障位置": "中间级轴承",
+          "优先级": "P2",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "b7404a5e4be7aa747a4242006d696dca3152d1e2a8344e6365ca15282401eaaf"
+        },
+        {
+          "record_id": "REC-GE-20260317-00064",
+          "设备状态": "危险",
+          "故障类型": "齿轮异常",
+          "故障位置": "低速级轴承",
+          "优先级": "P0",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "6a90e7ec854def8947ea05f3eddc75987d6e00094605af478a266e739776ee96"
+        },
+        {
+          "record_id": "REC-GE-20260314-00002",
+          "设备状态": "预警",
+          "故障类型": "正常",
+          "故障位置": "-",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "87b228a1acc9966ffb9be6d0a2a2d5ebc2bb11c88c3d68c94f6cec2b1aedc847"
+        }
+      ]
+    },
+    {
+      "equipment": "冷却水循环泵",
+      "statuses": [
+        "报警",
+        "正常",
+        "预警"
+      ],
+      "samples": [
+        {
+          "record_id": "REC-CO-20260314-00001",
+          "设备状态": "正常",
+          "故障类型": "轴承磨损",
+          "故障位置": "联轴器侧轴承",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "cd41cd98678ef5de12867f95a8a268fe534d411225842bc3c89314e54e274c98"
+        },
+        {
+          "record_id": "REC-CO-20260314-00003",
+          "设备状态": "预警",
+          "故障类型": "齿轮异常",
+          "故障位置": "联轴器侧轴承",
+          "优先级": "P2",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "ebe19113e342501c1979b0290a095d4111eb1899a12011a4bcf0c09410858c41"
+        },
+        {
+          "record_id": "REC-CO-20260314-00005",
+          "设备状态": "报警",
+          "故障类型": "转子不平衡",
+          "故障位置": "泵轴",
+          "优先级": "P2",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "7a33e8a770ec9cb5f1fd58bb78dcdb558cf23268cef6fd24223831fef65fc05c"
+        },
+        {
+          "record_id": "REC-CO-20260314-00002",
+          "设备状态": "正常",
+          "故障类型": "正常",
+          "故障位置": "-",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "e8dd490d20633842b2285b9b8c7dd92843f465c9ca756ad8b1e54564bbf0cac2"
+        },
+        {
+          "record_id": "REC-CO-20260314-00004",
+          "设备状态": "正常",
+          "故障类型": "正常",
+          "故障位置": "-",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "6ae966fd286352c9b3664a7cbe920974174f3e4fd202f272d31a3ffadbc9b075"
+        }
+      ]
+    },
+    {
+      "equipment": "加热炉助燃风机",
+      "statuses": [
+        "危险",
+        "报警",
+        "正常",
+        "预警"
+      ],
+      "samples": [
+        {
+          "record_id": "REC-FF-20260314-00002",
+          "设备状态": "正常",
+          "故障类型": "正常",
+          "故障位置": "-",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "3d507b840ea0527b25977b4855eae8ce02cef2e5f8d6ab6655267e69faf4a922"
+        },
+        {
+          "record_id": "REC-FF-20260314-00013",
+          "设备状态": "预警",
+          "故障类型": "轴承磨损",
+          "故障位置": "非驱动端轴承",
+          "优先级": "P2",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "37072161d192742d0c08e6bec83d0c36b7ec35c970255057e02103c095c01449"
+        },
+        {
+          "record_id": "REC-FF-20260314-00001",
+          "设备状态": "报警",
+          "故障类型": "轴承磨损",
+          "故障位置": "驱动端轴承严重磨损",
+          "优先级": "P1",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "affbd2e22890e0695a2bb8de3955280be60bad54c96e7afb16bd35b28b50823c"
+        },
+        {
+          "record_id": "REC-FF-20260314-00026",
+          "设备状态": "危险",
+          "故障类型": "润滑故障",
+          "故障位置": "转子严重不平衡",
+          "优先级": "P0",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "9d20f5d027eb5833a865a7fffef03bb25f0c5e60760114523301fdd65e12f952"
+        },
+        {
+          "record_id": "REC-FF-20260314-00003",
+          "设备状态": "正常",
+          "故障类型": "正常",
+          "故障位置": "-",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "9af9e55133d2990ac09bc05af6263457ec5e613d656d8c8a9bee9afc4cfe581c"
+        }
+      ]
+    },
+    {
+      "equipment": "高压除鳞泵",
+      "statuses": [
+        "危险",
+        "报警",
+        "正常",
+        "预警"
+      ],
+      "samples": [
+        {
+          "record_id": "REC-DP-20260314-00001",
+          "设备状态": "正常",
+          "故障类型": "正常",
+          "故障位置": "-",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "8a1530030d3f9f69537ac4569c770885bb64f91eab8afd262808f6b41f55de4b"
+        },
+        {
+          "record_id": "REC-DP-20260314-00010",
+          "设备状态": "预警",
+          "故障类型": "转子不平衡",
+          "故障位置": "转子",
+          "优先级": "P2",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "716ca5191b8a9177a4015c2c358c30ebfc45935f576fcae36e95b84ceaf32bdc"
+        },
+        {
+          "record_id": "REC-DP-20260314-00003",
+          "设备状态": "报警",
+          "故障类型": "转子不平衡",
+          "故障位置": "转子严重不平衡",
+          "优先级": "P0",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "b8986eb45ff87dbfd234f48f6e8d6cf301edf28d153724cd88eff6a2e943007b"
+        },
+        {
+          "record_id": "REC-DP-20260314-00009",
+          "设备状态": "危险",
+          "故障类型": "转子不平衡",
+          "故障位置": "转子严重不平衡",
+          "优先级": "P0",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "47b23e6bce56c0ecb922e2feb0f21b0606de66617b6c0f3332b1ede31c76360c"
+        },
+        {
+          "record_id": "REC-DP-20260314-00002",
+          "设备状态": "正常",
+          "故障类型": "正常",
+          "故障位置": "-",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "3cc8b77b12a569a6e6f29c0bd1aa90e2a062c6ff2a385367ad3c6d39e57a0dfd"
+        }
+      ]
+    },
+    {
+      "equipment": "连铸机扇形段驱动电机",
+      "statuses": [
+        "危险",
+        "报警",
+        "正常",
+        "预警"
+      ],
+      "samples": [
+        {
+          "record_id": "REC-CC-20260314-00002",
+          "设备状态": "正常",
+          "故障类型": "正常",
+          "故障位置": "-",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "b09ffcb565355c50e08e516b6097f47fdb8854812f18d143d6dfcefa413ca5f9"
+        },
+        {
+          "record_id": "REC-CC-20260314-00008",
+          "设备状态": "预警",
+          "故障类型": "润滑故障",
+          "故障位置": "转子",
+          "优先级": "P2",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "97b550bc751a96136c5a1e333f759389a0a4dce751a09aada6e86bd5513467e1"
+        },
+        {
+          "record_id": "REC-CC-20260314-00003",
+          "设备状态": "报警",
+          "故障类型": "润滑故障",
+          "故障位置": "转子严重不平衡",
+          "优先级": "P1",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "5e2269c5ab8f9f6e2748396a95ae6f9c455463ccf7766e661c5f3d4c50e5d20b"
+        },
+        {
+          "record_id": "REC-CC-20260314-00001",
+          "设备状态": "危险",
+          "故障类型": "润滑故障",
+          "故障位置": "转子严重不平衡",
+          "优先级": "P0",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "9904eeb7d1c77edd4be5f2695c3a8e72b271623decefdb0529a8bbaa4bd9105c"
+        },
+        {
+          "record_id": "REC-CC-20260314-00004",
+          "设备状态": "正常",
+          "故障类型": "正常",
+          "故障位置": "-",
+          "优先级": "P3",
+          "model_id": "L5P-f037a960e2e1",
+          "input_fingerprint": "f8fd5875e43ae558e787ab89878f93f3f6c814b0caf6345413602fe511b6173e"
+        }
+      ]
+    }
+  ]
+}

@@ -36,6 +36,7 @@ def apply_supervised_predictions(
         "prediction_status": statuses,
         "prediction_sources": sources,
         "equipment_category": prediction.get("equipment_category"),
+        "observation_input": prediction.get("observation_input"),
         "limitations": prediction.get("limitations") or [],
         "field_semantics": prediction.get("field_semantics") or {},
     }
@@ -104,14 +105,27 @@ def apply_supervised_predictions(
     return assessment
 
 
-def try_predict_for_context(context: dict[str, Any]) -> tuple[dict[str, Any] | None, str | None]:
-    """尝试对 L5 上下文做监督预测；失败返回 (None, reason)。"""
+def try_predict_for_context(
+    context: dict[str, Any],
+    *,
+    allow_dataset_observation_backfill: bool = True,
+) -> tuple[dict[str, Any] | None, str | None]:
+    """尝试对 L5 上下文做监督预测；失败返回 (None, reason)。
+
+    物理输入仅为 19 维观测 + 设备类别；record_id 只作追溯，不进入模型。
+    """
     from l5.prediction.service import L5PredictionError, L5PredictionService
     from l5.synthesis.features import extract_feature_map
 
-    features, gaps = extract_feature_map(context)
+    features, gaps, feat_meta = extract_feature_map(
+        context,
+        allow_dataset_observation_backfill=allow_dataset_observation_backfill,
+    )
     if features is None:
-        return None, f"missing_features:{','.join(gaps[:8])}"
+        refusal = (feat_meta or {}).get("refusal") or "missing_features"
+        if (feat_meta or {}).get("conflicts"):
+            return None, f"feature_conflict:{refusal}"
+        return None, f"{refusal}:{','.join(gaps[:8])}"
     cat = normalize_equipment_category(
         context.get("_resolved_equipment_category")
         or (context.get("evidence_bundle") or {}).get("equipment_category")
@@ -129,6 +143,20 @@ def try_predict_for_context(context: dict[str, Any]) -> tuple[dict[str, Any] | N
             equipment_id=context.get("equipment_id"),
             features=features,
         )
+        # 追溯：观测来源 / 版本（不把 record_id 当特征）
+        pred["observation_input"] = {
+            "feature_names": list(features.keys()),
+            "n_features": len(features),
+            "equipment_category": cat,
+            "model_input_excludes_record_id": True,
+            "feature_provenance": feat_meta.get("provenance"),
+            "backfill_used": bool(feat_meta.get("backfill_used")),
+            "backfill_fields": feat_meta.get("backfill_fields") or [],
+            "live_feature_count": feat_meta.get("live_feature_count"),
+        }
+        pred.setdefault("limitations", [])
+        if feat_meta.get("backfill_used"):
+            pred["limitations"].append("dataset_observation_backfill_for_missing_live_features_only")
         return pred, None
     except L5PredictionError as exc:
         return None, f"{exc.code}:{exc.message}"
