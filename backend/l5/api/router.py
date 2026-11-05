@@ -223,6 +223,14 @@ def create_synthesis_run(body: CreateSynthesisBody) -> dict[str, Any]:
         ) from exc
 
 
+@router.get("/synthesis/runs")
+def list_synthesis_runs(
+    offset: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=200),
+) -> dict[str, Any]:
+    return synthesis_service.list_synthesis_runs(offset=offset, limit=limit)
+
+
 @router.get("/synthesis/runs/{synthesis_run_id}")
 def get_synthesis_run(synthesis_run_id: str) -> dict[str, Any]:
     try:

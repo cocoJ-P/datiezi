@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
+import { useRoute } from "../../routing"
+import { listL5Runs } from "../../report/api"
 import { getAnalysisRunByDiagnosis } from "../l3/api"
 import { consumeL3HandoffFocus, type L3HandoffFocus } from "../overview/l3HandoffFocus"
+import { saveL5ReportFocus } from "../overview/l5HandoffFocus"
 import {
   createL4ReasoningRun,
   createL4Run,
@@ -54,73 +57,121 @@ function ReasoningOutcomeBadge({ outcome }: { outcome?: string }) {
   return <span className={cls}>{meta.label}</span>
 }
 
-function CandidateCard({ cand }: { cand: Record<string, unknown> }) {
+function evidenceSupportLabel(cand: Record<string, unknown>): {
+  label: string
+  tone: "ok" | "warn" | "bad" | "muted"
+} {
+  const contra = (cand.contradicting_evidence_ids as string[] | undefined) || []
+  const support = (cand.supporting_evidence_ids as string[] | undefined) || []
+  const manif = (cand.fault_manifestation_evidence_ids as string[] | undefined) || []
+  const status = String(cand.assessment_status || "unconfirmed").toLowerCase()
+  if (contra.length || status.includes("contradict")) return { label: "contradicted", tone: "bad" }
+  if (status.includes("confirm") && !status.includes("unconfirm")) return { label: "confirmed", tone: "ok" }
+  if (support.length || manif.length) return { label: "supported", tone: "ok" }
+  if (status.includes("insufficient") || !(support.length || manif.length)) {
+    return { label: "insufficient_evidence", tone: "warn" }
+  }
+  return { label: "unconfirmed", tone: "warn" }
+}
+
+function CandidateCard({
+  cand,
+  confirmation,
+}: {
+  cand: Record<string, unknown>
+  confirmation?: string
+}) {
+  const [open, setOpen] = useState(false)
   const missing = (cand.missing_evidence as string[] | undefined) || []
   const support = (cand.supporting_evidence_ids as string[] | undefined) || []
   const manif = (cand.fault_manifestation_evidence_ids as string[] | undefined) || []
   const contextual = (cand.contextual_evidence_ids as string[] | undefined) || []
   const contra = (cand.contradicting_evidence_ids as string[] | undefined) || []
+  const components =
+    (cand.involved_components as string[] | undefined) || (cand.components as string[] | undefined) || []
+  const ev = evidenceSupportLabel(cand)
+  const conf = confirmation || "unconfirmed"
   return (
     <article className="l4-card">
       <header>
         <h3>{String(cand.cause_name || "根因候选")}</h3>
-        <StateBadge value={String(cand.assessment_status || "unconfirmed")} />
+        <span className={`l4-badge ${ev.tone === "ok" ? "" : ev.tone === "bad" ? "is-danger" : "is-warn"}`}>
+          {ev.label}
+        </span>
       </header>
       <p>
-        关联故障 <strong>{String(cand.related_fault_type || "—")}</strong> · 适用性{" "}
-        {String(cand.applicability_status || "—")}
+        关联故障 <strong>{String(cand.related_fault_type || "—")}</strong>
+        {components.length ? ` · 部件 ${components.slice(0, 4).join(" / ")}` : ""}
+      </p>
+      <p className="l4-note">
+        适用性 {String(cand.applicability_status || "—")} · root_cause_confirmation <strong>{conf}</strong>
+        {conf === "confirmed" ? "" : "（未确认，不得当作已确认物理根因）"}
       </p>
       <p className="l4-note">{String(cand.support_summary || "")}</p>
-      <p className="l4-note">知识 {String(cand.causal_knowledge_id || "—")}</p>
-      {support.length ? (
-        <>
-          <p className="l4-note">根因特异支持（cause_specific）</p>
-          <ul className="l4-list-block">
-            {support.map((id) => (
-              <li key={id}>{id}</li>
-            ))}
-          </ul>
-        </>
-      ) : null}
-      {manif.length ? (
-        <>
-          <p className="l4-note">故障表现证据（fault_manifestation）</p>
-          <ul className="l4-list-block">
-            {manif.map((id) => (
-              <li key={id}>{id}</li>
-            ))}
-          </ul>
-        </>
-      ) : null}
-      {contextual.length ? (
-        <>
-          <p className="l4-note">上下文证据（contextual）</p>
-          <ul className="l4-list-block">
-            {contextual.map((id) => (
-              <li key={id}>{id}</li>
-            ))}
-          </ul>
-        </>
-      ) : null}
-      {contra.length ? (
-        <>
-          <p className="l4-note">反对证据</p>
-          <ul className="l4-list-block">
-            {contra.map((id) => (
-              <li key={id}>{id}</li>
-            ))}
-          </ul>
-        </>
-      ) : null}
-      {missing.length ? (
-        <>
-          <p className="l4-note">未验证条件</p>
-          <ul className="l4-list-block">
-            {missing.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </>
+      <p className="l4-note">
+        知识 {String(cand.causal_knowledge_id || "—")}
+        {cand.causal_knowledge_version ? ` · ${String(cand.causal_knowledge_version)}` : ""}
+      </p>
+      <button type="button" className="l4-linkish" onClick={() => setOpen((v) => !v)}>
+        {open ? "收起证据追溯" : "展开证据追溯"}
+      </button>
+      {open ? (
+        <div className="l4-evidence-panel">
+          {support.length ? (
+            <>
+              <p className="l4-note">根因特异支持（cause_specific）</p>
+              <ul className="l4-list-block">
+                {support.map((id) => (
+                  <li key={id}>{id}</li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p className="l4-note">无 cause_specific 支持 ID</p>
+          )}
+          {manif.length ? (
+            <>
+              <p className="l4-note">故障表现证据（振动/温度等观测引用）</p>
+              <ul className="l4-list-block">
+                {manif.map((id) => (
+                  <li key={id}>{id}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+          {contextual.length ? (
+            <>
+              <p className="l4-note">上下文证据</p>
+              <ul className="l4-list-block">
+                {contextual.map((id) => (
+                  <li key={id}>{id}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+          {contra.length ? (
+            <>
+              <p className="l4-note">反对证据</p>
+              <ul className="l4-list-block">
+                {contra.map((id) => (
+                  <li key={id}>{id}</li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p className="l4-note">无反对证据 ID</p>
+          )}
+          {missing.length ? (
+            <>
+              <p className="l4-note">证据不足 / 未验证条件</p>
+              <ul className="l4-list-block">
+                {missing.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+        </div>
       ) : null}
     </article>
   )
@@ -128,29 +179,38 @@ function CandidateCard({ cand }: { cand: Record<string, unknown> }) {
 
 function PathCard({ path }: { path: Record<string, unknown> }) {
   const states = (path.link_states as Record<string, unknown> | undefined) || {}
+  const validation = String(path.validation_status || "candidate_mechanism")
+  const confirmed = validation === "validated" || validation === "confirmed"
   return (
     <article className="l4-card">
       <header>
-        <h3>因果路径 {String(path.causal_path_id || "")}</h3>
-        <span className="l4-badge">{String(path.validation_status || "candidate_mechanism")}</span>
+        <h3>因果链 {String(path.causal_path_id || "")}</h3>
+        <span className="l4-badge is-warn">
+          {confirmed ? validation : `候选关联 · ${validation}`}
+        </span>
       </header>
-      <div className="l4-path">
+      <p className="l4-note">
+        {confirmed ? "已验证因果关系（以后端 validation_status 为准）" : "因果关系未确认 · 仅展示 API 返回的候选路径"}
+      </p>
+      <div className="l4-path" aria-label="异常观测到可能原因">
         <span>
-          {String(path.cause || "")}
-          <div className="l4-state">{String(states.cause || "")}</div>
+          异常/原因
+          <div className="l4-state">{String(path.cause || states.cause || "—")}</div>
         </span>
         <span>→</span>
         <span>
-          {String(path.mechanism || "")}
-          <div className="l4-state">{String(states.mechanism || "")}</div>
+          机理/表现
+          <div className="l4-state">{String(path.mechanism || states.mechanism || "—")}</div>
         </span>
         <span>→</span>
         <span>
-          {String(path.related_fault_type || path.resulting_fault || "")}
-          <div className="l4-state">{String(states.fault_to_evidence || "")}</div>
+          故障/影响
+          <div className="l4-state">
+            {String(path.related_fault_type || path.resulting_fault || states.fault_to_evidence || "—")}
+          </div>
         </span>
       </div>
-      <p className="l4-note">已观测 / 知识参考 / 假设 / 未知 均标注在环节状态；知识≠本机事实。</p>
+      <p className="l4-note">已观测 / 知识参考 / 假设 / 未知 均标注在环节状态；知识≠本机事实。不绘制虚构节点。</p>
     </article>
   )
 }
@@ -210,6 +270,7 @@ function ImpactCard({ impact }: { impact: Record<string, unknown> }) {
 }
 
 export function L4Workbench({ handoff }: { handoff?: L3HandoffFocus | null }) {
+  const { navigate } = useRoute()
   const [focus] = useState(() => handoff ?? consumeL3HandoffFocus())
   const [analysisRunId, setAnalysisRunId] = useState<string | null>(null)
   const [run, setRun] = useState<L4RunSummary | null>(null)
@@ -367,6 +428,36 @@ export function L4Workbench({ handoff }: { handoff?: L3HandoffFocus | null }) {
           <button type="button" disabled={reasoningBusy || !run} onClick={() => void runL4Reasoning(false)}>
             {reasoningBusy ? "AI 推理中…" : "AI 根因推理"}
           </button>
+          <button
+            type="button"
+            disabled={!selectedId}
+            onClick={() => {
+              void (async () => {
+                try {
+                  const page = await listL5Runs(50)
+                  const hit =
+                    page.items.find((r) => r.l4_run_id && run && r.l4_run_id === run.l4_run_id) ||
+                    page.items.find((r) => r.analysis_run_id && analysisRunId && r.analysis_run_id === analysisRunId) ||
+                    page.items.find((r) => r.diagnosis_run_id === focus?.diagnosis_run_id)
+                  saveL5ReportFocus({
+                    l5_run_id: hit?.l5_run_id,
+                    record_id: selectedId,
+                    diagnosis_run_id: focus?.diagnosis_run_id,
+                    analysis_run_id: analysisRunId || undefined,
+                    l4_run_id: run?.l4_run_id,
+                    equipment_type: focus?.equipment_type,
+                    reason: "from_l4_to_l5",
+                  })
+                  if (hit?.l5_run_id) navigate({ page: "report", runId: hit.l5_run_id })
+                  else navigate({ page: "diagnosis", tab: "l5" })
+                } catch {
+                  navigate({ page: "diagnosis", tab: "l5" })
+                }
+              })()
+            }}
+          >
+            打开对应 L5 报告
+          </button>
         </div>
       </header>
 
@@ -445,7 +536,11 @@ export function L4Workbench({ handoff }: { handoff?: L3HandoffFocus | null }) {
               </article>
 
               {(assessment.root_cause_candidates || []).map((cand) => (
-                <CandidateCard key={String(cand.candidate_id)} cand={cand} />
+                <CandidateCard
+                  key={String(cand.candidate_id)}
+                  cand={cand}
+                  confirmation={String(assessment.root_cause_confirmation || "unconfirmed")}
+                />
               ))}
               {(assessment.root_cause_candidates || []).length === 0 ? (
                 <article className="l4-card">

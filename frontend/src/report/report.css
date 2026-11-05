@@ -164,6 +164,151 @@
   font-size: 13px;
 }
 
+.rp-status-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 650;
+  background: #eef2f6;
+  color: var(--muted);
+}
+
+.rp-status-pill.is-ok {
+  background: #e8f6ee;
+  color: #1f7a4d;
+}
+
+.rp-status-pill.is-warn {
+  background: #fff4e5;
+  color: #b86a1c;
+}
+
+.rp-status-pill.is-bad {
+  background: #fdeceb;
+  color: #b42318;
+}
+
+.rp-customer-hero,
+.rp-customer-findings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.rp-customer-hero > div,
+.rp-customer-findings > div {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.rp-customer-hero strong,
+.rp-customer-findings p {
+  display: block;
+  margin: 4px 0 0;
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.rp-customer-findings > div.is-wide {
+  grid-column: 1 / -1;
+}
+
+.rp-emph.is-ok {
+  color: #1f7a4d;
+}
+
+.rp-emph.is-warn {
+  color: #b86a1c;
+}
+
+.rp-emph.is-bad {
+  color: #b42318;
+}
+
+.rp-ratio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.rp-ratio-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #fff;
+}
+
+.rp-ratio-card h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.rp-ratio-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.rp-ratio-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.rp-ratio-list span {
+  color: var(--muted);
+}
+
+.rp-ratio-list b {
+  font-variant-numeric: tabular-nums;
+}
+
+.rp-tech-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.rp-tech-toggle__btn,
+.rp-ghost-btn {
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.rp-tech-panel {
+  border: 1px dashed #c5d0dc;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #fbfcfe;
+}
+
+@media (max-width: 900px) {
+  .rp-customer-hero,
+  .rp-customer-findings,
+  .rp-ratio-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .rp-section {
   margin-bottom: 18px;
 }

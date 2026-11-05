@@ -68,6 +68,7 @@ export type L5RunSummary = {
   created_at?: string
   finished_at?: string
   review_note?: string
+  source_versions?: Record<string, unknown>
 }
 
 async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
@@ -230,6 +231,19 @@ export async function listSynthesisRecords(synthesisRunId: string, limit = 50, s
   )) as {
     total: number
     items: Array<{ record_id: string; status?: string; assessment?: SynthesisAssessment }>
+  }
+}
+
+export async function listSynthesisRuns(limit = 50, signal?: AbortSignal) {
+  return (await requestJson(`/l5/synthesis/runs?limit=${limit}`, { signal })) as {
+    total: number
+    items: Array<{
+      synthesis_run_id: string
+      status?: string
+      source_l5_run_id?: string
+      record_ids?: string[]
+      created_at?: string
+    }>
   }
 }
 

@@ -14,7 +14,7 @@ import {
   type WorkflowResponse,
 } from "./l2/api"
 import { saveL2HandoffFocus } from "./l2/handoffFocus"
-import { DiagnosticFlowCanvas } from "./overview/DiagnosticFlowCanvas"
+import { DiagnosticFlowCanvas, type DownstreamStageStats, type L5StageStats } from "./overview/DiagnosticFlowCanvas"
 import {
   aggregateRouting,
   l1Passed,
@@ -25,9 +25,31 @@ import {
   type EquipmentItem,
 } from "./overview/flowModel"
 import { getAnalysisRunByDiagnosis, type AnalysisRunSummary } from "./l3/api"
+import {
+  createL4ReasoningRun,
+  createL4Run,
+  getL4ByAnalysis,
+  getL4ReasoningByL4,
+  listL4ReasoningResults,
+  listL4Results,
+} from "./l4/api"
+import {
+  createL5Run,
+  createSynthesisRun,
+  getPredictionStatus,
+  listL5Records,
+  listL5Runs,
+  listSynthesisRuns,
+} from "../report/api"
 import { saveL3HandoffFocus } from "./overview/l3HandoffFocus"
+import { saveL5ReportFocus } from "./overview/l5HandoffFocus"
+import { useRoute } from "../routing"
 
 const L1_STEP_IDS = ["p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8"]
+
+function isL3Done(analysis: AnalysisRunSummary | null | undefined): boolean {
+  return analysis?.status === "succeeded" || analysis?.status === "partial"
+}
 
 function userMessage(raw: string | null | undefined, fallback: string): string {
   if (!raw) return fallback
@@ -47,6 +69,7 @@ function userMessage(raw: string | null | undefined, fallback: string): string {
 }
 
 export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: DiagnosisTabId) => void }) {
+  const { navigate } = useRoute()
   const { selectedId, filename, status, addFile } = useL1Dataset()
   const [encoding, setEncoding] = useState("auto")
   const [delimiter, setDelimiter] = useState("auto")
@@ -59,13 +82,29 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
   const [routingSummaries, setRoutingSummaries] = useState<DiagnosisRoutingSummary[]>([])
   const [routingLoading, setRoutingLoading] = useState(false)
   const [l3Runs, setL3Runs] = useState<Record<string, AnalysisRunSummary | null>>({})
+  const [l4StatsByBranch, setL4StatsByBranch] = useState<Record<string, DownstreamStageStats>>({})
+  const [l5Stats, setL5Stats] = useState<L5StageStats | null>(null)
   const [reasonOpen, setReasonOpen] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
+  /** 已成功触发过的自动步骤，避免轮询重复 POST */
+  const autoDoneRef = useRef<Set<string>>(new Set())
+  /** 正在进行中的自动步骤 */
+  const autoInflightRef = useRef<Set<string>>(new Set())
 
   const l1Ok = l1Passed(stages, L1_STEP_IDS)
   const handoff = workflow?.l2?.handoff
   const l2Status = workflow?.l2?.status || handoff?.status
-  const equipmentItems = (handoff?.equipment_items || []) as EquipmentItem[]
+  const equipmentItems = useMemo(
+    () => (handoff?.equipment_items || []) as EquipmentItem[],
+    [handoff?.equipment_items],
+  )
+  const equipmentKey = useMemo(
+    () =>
+      equipmentItems
+        .map((item) => `${item.equipment_type || ""}:${item.diagnosis_run_id || ""}:${item.status || ""}`)
+        .join("|"),
+    [equipmentItems],
+  )
   const primaryItem = equipmentItems[0]
   const l2Main = resolveL2Main(l2Status, l1Ok)
   const phase = resolveFlowPhase(l1Ok, l2Main)
@@ -73,7 +112,7 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
 
   useEffect(() => {
     if (!selectedId) {
-      setStages([])
+      setStages((prev) => (prev.length ? [] : prev))
       return
     }
     const controller = new AbortController()
@@ -82,14 +121,14 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
         if (!controller.signal.aborted) setStages(detail.stages ?? [])
       })
       .catch(() => {
-        if (!controller.signal.aborted) setStages([])
+        if (!controller.signal.aborted) setStages((prev) => (prev.length ? [] : prev))
       })
     return () => controller.abort()
   }, [selectedId, notice])
 
   useEffect(() => {
     if (!selectedId || !l1Ok) {
-      setWorkflow(null)
+      setWorkflow((prev) => (prev ? null : prev))
       return
     }
     let cancelled = false
@@ -122,7 +161,7 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
   useEffect(() => {
     const runIds = equipmentItems.map((item) => item.diagnosis_run_id).filter(Boolean) as string[]
     if (!runIds.length) {
-      setRunSummaries({})
+      setRunSummaries((prev) => (Object.keys(prev).length ? {} : prev))
       return
     }
     let cancelled = false
@@ -145,11 +184,11 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
     return () => {
       cancelled = true
     }
-  }, [equipmentItems])
+  }, [equipmentKey, equipmentItems])
 
   useEffect(() => {
     if (l2Main !== "已完成") {
-      setRoutingSummaries([])
+      setRoutingSummaries((prev) => (prev.length ? [] : prev))
       setRoutingLoading(false)
       return
     }
@@ -157,7 +196,7 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
       .filter((item) => item.status === "completed" && item.diagnosis_run_id)
       .map((item) => item.diagnosis_run_id as string)
     if (!runIds.length) {
-      setRoutingSummaries([])
+      setRoutingSummaries((prev) => (prev.length ? [] : prev))
       return
     }
     let cancelled = false
@@ -178,11 +217,11 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
     return () => {
       cancelled = true
     }
-  }, [equipmentItems, l2Main])
+  }, [equipmentKey, equipmentItems, l2Main])
 
   useEffect(() => {
     if (l2Main !== "已完成" || !routingSummaries.length) {
-      setL3Runs({})
+      setL3Runs((prev) => (Object.keys(prev).length ? {} : prev))
       return
     }
     const runIds = routingSummaries.map((item) => item.diagnosis_run_id)
@@ -208,6 +247,478 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
       window.clearInterval(timer)
     }
   }, [routingSummaries, l2Main])
+
+  const analysisIdKey = useMemo(
+    () =>
+      Object.values(l3Runs)
+        .map((run) => run?.analysis_run_id)
+        .filter(Boolean)
+        .sort()
+        .join("|"),
+    [l3Runs],
+  )
+  const diagnosisIdKey = useMemo(
+    () =>
+      equipmentItems
+        .map((item) => item.diagnosis_run_id)
+        .filter(Boolean)
+        .sort()
+        .join("|"),
+    [equipmentItems],
+  )
+
+  const branchFocusKey = useMemo(() => {
+    return routingSummaries
+      .flatMap((summary) =>
+        (summary.groups || [])
+          .filter((g) => g.l3_review_count > 0)
+          .map((g) => `${g.group_key}@${summary.diagnosis_run_id}`),
+      )
+      .sort()
+      .join("|")
+  }, [routingSummaries])
+
+  useEffect(() => {
+    if (l2Main !== "已完成") {
+      setL4StatsByBranch((prev) => (Object.keys(prev).length ? {} : prev))
+      setL5Stats((prev) => (prev ? null : prev))
+      return
+    }
+    let cancelled = false
+    const analysisIds = analysisIdKey ? analysisIdKey.split("|") : []
+    const diagnosisIds = new Set(diagnosisIdKey ? diagnosisIdKey.split("|") : [])
+    const branchPairs = routingSummaries.flatMap((summary) =>
+      (summary.groups || [])
+        .filter((g) => g.l3_review_count > 0)
+        .map((branch) => ({ branch, summary })),
+    )
+
+    async function loadDownstream() {
+      type L4Cache = {
+        l4RunId: string
+        items: Array<{
+          record_id: string
+          equipment_id?: string
+          assessment?: { root_cause_candidates?: Array<Record<string, unknown>>; root_cause_confirmation?: string }
+        }>
+        reasoningDone: number
+      }
+      const cache = new Map<string, L4Cache | null>()
+      const autoBusyL4 = new Set<string>()
+      const autoFailedL4 = new Map<string, string>()
+
+      async function loadL4ForAnalysis(arId: string): Promise<L4Cache | null> {
+        if (cache.has(arId)) return cache.get(arId) || null
+        try {
+          const body = await getL4ByAnalysis(arId)
+          if (!body.l4_run) {
+            cache.set(arId, null)
+            return null
+          }
+          const results = await listL4Results(body.l4_run.l4_run_id)
+          let reasoningDone = 0
+          try {
+            const rr = await getL4ReasoningByL4(body.l4_run.l4_run_id)
+            if (rr.reasoning_run) {
+              const rrItems = await listL4ReasoningResults(rr.reasoning_run.reasoning_run_id)
+              reasoningDone = rrItems.total || rrItems.items.length
+            }
+          } catch {
+            /* optional */
+          }
+          const packed: L4Cache = {
+            l4RunId: body.l4_run.l4_run_id,
+            items: results.items || [],
+            reasoningDone,
+          }
+          cache.set(arId, packed)
+          return packed
+        } catch {
+          cache.set(arId, null)
+          return null
+        }
+      }
+
+      // 按 AnalysisRun 聚合记录，供自动创建 L4
+      const recordsByAnalysis = new Map<string, string[]>()
+      for (const { branch, summary } of branchPairs) {
+        const analysis = l3Runs[summary.diagnosis_run_id]
+        const arId = analysis?.analysis_run_id
+        if (!arId || !isL3Done(analysis)) continue
+        const prev = recordsByAnalysis.get(arId) || []
+        for (const rid of branch.l3_record_ids || []) {
+          if (!prev.includes(rid)) prev.push(rid)
+        }
+        recordsByAnalysis.set(arId, prev)
+      }
+
+      // L3 完成后自动创建 L4（及 L4 Reasoning）
+      for (const [arId, recordIds] of recordsByAnalysis) {
+        let packed = await loadL4ForAnalysis(arId)
+        if (packed) {
+          const reasonKey = `l4r:${packed.l4RunId}`
+          if (!packed.reasoningDone && !autoDoneRef.current.has(reasonKey) && !autoInflightRef.current.has(reasonKey)) {
+            autoInflightRef.current.add(reasonKey)
+            try {
+              await createL4ReasoningRun({
+                l4_run_id: packed.l4RunId,
+                force_new: false,
+                max_records: 5,
+                record_ids: recordIds.slice(0, 5),
+              })
+              autoDoneRef.current.add(reasonKey)
+              cache.delete(arId)
+              packed = await loadL4ForAnalysis(arId)
+            } catch {
+              /* 推理失败可下次重试 */
+            } finally {
+              autoInflightRef.current.delete(reasonKey)
+            }
+          }
+          continue
+        }
+        const l4Key = `l4:${arId}`
+        if (autoInflightRef.current.has(l4Key)) {
+          autoBusyL4.add(arId)
+          continue
+        }
+        autoInflightRef.current.add(l4Key)
+        autoBusyL4.add(arId)
+        try {
+          const created = await createL4Run({
+            analysis_run_id: arId,
+            force_new: false,
+            max_records: 20,
+            record_ids: recordIds.length ? recordIds.slice(0, 20) : undefined,
+          })
+          cache.delete(arId)
+          const after = await loadL4ForAnalysis(arId)
+          if (after?.l4RunId || created.l4_run?.l4_run_id) {
+            const l4RunId = after?.l4RunId || created.l4_run.l4_run_id
+            const reasonKey = `l4r:${l4RunId}`
+            if (!autoDoneRef.current.has(reasonKey) && !autoInflightRef.current.has(reasonKey)) {
+              autoInflightRef.current.add(reasonKey)
+              try {
+                await createL4ReasoningRun({
+                  l4_run_id: l4RunId,
+                  force_new: false,
+                  max_records: 5,
+                  record_ids: recordIds.slice(0, 5),
+                })
+                autoDoneRef.current.add(reasonKey)
+                cache.delete(arId)
+                await loadL4ForAnalysis(arId)
+              } catch {
+                /* optional */
+              } finally {
+                autoInflightRef.current.delete(reasonKey)
+              }
+            }
+          }
+          autoBusyL4.delete(arId)
+        } catch (exc) {
+          autoBusyL4.delete(arId)
+          autoFailedL4.set(arId, exc instanceof Error ? exc.message : String(exc))
+        } finally {
+          autoInflightRef.current.delete(l4Key)
+        }
+        if (cancelled) return
+      }
+
+      const nextBranch: Record<string, DownstreamStageStats> = {}
+      const l4ByDiagnosis = new Map<string, { analysisRunId: string; l4RunId: string; recordIds: string[] }>()
+
+      for (const { branch, summary } of branchPairs) {
+        const analysis = l3Runs[summary.diagnosis_run_id]
+        const arId = analysis?.analysis_run_id
+        if (!arId) {
+          nextBranch[branch.group_key] = {
+            statusLabel: analysis ? "等待 L3 完成" : "待分析",
+            tone: "idle",
+            analyzedRecords: 0,
+            candidateCount: 0,
+            reasoningDone: 0,
+            insufficientOrConflict: 0,
+            l4RunId: null,
+            knowledgeNote: "L3 AnalysisRun 就绪并完成后将自动启动 L4",
+          }
+          continue
+        }
+        if (!isL3Done(analysis)) {
+          nextBranch[branch.group_key] = {
+            statusLabel: "等待 L3 完成",
+            tone: "busy",
+            analyzedRecords: 0,
+            candidateCount: 0,
+            reasoningDone: 0,
+            insufficientOrConflict: 0,
+            l4RunId: null,
+            knowledgeNote: `L3 状态 ${analysis?.status || "unknown"} · 完成后自动执行 L4`,
+          }
+          continue
+        }
+        if (autoBusyL4.has(arId)) {
+          nextBranch[branch.group_key] = {
+            statusLabel: "L4 自动执行中",
+            tone: "busy",
+            analyzedRecords: 0,
+            candidateCount: 0,
+            reasoningDone: 0,
+            insufficientOrConflict: 0,
+            l4RunId: null,
+            knowledgeNote: "L3 已完成，正在自动创建 L4Run…",
+          }
+          continue
+        }
+        if (autoFailedL4.has(arId)) {
+          nextBranch[branch.group_key] = {
+            statusLabel: "L4 自动失败",
+            tone: "fail",
+            analyzedRecords: 0,
+            candidateCount: 0,
+            reasoningDone: 0,
+            insufficientOrConflict: 0,
+            l4RunId: null,
+            knowledgeNote: autoFailedL4.get(arId) || "自动创建 L4 失败，可进入 L4 手动重试",
+          }
+          continue
+        }
+        const packed = await loadL4ForAnalysis(arId)
+        if (!packed) {
+          nextBranch[branch.group_key] = {
+            statusLabel: "L4 待自动执行",
+            tone: "idle",
+            analyzedRecords: 0,
+            candidateCount: 0,
+            reasoningDone: 0,
+            insufficientOrConflict: 0,
+            l4RunId: null,
+            knowledgeNote: "即将自动创建 L4Run",
+          }
+          continue
+        }
+        const idSet = new Set(branch.l3_record_ids || [])
+        let items = packed.items
+        if (idSet.size) {
+          const filtered = items.filter((it) => idSet.has(it.record_id))
+          if (filtered.length) items = filtered
+          else if (branch.equipment_id) {
+            const byEquip = packed.items.filter((it) => String(it.equipment_id || "") === String(branch.equipment_id))
+            if (byEquip.length) items = byEquip
+          }
+        } else if (branch.equipment_id) {
+          const byEquip = packed.items.filter((it) => String(it.equipment_id || "") === String(branch.equipment_id))
+          if (byEquip.length) items = byEquip
+        }
+        let candidates = 0
+        let insufficient = 0
+        for (const item of items) {
+          const cands = item.assessment?.root_cause_candidates || []
+          candidates += cands.length
+          const conf = String(item.assessment?.root_cause_confirmation || "unconfirmed")
+          if (conf !== "confirmed") insufficient += 1
+          for (const c of cands) {
+            const status = String((c as Record<string, unknown>).assessment_status || "")
+            if (status.includes("insufficient") || status.includes("conflict")) insufficient += 1
+          }
+        }
+        nextBranch[branch.group_key] = {
+          statusLabel: "已有 L4Run",
+          tone: "pass",
+          analyzedRecords: items.length,
+          candidateCount: candidates,
+          reasoningDone: packed.reasoningDone,
+          insufficientOrConflict: insufficient,
+          l4RunId: packed.l4RunId,
+          knowledgeNote: `${branch.display_name} · 已自动衔接 L4`,
+        }
+        const prev = l4ByDiagnosis.get(summary.diagnosis_run_id)
+        const recs = [...(branch.l3_record_ids || [])]
+        if (prev) {
+          for (const rid of recs) if (!prev.recordIds.includes(rid)) prev.recordIds.push(rid)
+        } else {
+          l4ByDiagnosis.set(summary.diagnosis_run_id, {
+            analysisRunId: arId,
+            l4RunId: packed.l4RunId,
+            recordIds: recs,
+          })
+        }
+      }
+      if (!cancelled) setL4StatsByBranch(nextBranch)
+
+      try {
+        let [pred, l5page, syn] = await Promise.all([
+          getPredictionStatus().catch(() => ({ model_id: "", equipment_categories: [] as string[], n_models: 0 })),
+          listL5Runs(50).catch(() => ({ total: 0, items: [] as Array<{
+            l5_run_id: string
+            diagnosis_run_id?: string
+            analysis_run_id?: string
+            l4_run_id?: string
+            selected_record_count?: number
+          }> })),
+          listSynthesisRuns(50).catch(() => ({ total: 0, items: [] })),
+        ])
+        if (cancelled) return
+
+        // L4 完成后自动创建 L5（及 Synthesis）
+        let autoL5Busy = false
+        let autoL5Note = ""
+        for (const [diagnosisRunId, binding] of l4ByDiagnosis) {
+          const existing = (l5page.items || []).find(
+            (run) =>
+              run.diagnosis_run_id === diagnosisRunId ||
+              run.analysis_run_id === binding.analysisRunId ||
+              run.l4_run_id === binding.l4RunId,
+          )
+          if (existing) {
+            const synKey = `syn:${existing.l5_run_id}`
+            if (!autoDoneRef.current.has(synKey) && !autoInflightRef.current.has(synKey)) {
+              autoInflightRef.current.add(synKey)
+              try {
+                await createSynthesisRun({
+                  l5_run_id: existing.l5_run_id,
+                  force_new: false,
+                  max_records: 5,
+                  record_ids: binding.recordIds.slice(0, 5),
+                  allow_llm_synthesis: false,
+                })
+                autoDoneRef.current.add(synKey)
+              } catch {
+                /* synthesis 可下次重试 */
+              } finally {
+                autoInflightRef.current.delete(synKey)
+              }
+            }
+            continue
+          }
+          const l5Key = `l5:${diagnosisRunId}`
+          if (autoInflightRef.current.has(l5Key)) {
+            autoL5Busy = true
+            autoL5Note = "L5 自动执行中…"
+            continue
+          }
+          autoInflightRef.current.add(l5Key)
+          autoL5Busy = true
+          autoL5Note = "L4 已完成，正在自动创建 L5…"
+          try {
+            const created = await createL5Run({
+              diagnosis_run_id: diagnosisRunId,
+              analysis_run_id: binding.analysisRunId,
+              l4_run_id: binding.l4RunId,
+              force_new: false,
+              max_records: 20,
+              record_ids: binding.recordIds.length ? binding.recordIds.slice(0, 20) : undefined,
+            })
+            const l5RunId = created.l5_run?.l5_run_id
+            if (l5RunId) {
+              const synKey = `syn:${l5RunId}`
+              if (!autoDoneRef.current.has(synKey) && !autoInflightRef.current.has(synKey)) {
+                autoInflightRef.current.add(synKey)
+                try {
+                  await createSynthesisRun({
+                    l5_run_id: l5RunId,
+                    force_new: false,
+                    max_records: 5,
+                    record_ids: binding.recordIds.slice(0, 5),
+                    allow_llm_synthesis: false,
+                  })
+                  autoDoneRef.current.add(synKey)
+                } catch {
+                  /* optional */
+                } finally {
+                  autoInflightRef.current.delete(synKey)
+                }
+              }
+            }
+            l5page = await listL5Runs(50).catch(() => l5page)
+            syn = await listSynthesisRuns(50).catch(() => syn)
+            autoL5Busy = false
+            autoL5Note = ""
+          } catch (exc) {
+            autoL5Busy = false
+            autoL5Note = exc instanceof Error ? `L5 自动失败：${exc.message}` : "L5 自动失败"
+          } finally {
+            autoInflightRef.current.delete(l5Key)
+          }
+          if (cancelled) return
+        }
+
+        const relevant = (l5page.items || []).filter(
+          (run) =>
+            (run.diagnosis_run_id && diagnosisIds.has(run.diagnosis_run_id)) ||
+            (run.analysis_run_id && analysisIds.includes(run.analysis_run_id)) ||
+            [...l4ByDiagnosis.values()].some((b) => b.l4RunId && run.l4_run_id === b.l4RunId),
+        )
+        const useRuns = relevant.length ? relevant : l5page.items || []
+        let recordCount = useRuns.reduce((s, r) => s + (r.selected_record_count || 0), 0)
+        let primaryL5: string | null = useRuns[0]?.l5_run_id || null
+        let primaryRecord: string | null = null
+        if (primaryL5) {
+          try {
+            const recs = await listL5Records(primaryL5, 20)
+            if (!cancelled) {
+              recordCount = recs.total || recs.items.length
+              primaryRecord = recs.items[0]?.record_id || null
+            }
+          } catch {
+            /* 用 run 摘要计数即可 */
+          }
+        }
+        if (cancelled) return
+        const cats = pred.equipment_categories || []
+        const modelReady = Boolean(pred.model_id)
+        const hasBound = relevant.length > 0
+        setL5Stats({
+          statusLabel: hasBound
+            ? "已有报告"
+            : autoL5Busy
+              ? "L5 自动执行中"
+              : autoL5Note.startsWith("L5 自动失败")
+                ? "L5 自动失败"
+                : l4ByDiagnosis.size
+                  ? "L5 待自动执行"
+                  : modelReady
+                    ? "等待上游 L4"
+                    : "未就绪",
+          tone: hasBound ? "pass" : autoL5Busy ? "busy" : autoL5Note.startsWith("L5 自动失败") ? "fail" : "idle",
+          modelId: pred.model_id || "L5P-v1",
+          equipmentCategories: cats,
+          reportCount: useRuns.length,
+          reportRecords: recordCount,
+          synthesisCompleted: syn.total || 0,
+          predictionCoverageNote: pred.n_models
+            ? `${pred.n_models} 预测头 · 覆盖 ${cats.length || 6} 类设备`
+            : "六类设备预测能力以模型包为准",
+          knowledgeNote: autoL5Note
+            || (hasBound
+              ? "L4 完成后已自动衔接综合诊断"
+              : l4ByDiagnosis.size
+                ? "检测到已完成的 L4，准备自动创建 L5"
+                : "等待各分支 L4 完成后自动执行 L5"),
+          primaryL5RunId: primaryL5,
+          primaryRecordId: primaryRecord,
+        })
+      } catch (exc) {
+        if (!cancelled) {
+          setL5Stats({
+            statusLabel: "加载失败",
+            tone: "fail",
+            modelId: "L5P-v1",
+            equipmentCategories: [],
+            reportCount: 0,
+            reportRecords: 0,
+            synthesisCompleted: 0,
+            predictionCoverageNote: "无法读取 /l5 API（请确认开发代理已转发 /l5）",
+            knowledgeNote: exc instanceof Error ? exc.message : "请稍后刷新",
+          })
+        }
+      }
+    }
+    void loadDownstream()
+    return () => {
+      cancelled = true
+    }
+  }, [l2Main, analysisIdKey, diagnosisIdKey, branchFocusKey, l3Runs, routingSummaries])
 
   const progressText = useMemo(() => progressFromRuns(runSummaries, l2Main), [runSummaries, l2Main])
   const routing = useMemo(() => (routingSummaries.length ? aggregateRouting(routingSummaries) : null), [routingSummaries])
@@ -319,8 +830,8 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
       .catch(() => setNotice("L2 重试未能启动，请稍后刷新。"))
   }
 
-  function openL3(branch: RoutingGroupSummary, summary?: DiagnosisRoutingSummary) {
-    saveL3HandoffFocus({
+  function focusFromBranch(branch: RoutingGroupSummary, summary?: DiagnosisRoutingSummary) {
+    return {
       contract_version: "l2_l3_handoff_v1",
       equipment_type: branch.equipment_type,
       equipment_id: branch.equipment_id,
@@ -331,14 +842,57 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
       dataset_revision_id: summary?.dataset_revision_id,
       model_bundle_id: summary?.model_bundle_id,
       diagnosis_run_id: summary?.diagnosis_run_id,
-      trigger_reason: "auto_review",
+      trigger_reason: "auto_review" as const,
       conflict_count: branch.conflict_count,
       uncertain_count: branch.uncertain_count,
       abnormal_count: branch.abnormal_count,
       l3_review_count: branch.l3_review_count,
       reason: "L2 分流建议进入 L3（ABNORMAL / CONFLICT / UNCERTAIN，auto_review）。",
-    })
+    }
+  }
+
+  function openL3(branch: RoutingGroupSummary, summary?: DiagnosisRoutingSummary) {
+    saveL3HandoffFocus(focusFromBranch(branch, summary))
     onOpenLayer("l3")
+  }
+
+  function openL4(branch?: RoutingGroupSummary, summary?: DiagnosisRoutingSummary) {
+    if (branch) saveL3HandoffFocus(focusFromBranch(branch, summary))
+    else if (routing?.branches[0]) {
+      const b = routing.branches[0]
+      const parent = routingSummaries.find((s) => s.equipment_type === b.equipment_type)
+      saveL3HandoffFocus(focusFromBranch(b, parent))
+    }
+    onOpenLayer("l4")
+  }
+
+  function openL5() {
+    if (routing?.branches[0]) {
+      const b = routing.branches[0]
+      const parent = routingSummaries.find((s) => s.equipment_type === b.equipment_type)
+      saveL3HandoffFocus(focusFromBranch(b, parent))
+    }
+    if (l5Stats?.primaryL5RunId) {
+      saveL5ReportFocus({
+        l5_run_id: l5Stats.primaryL5RunId,
+        record_id: l5Stats.primaryRecordId || undefined,
+        reason: "from_overview",
+      })
+    }
+    onOpenLayer("l5")
+  }
+
+  function openL5Report() {
+    if (l5Stats?.primaryL5RunId) {
+      saveL5ReportFocus({
+        l5_run_id: l5Stats.primaryL5RunId,
+        record_id: l5Stats.primaryRecordId || undefined,
+        reason: "from_overview_report",
+      })
+      navigate({ page: "report", runId: l5Stats.primaryL5RunId })
+      return
+    }
+    navigate({ page: "report" })
   }
 
   return (
@@ -386,7 +940,7 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
         </p>
       ) : (
         <p className="dx-control-note" role="status">
-          上传文件后将自动执行可完成的步骤。流程图按实际阶段展开：L1 数据治理 → L2 筛查 → 需复核对象分流到 L3。
+          上传文件后将自动执行可完成的步骤。流程图：L1 → L2 → L3；L3 完成后自动执行 L4；L4 完成后自动执行 L5。
         </p>
       )}
 
@@ -403,6 +957,8 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
         routingLoading={routingLoading}
         summaries={routingSummaries}
         l3Runs={l3Runs}
+        l4StatsByBranch={l4StatsByBranch}
+        l5Stats={l5Stats}
         reasonText={reasonText}
         reasonOpen={reasonOpen}
         actions={{
@@ -423,6 +979,9 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
         onEnterL2={() => onOpenLayer("l2")}
         onEnterL1={() => onOpenLayer("l1")}
         onEnterL3={openL3}
+        onEnterL4={openL4}
+        onEnterL5={openL5}
+        onOpenL5Report={openL5Report}
       />
     </section>
   )

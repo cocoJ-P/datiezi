@@ -52,6 +52,15 @@ export async function getL4Status(signal?: AbortSignal) {
   return (await requestJson("/l4/status", { signal })) as Record<string, unknown>
 }
 
+export async function getL4Overview(analysisRunId?: string, signal?: AbortSignal) {
+  const q = analysisRunId ? `?analysis_run_id=${encodeURIComponent(analysisRunId)}` : ""
+  return (await requestJson(`/l4/overview${q}`, { signal })) as {
+    status?: Record<string, unknown>
+    l4_run?: L4RunSummary | null
+    analysis_run_id?: string
+  }
+}
+
 export async function getL4ByAnalysis(analysisRunId: string, signal?: AbortSignal) {
   return (await requestJson(`/l4/by-analysis/${encodeURIComponent(analysisRunId)}`, { signal })) as {
     l4_run: L4RunSummary | null

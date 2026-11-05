@@ -111,6 +111,27 @@ class SynthesisStore:
         finally:
             conn.close()
 
+    def list_runs(self, *, offset: int = 0, limit: int = 50) -> dict[str, Any]:
+        conn = connect(self.db_path)
+        try:
+            total = conn.execute("SELECT COUNT(*) AS c FROM synthesis_runs").fetchone()["c"]
+            rows = conn.execute(
+                """
+                SELECT * FROM synthesis_runs
+                ORDER BY created_at DESC
+                LIMIT ? OFFSET ?
+                """,
+                (limit, offset),
+            ).fetchall()
+            return {
+                "total": int(total),
+                "offset": offset,
+                "limit": limit,
+                "items": [self._run_from_row(r) for r in rows],
+            }
+        finally:
+            conn.close()
+
     def list_records(self, synthesis_run_id: str, *, limit: int = 50) -> dict[str, Any]:
         conn = connect(self.db_path)
         try:

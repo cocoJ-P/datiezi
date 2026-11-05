@@ -51,10 +51,10 @@ export const DIAGNOSIS_GROUPS = [
       {
         id: "l5",
         prefix: "L5",
-        label: "反馈",
+        label: "综合诊断",
         crumb: "诊断技术体系 / L5",
-        title: "诊断交付与知识反馈",
-        summary: "复核 · 知识回写 · 交付交接",
+        title: "综合诊断与十字段报告",
+        summary: "L5P-v1 十字段预测 · 知识增强对照 · Synthesis 按需复核",
       },
     ],
   },

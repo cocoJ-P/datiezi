@@ -179,6 +179,26 @@
   line-height: 1.55;
 }
 
+.l4-linkish {
+  margin-top: 8px;
+  border: 0;
+  background: transparent;
+  color: #2a5f9e;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.l4-evidence-panel {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid #eef2f6;
+  border-radius: 8px;
+  background: #fafbfc;
+}
+
 @media (max-width: 960px) {
   .l4-layout,
   .l4-metrics {

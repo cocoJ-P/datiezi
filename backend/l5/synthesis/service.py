@@ -208,6 +208,10 @@ def get_synthesis(synthesis_run_id: str) -> dict[str, Any]:
         raise SynthesisServiceError("not_found", str(exc), 404) from exc
 
 
+def list_synthesis_runs(offset: int = 0, limit: int = 50) -> dict[str, Any]:
+    return SYNTHESIS_STORE.list_runs(offset=offset, limit=limit)
+
+
 def list_synthesis_records(synthesis_run_id: str, limit: int = 50) -> dict[str, Any]:
     return SYNTHESIS_STORE.list_records(synthesis_run_id, limit=limit)
 

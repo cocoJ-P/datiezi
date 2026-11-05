@@ -49,6 +49,119 @@
   padding-top: 8px;
 }
 
+.dx-flow-branch-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 4px;
+  align-self: center;
+}
+
+.dx-flow-branch-row {
+  display: flex;
+  align-items: stretch;
+  gap: 28px;
+  animation: dx-flow-rise 280ms ease-out both;
+}
+
+.dx-flow-branch-row .dx-flow-l3-card {
+  width: min(300px, 70vw);
+  flex: 0 0 auto;
+  animation: none;
+}
+
+.dx-flow-l4-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(260px, 64vw);
+  padding: 12px 14px 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  text-align: left;
+  overflow: hidden;
+}
+
+.dx-flow-l4-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--flow-idle);
+}
+
+.dx-flow-l4-card.is-pass::before {
+  background: var(--flow-pass);
+}
+
+.dx-flow-l4-card.is-pass {
+  border-color: #b7dcc6;
+}
+
+.dx-flow-l4-card.is-idle::before {
+  background: var(--flow-idle);
+}
+
+.dx-flow-l4-card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.dx-flow-l4-card h5 {
+  margin: 2px 0 0;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.dx-flow-l4-card .dx-flow-status.is-pass {
+  color: var(--flow-pass);
+}
+
+.dx-flow-l4-card .dx-flow-status.is-idle {
+  color: var(--muted);
+  font-style: normal;
+}
+
+.dx-flow-l4-card .dx-flow-actions {
+  margin-top: auto;
+}
+
+.dx-flow-l4-card button {
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.dx-flow-l4-card .dx-primary {
+  border-color: #2a5f9e;
+  background: #2a5f9e;
+  color: #fff;
+}
+
+.dx-flow-l5-col {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  padding-top: 4px;
+  width: min(300px, 76vw);
+}
+
+.dx-flow-l5-col .dx-flow-node {
+  width: 100%;
+}
+
 .dx-flow-node {
   position: relative;
   display: flex;
@@ -456,7 +569,19 @@
 
   .dx-flow-l2-col,
   .dx-flow-l3-col,
+  .dx-flow-branch-rail,
+  .dx-flow-l5-col,
   .dx-flow-node {
+    width: 100%;
+  }
+
+  .dx-flow-branch-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .dx-flow-branch-row .dx-flow-l3-card,
+  .dx-flow-l4-card {
     width: 100%;
   }
 

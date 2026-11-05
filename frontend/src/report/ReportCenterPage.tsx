@@ -1,4 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
+import { useRoute } from "../routing"
+import { consumeL5ReportFocus } from "../diagnosis/overview/l5HandoffFocus"
+import {
+  getDiagnosisRoutingSummary,
+  type DiagnosisRoutingSummary,
+} from "../diagnosis/l2/api"
+import { getAnalysisRun, type AnalysisRunSummary } from "../diagnosis/l3/api"
 import {
   createAlertRun,
   createSynthesisRun,
@@ -51,6 +58,24 @@ function formatSlotValue(slot?: FieldSlot): string {
   } catch {
     return String(slot.value)
   }
+}
+
+function fieldOf(assessment: FinalDiagnosisAssessment, key: string): string {
+  return formatSlotValue(assessment.fields?.[key])
+}
+
+function pct(part: number, total: number): string {
+  if (!total) return "—"
+  return `${((part / total) * 100).toFixed(1)}%`
+}
+
+function statusTone(statusText: string): "ok" | "warn" | "bad" | "neutral" {
+  const s = statusText.toLowerCase()
+  if (!statusText || statusText === "—") return "neutral"
+  if (/(正常|normal|ok|healthy)/i.test(s)) return "ok"
+  if (/(严重|critical|alarm|fault|异常|abnormal|重度)/i.test(s)) return "bad"
+  if (/(注意|warning|uncertain|conflict|中度|轻度|待|unconfirmed)/i.test(s)) return "warn"
+  return "neutral"
 }
 
 function AlertPanel({
@@ -250,126 +275,346 @@ function LiveReportDetail({
   const labels = assessment.field_labels_zh || {}
   const fields = assessment.fields || {}
   const predMeta = assessment.supervised_prediction
+  const [showTech, setShowTech] = useState(false)
+  const [l2Summary, setL2Summary] = useState<DiagnosisRoutingSummary | null>(null)
+  const [l3Run, setL3Run] = useState<AnalysisRunSummary | null>(null)
+
+  const equipmentStatus = fieldOf(assessment, "equipment_status")
+  const faultType = fieldOf(assessment, "fault_type")
+  const faultSeverity = fieldOf(assessment, "fault_severity")
+  const faultLocation = fieldOf(assessment, "fault_location")
+  const confidence = fieldOf(assessment, "diagnosis_confidence")
+  const spectral = fieldOf(assessment, "spectral_description")
+  const rootCause = fieldOf(assessment, "root_cause_analysis")
+  const actions = fieldOf(assessment, "recommended_actions")
+  const priority = fieldOf(assessment, "priority")
+  const impact = fieldOf(assessment, "impact_degree")
+  const tone = statusTone(`${equipmentStatus} ${faultSeverity} ${faultType}`)
+
+  useEffect(() => {
+    let cancelled = false
+    const diagnosisId = assessment.source_run_ids?.diagnosis_run_id
+    const analysisId = assessment.source_run_ids?.analysis_run_id
+    setL2Summary(null)
+    setL3Run(null)
+    ;(async () => {
+      if (diagnosisId) {
+        try {
+          const body = await getDiagnosisRoutingSummary(diagnosisId)
+          if (!cancelled) setL2Summary(body)
+        } catch {
+          if (!cancelled) setL2Summary(null)
+        }
+      }
+      if (analysisId) {
+        try {
+          const body = await getAnalysisRun(analysisId)
+          if (!cancelled) setL3Run(body)
+        } catch {
+          if (!cancelled) setL3Run(null)
+        }
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [assessment.source_run_ids?.diagnosis_run_id, assessment.source_run_ids?.analysis_run_id])
+
+  const l2Group = useMemo(() => {
+    if (!l2Summary?.groups?.length) return null
+    const byEquip = l2Summary.groups.find((g) => String(g.equipment_id || "") === String(assessment.equipment_id || ""))
+    return byEquip || l2Summary.groups[0]
+  }, [l2Summary, assessment.equipment_id])
+
+  const l2Total = l2Group?.total_records || l2Summary?.total_records || 0
+  const l2Complete = l2Group?.l2_complete_count ?? l2Summary?.l2_complete_count ?? 0
+  const l2Abnormal = l2Group?.abnormal_count ?? l2Summary?.screening_counts?.ABNORMAL ?? 0
+  const l2Conflict = l2Group?.conflict_count ?? l2Summary?.screening_counts?.CONFLICT ?? 0
+  const l2Uncertain = l2Group?.uncertain_count ?? l2Summary?.screening_counts?.UNCERTAIN ?? 0
+  const l2Normal = l2Group?.normal_count ?? Math.max(0, l2Total - l2Abnormal - l2Conflict - l2Uncertain)
+  const l3Review = l2Group?.l3_review_count ?? l2Summary?.l3_review_count ?? 0
+
+  const l3Selected = l3Run?.selected_record_count || 0
+  const l3Succeeded = l3Run?.succeeded_record_count || 0
+  const l3Failed = l3Run?.failed_record_count || 0
+  const l3Inconclusive = l3Run?.inconclusive_record_count || 0
+  const l3Processed = l3Run?.processed_record_count || 0
+
   return (
     <article className="rp-doc">
       <header className="rp-doc__header">
         <div className="rp-doc__meta-row">
-          <span className="rp-doc__id">{assessment.l5_run_id}</span>
+          <span className={`rp-status-pill is-${tone}`}>
+            {tone === "ok" ? "状态正常倾向" : tone === "bad" ? "需重点关注" : tone === "warn" ? "建议复核" : "结果待解读"}
+          </span>
           {reviewBadge(assessment.review_status)}
-          <span className="rp-doc__ver">outcome {assessment.outcome || "—"}</span>
         </div>
-        <h1 className="rp-doc__title">
-          综合诊断报告 · {assessment.record_id}
-        </h1>
-        <div className="rp-doc__issue">
-          <div>
-            <span className="rp-label">设备</span>
-            <strong>
-              {assessment.equipment_type || "—"} / {assessment.equipment_id || "—"}
-            </strong>
-          </div>
-          <div>
-            <span className="rp-label">根因确认</span>
-            <strong>{assessment.root_cause_confirmation || "unconfirmed"}</strong>
-          </div>
-          <div>
-            <span className="rp-label">监督模型</span>
-            <strong>{predMeta?.model_id || predictionModelId || "—"}</strong>
-          </div>
-        </div>
+        <h1 className="rp-doc__title">设备诊断结论</h1>
+        <p className="rp-body">
+          面向现场的摘要结论。技术字段、证据链与模型细节默认收在下方二级。
+        </p>
       </header>
 
       <section className="rp-section">
-        <h2>第一部分：十字段预测（比赛主输出）</h2>
-        <p className="rp-body">
-          主值来自 L5 监督预测（CatBoost）；诊断置信度为数据集回归目标，不等于已校准正确概率；根因模板 ≠
-          现场已确认根因。L2 CONFLICT/UNCERTAIN 不是四级设备状态。
-        </p>
-        <div className="rp-summary" style={{ gridTemplateColumns: "1fr" }}>
-          {FIELD_ORDER.map((key) => {
-            const slot = fields[key]
-            const extras = slot?.extras || {}
-            return (
-              <div key={key} style={{ borderBottom: "1px solid var(--line, #e5e7eb)", paddingBottom: 10 }}>
-                <span className="rp-label">{labels[key] || key}</span>
-                <p>{formatSlotValue(slot)}</p>
-                <p className="rp-inline-note">
-                  来源：{slot?.source_layer || "—"} · 模型 {String(extras.source_model_id || predMeta?.model_id || "—")} ·
-                  状态 {String(extras.prediction_status || "—")}
-                </p>
-                {slot?.uncertainty ? <p className="rp-inline-note">不确定性：{slot.uncertainty}</p> : null}
-                <button type="button" className="rp-sidebar__item" style={{ marginTop: 4 }} onClick={() => onTrace(key)}>
-                  查看证据追溯
-                </button>
-                {activeField === key && provenance ? (
-                  <pre className="rp-mono" style={{ whiteSpace: "pre-wrap", fontSize: 12, marginTop: 8 }}>
-                    {JSON.stringify(provenance, null, 2)}
-                  </pre>
-                ) : null}
-              </div>
-            )
-          })}
+        <h2>涉及设备</h2>
+        <div className="rp-customer-hero">
+          <div>
+            <span className="rp-label">设备类型</span>
+            <strong>{assessment.equipment_type || "—"}</strong>
+          </div>
+          <div>
+            <span className="rp-label">设备编号</span>
+            <strong>{assessment.equipment_id || "—"}</strong>
+          </div>
+          <div>
+            <span className="rp-label">设备状态</span>
+            <strong className={`rp-emph is-${tone}`}>{equipmentStatus}</strong>
+          </div>
         </div>
       </section>
 
-      <SynthesisPanel synthesis={synthesis} onRun={onSynthesis} busy={busy} />
-
-      <AlertPanel alert={alert} onRule={onRule} ruleDetail={ruleDetail} />
-
       <section className="rp-section">
-        <h2>第三部分：评测与追溯</h2>
-        <p className="rp-body">
-          离线 internal_val 指标见模型包 metrics；本页展示证据追溯与局限性。评测标签不进入推理 API。
-        </p>
-        <p className="rp-mono">
-          fingerprint {predMeta?.model_input_fingerprint || "—"} · L2{" "}
-          {assessment.source_run_ids?.diagnosis_run_id || "—"} · L3 {assessment.source_run_ids?.analysis_run_id || "—"} ·
-          L4 {assessment.source_run_ids?.l4_run_id || "—"}
-        </p>
+        <h2>最终检出问题</h2>
+        <div className="rp-customer-findings">
+          <div>
+            <span className="rp-label">故障类型</span>
+            <p>{faultType}</p>
+          </div>
+          <div>
+            <span className="rp-label">严重程度</span>
+            <p>{faultSeverity}</p>
+          </div>
+          <div>
+            <span className="rp-label">可能部位</span>
+            <p>{faultLocation}</p>
+          </div>
+          <div>
+            <span className="rp-label">诊断置信度</span>
+            <p>{confidence}</p>
+          </div>
+          <div className="is-wide">
+            <span className="rp-label">频谱/现象描述</span>
+            <p>{spectral}</p>
+          </div>
+          <div className="is-wide">
+            <span className="rp-label">根因分析结论</span>
+            <p>{rootCause}</p>
+            <p className="rp-inline-note">
+              根因确认状态：
+              {assessment.root_cause_confirmation === "confirmed" ? "已确认" : "未确认（需人工复核）"}
+            </p>
+          </div>
+          <div className="is-wide">
+            <span className="rp-label">建议措施</span>
+            <p>{actions}</p>
+          </div>
+          <div>
+            <span className="rp-label">优先级</span>
+            <p>{priority}</p>
+          </div>
+          <div>
+            <span className="rp-label">影响程度</span>
+            <p>{impact}</p>
+          </div>
+        </div>
       </section>
 
       <section className="rp-section">
-        <h2>验证建议</h2>
-        {(assessment.verification_recommendations || []).length ? (
-          <table className="rp-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>类型</th>
-                <th>说明</th>
-                <th>缺失条件</th>
-                <th>人工确认</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(assessment.verification_recommendations || []).map((rec) => (
-                <tr key={String(rec.recommendation_id)}>
-                  <td className="rp-mono">{String(rec.recommendation_id)}</td>
-                  <td>{String(rec.recommendation_type)}</td>
-                  <td>{String(rec.description)}</td>
-                  <td className="rp-mono">{String(rec.condition_id)}</td>
-                  <td>{rec.requires_human_review ? "是" : "否"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p className="rp-body">当前记录无自动生成的验证建议。</p>
-        )}
+        <h2>筛查与深度分析比率</h2>
+        <div className="rp-ratio-grid">
+          <div className="rp-ratio-card">
+            <h3>L2 设备筛查</h3>
+            {l2Summary ? (
+              <>
+                <p className="rp-body">
+                  范围：{l2Group?.display_name || l2Summary.display_name} · 共 {l2Total} 条
+                </p>
+                <ul className="rp-ratio-list">
+                  <li>
+                    <span>初判正常</span>
+                    <b>
+                      {l2Normal}（{pct(l2Normal, l2Total)}）
+                    </b>
+                  </li>
+                  <li>
+                    <span>初判异常</span>
+                    <b>
+                      {l2Abnormal}（{pct(l2Abnormal, l2Total)}）
+                    </b>
+                  </li>
+                  <li>
+                    <span>冲突</span>
+                    <b>
+                      {l2Conflict}（{pct(l2Conflict, l2Total)}）
+                    </b>
+                  </li>
+                  <li>
+                    <span>不确定</span>
+                    <b>
+                      {l2Uncertain}（{pct(l2Uncertain, l2Total)}）
+                    </b>
+                  </li>
+                  <li>
+                    <span>L2 完成留存</span>
+                    <b>
+                      {l2Complete}（{pct(l2Complete, l2Total)}）
+                    </b>
+                  </li>
+                  <li>
+                    <span>建议进入 L3</span>
+                    <b>
+                      {l3Review}（{pct(l3Review, l2Total)}）
+                    </b>
+                  </li>
+                </ul>
+              </>
+            ) : (
+              <p className="rp-body">未绑定 L2 DiagnosisRun，暂无筛查比率。</p>
+            )}
+          </div>
+          <div className="rp-ratio-card">
+            <h3>L3 深度分析</h3>
+            {l3Run ? (
+              <>
+                <p className="rp-body">
+                  状态：
+                  {l3Run.status === "succeeded"
+                    ? "分析完成"
+                    : l3Run.status === "partial"
+                      ? "部分完成"
+                      : l3Run.status}
+                  · 已处理 {l3Processed}/{l3Selected}
+                </p>
+                <ul className="rp-ratio-list">
+                  <li>
+                    <span>成功判定</span>
+                    <b>
+                      {l3Succeeded}（{pct(l3Succeeded, l3Selected || l3Processed)}）
+                    </b>
+                  </li>
+                  <li>
+                    <span>失败</span>
+                    <b>
+                      {l3Failed}（{pct(l3Failed, l3Selected || l3Processed)}）
+                    </b>
+                  </li>
+                  <li>
+                    <span>不可判定</span>
+                    <b>
+                      {l3Inconclusive}（{pct(l3Inconclusive, l3Selected || l3Processed)}）
+                    </b>
+                  </li>
+                  <li>
+                    <span>处理完成率</span>
+                    <b>{pct(l3Processed, l3Selected)}</b>
+                  </li>
+                </ul>
+              </>
+            ) : (
+              <p className="rp-body">未绑定 L3 AnalysisRun，暂无深度分析比率。</p>
+            )}
+          </div>
+        </div>
       </section>
 
       <section className="rp-section">
-        <h2>4. 局限性</h2>
-        <ul className="rp-list">
-          {(assessment.limitations || []).map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
+        <div className="rp-tech-toggle">
+          <button type="button" className="rp-tech-toggle__btn" onClick={() => setShowTech((v) => !v)}>
+            {showTech ? "收起技术详情（二级）" : "展开技术详情（二级）"}
+          </button>
+          <span className="rp-inline-note">十字段原始字段、证据追溯、合成对照、规程警报</span>
+        </div>
+        {showTech ? (
+          <div className="rp-tech-panel">
+            <section className="rp-section">
+              <h2>十字段原始输出</h2>
+              <p className="rp-body">
+                主值来自 L5 监督预测；诊断置信度为数据集回归目标，不等于已校准正确概率。根因模板 ≠ 现场已确认根因。
+              </p>
+              <div className="rp-summary" style={{ gridTemplateColumns: "1fr" }}>
+                {FIELD_ORDER.map((key) => {
+                  const slot = fields[key]
+                  const extras = slot?.extras || {}
+                  return (
+                    <div key={key} style={{ borderBottom: "1px solid var(--line, #e5e7eb)", paddingBottom: 10 }}>
+                      <span className="rp-label">{labels[key] || key}</span>
+                      <p>{formatSlotValue(slot)}</p>
+                      <p className="rp-inline-note">
+                        来源：{slot?.source_layer || "—"} · 模型{" "}
+                        {String(extras.source_model_id || predMeta?.model_id || predictionModelId || "—")} · 状态{" "}
+                        {String(extras.prediction_status || "—")}
+                      </p>
+                      {slot?.uncertainty ? <p className="rp-inline-note">不确定性：{slot.uncertainty}</p> : null}
+                      <button type="button" className="rp-ghost-btn" onClick={() => onTrace(key)}>
+                        查看证据追溯
+                      </button>
+                      {activeField === key && provenance ? (
+                        <pre className="rp-mono" style={{ whiteSpace: "pre-wrap", fontSize: 12, marginTop: 8 }}>
+                          {JSON.stringify(provenance, null, 2)}
+                        </pre>
+                      ) : null}
+                    </div>
+                  )
+                })}
+              </div>
+            </section>
+
+            <SynthesisPanel synthesis={synthesis} onRun={onSynthesis} busy={busy} />
+            <AlertPanel alert={alert} onRule={onRule} ruleDetail={ruleDetail} />
+
+            <section className="rp-section">
+              <h2>评测与追溯 ID</h2>
+              <p className="rp-mono">
+                fingerprint {predMeta?.model_input_fingerprint || "—"} · L2{" "}
+                {assessment.source_run_ids?.diagnosis_run_id || "—"} · L3{" "}
+                {assessment.source_run_ids?.analysis_run_id || "—"} · L4{" "}
+                {assessment.source_run_ids?.l4_run_id || "—"} · L5 {assessment.l5_run_id || "—"}
+              </p>
+            </section>
+
+            <section className="rp-section">
+              <h2>验证建议</h2>
+              {(assessment.verification_recommendations || []).length ? (
+                <table className="rp-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>类型</th>
+                      <th>说明</th>
+                      <th>缺失条件</th>
+                      <th>人工确认</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(assessment.verification_recommendations || []).map((rec) => (
+                      <tr key={String(rec.recommendation_id)}>
+                        <td className="rp-mono">{String(rec.recommendation_id)}</td>
+                        <td>{String(rec.recommendation_type)}</td>
+                        <td>{String(rec.description)}</td>
+                        <td className="rp-mono">{String(rec.condition_id)}</td>
+                        <td>{rec.requires_human_review ? "是" : "否"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p className="rp-body">当前记录无自动生成的验证建议。</p>
+              )}
+            </section>
+
+            <section className="rp-section">
+              <h2>局限性</h2>
+              <ul className="rp-list">
+                {(assessment.limitations || []).map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </section>
+          </div>
+        ) : null}
       </section>
 
-      <footer className="rp-doc__footer">
-        L5a 真实引擎报告 · 非演示数据 · {assessment.record_id}
-      </footer>
+      <footer className="rp-doc__footer">记录 {assessment.record_id} · 客户向一级结论</footer>
     </article>
   )
 }
@@ -400,6 +645,7 @@ function DemoReportDetail({ report }: { report: DiagnosticReport }) {
 }
 
 export function ReportCenterPage() {
+  const { route } = useRoute()
   const [mode, setMode] = useState<"live" | "demo">("live")
   const [runs, setRuns] = useState<L5RunSummary[]>([])
   const [selectedRunId, setSelectedRunId] = useState("")
@@ -417,6 +663,19 @@ export function ReportCenterPage() {
   const [ruleDetail, setRuleDetail] = useState<Record<string, unknown> | null>(null)
   const [synthesis, setSynthesis] = useState<SynthesisAssessment | null>(null)
   const [predictionModelId, setPredictionModelId] = useState<string>("")
+  const [pendingRecordId, setPendingRecordId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const focus = consumeL5ReportFocus()
+    if (focus?.l5_run_id) {
+      setMode("live")
+      setSelectedRunId(focus.l5_run_id)
+      if (focus.record_id) setPendingRecordId(focus.record_id)
+    } else if (route.runId) {
+      setMode("live")
+      setSelectedRunId(route.runId)
+    }
+  }, [route.runId])
 
   const loadRuns = useCallback(async () => {
     setBusy(true)
@@ -455,7 +714,12 @@ export function ReportCenterPage() {
         const page = await listL5Records(selectedRunId, 100)
         if (cancelled) return
         setRecords(page.items || [])
-        setSelectedRecordId(page.items?.[0]?.record_id || "")
+        const prefer =
+          pendingRecordId && page.items?.some((r) => r.record_id === pendingRecordId)
+            ? pendingRecordId
+            : page.items?.[0]?.record_id || ""
+        setSelectedRecordId(prefer)
+        setPendingRecordId(null)
         setActiveField(null)
         setProvenance(null)
         setAlertAssessment(null)
@@ -472,7 +736,7 @@ export function ReportCenterPage() {
     return () => {
       cancelled = true
     }
-  }, [mode, selectedRunId])
+  }, [mode, selectedRunId, pendingRecordId])
 
   useEffect(() => {
     if (!alertRunId || !selectedRecordId) {
@@ -565,14 +829,14 @@ export function ReportCenterPage() {
       <div className="rp-topbar">
         <div>
           <h1 className="rp-page__title">报告中心</h1>
-          <p className="rp-page__sub">L5-P3 十字段监督预测 + 知识增强对照 · 演示数据严格隔离</p>
+          <p className="rp-page__sub">一级：设备问题结论与 L2/L3 比率 · 二级：技术证据与模型细节</p>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           <button type="button" onClick={() => setMode("live")} disabled={mode === "live"}>
-            真实 L5 报告
+            正式报告
           </button>
           <button type="button" onClick={() => setMode("demo")} disabled={mode === "demo"}>
-            演示数据
+            演示样例
           </button>
           {mode === "live" ? (
             <>
@@ -580,7 +844,7 @@ export function ReportCenterPage() {
                 刷新
               </button>
               <button type="button" onClick={() => void onRunAlerts()} disabled={busy || !selectedRunId}>
-                运行阈值评估
+                运行规程评估
               </button>
             </>
           ) : null}
@@ -616,7 +880,7 @@ export function ReportCenterPage() {
       ) : (
         <div className="rp-layout">
           <aside className="rp-sidebar">
-            <div className="rp-sidebar__head">L5Run 列表 {busy ? "· 加载中" : ""}</div>
+            <div className="rp-sidebar__head">诊断批次 {busy ? "· 加载中" : ""}</div>
             <ul className="rp-sidebar__list">
               {runs.length ? (
                 runs.map((r) => (
@@ -626,15 +890,15 @@ export function ReportCenterPage() {
                       className={`rp-sidebar__item${selectedRunId === r.l5_run_id ? " is-active" : ""}`}
                       onClick={() => setSelectedRunId(r.l5_run_id)}
                     >
-                      <div className="rp-sidebar__item-title">{r.l5_run_id}</div>
+                      <div className="rp-sidebar__item-title">
+                        {r.status === "completed" ? "已完成批次" : r.status === "partial" ? "部分完成批次" : "诊断批次"}
+                      </div>
                       <div className="rp-sidebar__item-meta">
-                        <span>{r.status}</span>
-                        <span>{(r.created_at || "").slice(0, 10)}</span>
+                        <span>{(r.created_at || "").slice(0, 16).replace("T", " ")}</span>
+                        <span>{r.selected_record_count || 0} 台/条</span>
                       </div>
                       <div className="rp-sidebar__item-tags">
-                        <span className="rp-badge rp-badge--draft">
-                          {r.selected_record_count || 0} 条 · partial {r.partial_record_count || 0}
-                        </span>
+                        <span className="rp-badge rp-badge--draft">{r.l5_run_id.slice(0, 12)}…</span>
                       </div>
                     </button>
                   </li>
@@ -642,34 +906,45 @@ export function ReportCenterPage() {
               ) : (
                 <li>
                   <p className="rp-body" style={{ padding: 12 }}>
-                    暂无 L5Run。请先通过 API `POST /l5/runs` 绑定显式 L2/L3/L4 run_id 生成报告。
+                    暂无正式报告。请先在智能诊断工作台完成 L2→L5 流程。
                   </p>
                 </li>
               )}
             </ul>
             {selectedRunId ? (
               <>
-                <div className="rp-sidebar__head">记录</div>
+                <div className="rp-sidebar__head">设备记录</div>
                 <ul className="rp-sidebar__list">
-                  {records.map((rec) => (
-                    <li key={rec.record_id}>
-                      <button
-                        type="button"
-                        className={`rp-sidebar__item${selectedRecordId === rec.record_id ? " is-active" : ""}`}
-                        onClick={() => {
-                          setSelectedRecordId(rec.record_id)
-                          setActiveField(null)
-                          setProvenance(null)
-                        }}
-                      >
-                        <div className="rp-sidebar__item-title">{rec.record_id}</div>
-                        <div className="rp-sidebar__item-meta">
-                          <span>{rec.outcome || "—"}</span>
-                          {reviewBadge(rec.review_status)}
-                        </div>
-                      </button>
-                    </li>
-                  ))}
+                  {records.map((rec) => {
+                    const a = rec.assessment
+                    const fault = formatSlotValue(a?.fields?.fault_type)
+                    const status = formatSlotValue(a?.fields?.equipment_status)
+                    return (
+                      <li key={rec.record_id}>
+                        <button
+                          type="button"
+                          className={`rp-sidebar__item${selectedRecordId === rec.record_id ? " is-active" : ""}`}
+                          onClick={() => {
+                            setSelectedRecordId(rec.record_id)
+                            setActiveField(null)
+                            setProvenance(null)
+                          }}
+                        >
+                          <div className="rp-sidebar__item-title">
+                            {a?.equipment_id || rec.record_id}
+                          </div>
+                          <div className="rp-sidebar__item-meta">
+                            <span>{a?.equipment_type || "设备"}</span>
+                            {reviewBadge(rec.review_status)}
+                          </div>
+                          <div className="rp-sidebar__item-tags">
+                            <span className="rp-badge rp-badge--draft">{status}</span>
+                            {fault !== "—" ? <span className="rp-badge rp-badge--archived">{fault}</span> : null}
+                          </div>
+                        </button>
+                      </li>
+                    )
+                  })}
                 </ul>
               </>
             ) : null}
@@ -690,7 +965,7 @@ export function ReportCenterPage() {
                 predictionModelId={predictionModelId}
               />
             ) : (
-              <p className="rp-body">选择 L5Run 与记录以查看真实十字段报告。</p>
+              <p className="rp-body">请选择诊断批次与设备记录，查看客户向结论报告。</p>
             )}
           </main>
         </div>
