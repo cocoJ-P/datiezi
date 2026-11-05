@@ -21,7 +21,6 @@ def client(tmp_path, monkeypatch):
     monkeypatch.setenv("L2_MODEL_BUNDLE_PATH", str(BUNDLE))
     monkeypatch.setenv("L2_MANAGEMENT_DB", str(db_path))
     monkeypatch.setenv("L2_TRAINING_LOGS_ROOT", str(logs))
-    monkeypatch.setenv("L2_MANAGEMENT_TOKEN", "secret-token")
     monkeypatch.setenv("L2_MODELS_ROOT", str(ROOT / "models"))
 
     from l2.inference.model_manager import MODEL_MANAGER
@@ -40,22 +39,14 @@ def client(tmp_path, monkeypatch):
         yield test_client, svc
 
 
-def test_datasets_and_unauthorized_write(client):
+def test_datasets_and_write_without_token(client):
     test_client, _svc = client
     datasets = test_client.get("/l2/management/datasets")
     assert datasets.status_code == 200
     assert any(item["dataset_id"] == "main_mill_motor_dev" for item in datasets.json()["datasets"])
 
-    denied = test_client.post(
-        "/l2/management/train/jobs",
-        json={"equipment_type": "main_mill_motor", "dataset_id": "main_mill_motor_dev"},
-    )
-    assert denied.status_code == 401
-    assert denied.json()["error_code"] == "MANAGEMENT_UNAUTHORIZED"
-
     bad_dataset = test_client.post(
         "/l2/management/train/jobs",
-        headers={"X-L2-Management-Token": "secret-token"},
         json={"equipment_type": "main_mill_motor", "dataset_id": "not_exists"},
     )
     assert bad_dataset.status_code == 404
@@ -63,7 +54,6 @@ def test_datasets_and_unauthorized_write(client):
 
     ok = test_client.post(
         "/l2/management/train/jobs",
-        headers={"X-L2-Management-Token": "secret-token"},
         json={"equipment_type": "main_mill_motor", "dataset_id": "main_mill_motor_dev"},
     )
     assert ok.status_code == 200
@@ -75,17 +65,11 @@ def test_datasets_and_unauthorized_write(client):
     assert missing.status_code == 404
     assert missing.json()["error_code"] == "MODEL_NOT_FOUND"
 
-    bootstrap = test_client.post(
-        "/l2/management/bootstrap",
-        headers={"X-L2-Management-Token": "secret-token"},
-    )
+    bootstrap = test_client.post("/l2/management/bootstrap")
     assert bootstrap.status_code == 200
     assert bootstrap.json()["count"] >= 1
 
-    activate = test_client.post(
-        "/l2/management/models/TR-0b062172078e/activate",
-        headers={"X-L2-Management-Token": "secret-token"},
-    )
+    activate = test_client.post("/l2/management/models/TR-0b062172078e/activate")
     assert activate.status_code == 200
     assert activate.json()["activated_model_bundle_id"] == "TR-0b062172078e"
 

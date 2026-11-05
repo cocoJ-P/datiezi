@@ -9,6 +9,7 @@ from typing import Any
 from l2.equipment.registry import has_equipment
 from l2.inference.decision import DecisionThresholds, decide
 from l2.inference.model_manager import MODEL_MANAGER, ModelManager, ModelNotReadyError
+from l2.inference.spectral_reference import attach_spectral_reference
 from l2.inference.validators import InferenceValidationError, validate_equipment_type, validate_features
 from l2.training import predict_bundle
 
@@ -49,7 +50,7 @@ def _enrich_prediction(
         normal_label=normal_label,
     )
     calibration = raw.get("calibration_status") or {}
-    return {
+    body = {
         "record_id": record_id,
         "equipment_type": equipment_type,
         "model_bundle_id": raw.get("model_bundle_id"),
@@ -86,6 +87,8 @@ def _enrich_prediction(
         },
         "calibration_status": calibration,
     }
+    # 频谱参考为后置解释字段，不参与概率与分流计算。
+    return attach_spectral_reference(body)
 
 
 class InferenceService:

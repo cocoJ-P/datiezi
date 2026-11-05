@@ -1,0 +1,31 @@
+equipment_type: main_mill_motor
+template_version: spectral_patterns_v1
+
+patterns:
+  轴承磨损:
+    description: 典型轴承故障可能伴随轴承特征频率及谐波成分增强。
+    related_features:
+      - BPFO幅值(g)
+      - BPFI幅值(g)
+      - BSF幅值(g)
+      - 包络谱峰值(g)
+
+  转子不平衡:
+    description: 典型转子不平衡通常表现为1X转频相关振动成分增强。
+    related_features:
+      - 1X转频幅值(mm/s)
+      - X向振动(mm/s)
+      - Y向振动(mm/s)
+
+  润滑故障:
+    description: 典型润滑不良可能伴随宽频噪声抬升与包络能量增强。
+    related_features:
+      - 包络谱峰值(g)
+      - X向振动(mm/s)
+      - Y向振动(mm/s)
+
+  齿轮异常:
+    description: 典型齿轮异常可能在啮合频率附近出现边带与调制相关特征增强。
+    related_features:
+      - 啮合频率幅值(g)
+      - 包络谱峰值(g)

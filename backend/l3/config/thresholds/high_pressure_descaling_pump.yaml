@@ -1,0 +1,39 @@
+equipment_type: high_pressure_descaling_pump
+rule_version: pump_thresholds_v1
+
+rules:
+  - rule_id: pump_vib_x_alarm
+    equipment_scope: high_pressure_descaling_pump
+    parameter: X向振动(mm/s)
+    unit: mm/s
+    threshold: 4.5
+    threshold_type: upper_alarm
+    source_reference: pump-vib-guideline-internal
+    rule_version: pump_thresholds_v1
+
+  - rule_id: pump_vib_y_alarm
+    equipment_scope: high_pressure_descaling_pump
+    parameter: Y向振动(mm/s)
+    unit: mm/s
+    threshold: 4.5
+    threshold_type: upper_alarm
+    source_reference: pump-vib-guideline-internal
+    rule_version: pump_thresholds_v1
+
+  - rule_id: pump_vib_max_alarm
+    equipment_scope: high_pressure_descaling_pump
+    parameter: 最大振动(mm/s)
+    unit: mm/s
+    threshold: 7.1
+    threshold_type: upper_alarm
+    source_reference: pump-vib-guideline-internal
+    rule_version: pump_thresholds_v1
+
+  - rule_id: pump_bearing_temp_de_alarm
+    equipment_scope: high_pressure_descaling_pump
+    parameter: 驱动端轴承温度(°C)
+    unit: "°C"
+    threshold: 80
+    threshold_type: upper_alarm
+    source_reference: plant-bearing-temp-guideline
+    rule_version: pump_thresholds_v1

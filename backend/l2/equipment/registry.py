@@ -13,6 +13,18 @@ CONFIG_DIR = Path(__file__).resolve().parent / "config"
 _CACHE: dict[str, EquipmentSpec] | None = None
 
 
+def runtime_config_dir() -> Path:
+    import os
+
+    from l2.inference.config import PROJECT_ROOT
+
+    raw = os.getenv("L2_EQUIPMENT_RUNTIME_DIR", "").strip()
+    path = Path(raw) if raw else PROJECT_ROOT / "data" / "runtime" / "l2_equipment"
+    if not path.is_absolute():
+        path = (PROJECT_ROOT / path).resolve()
+    return path
+
+
 def _parse_spec(payload: dict[str, Any]) -> EquipmentSpec:
     features = tuple(
         FeatureDef(
@@ -62,14 +74,19 @@ def load_all_specs(*, refresh: bool = False) -> dict[str, EquipmentSpec]:
     if _CACHE is not None and not refresh:
         return dict(_CACHE)
     specs: dict[str, EquipmentSpec] = {}
-    if CONFIG_DIR.is_dir():
-        for path in sorted(CONFIG_DIR.glob("*.yaml")):
+    # 先加载内置，再加载运行时（同名可覆盖，用于 Schema 新版本）
+    for directory in (CONFIG_DIR, runtime_config_dir()):
+        if not directory.is_dir():
+            continue
+        for path in sorted(directory.glob("*.yaml")):
+            if path.name == "mappings.yaml":
+                continue
             payload = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
             if not isinstance(payload, dict):
                 raise ValueError(f"设备配置必须是对象：{path}")
+            if "equipment_type" not in payload:
+                continue
             spec = _parse_spec(payload)
-            if spec.equipment_type in specs:
-                raise ValueError(f"重复设备类型：{spec.equipment_type}")
             specs[spec.equipment_type] = spec
     _CACHE = specs
     return dict(specs)

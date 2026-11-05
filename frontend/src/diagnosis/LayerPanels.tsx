@@ -1,8 +1,12 @@
-import { eventById } from "../events/catalog"
+import { useState } from "react"
 import type { DiagnosisTabId } from "../events/diagnosisNav"
 import { PipelinePanel } from "./l1/PipelinePanel"
-import { AVAILABILITY_LABEL, EXECUTION_LABEL, SOURCE_LABEL, STAGE_LABEL, STAGE_STATE_LABEL, TASK_STATUS_LABEL, formatStamp, strategyLabel } from "./labels"
-import { advanceDemo, engineBoard, markReportHandoff, useDiagnosticStore } from "./store"
+import { L2Workspace } from "./l2/L2Workspace"
+import { L3Workbench } from "./l3/L3Workbench"
+import { L4Workbench } from "./l4/L4Workbench"
+import { SOURCE_LABEL, STAGE_LABEL, STAGE_STATE_LABEL, TASK_STATUS_LABEL, formatStamp, strategyLabel } from "./labels"
+import { consumeL3HandoffFocus } from "./overview/l3HandoffFocus"
+import { advanceDemo, markReportHandoff } from "./store"
 import type { DiagnosticRun } from "./types"
 
 export function LayerPanel({
@@ -17,18 +21,27 @@ export function LayerPanel({
   engineId?: string
 }) {
   if (tab === "l1") return <PipelinePanel />
+  if (tab === "l2") return <L2Workspace initialView={engineId} />
+  if (tab === "l3") return <EngineLayer run={run} engineId={engineId} />
   if (missingId) {
     return <p className="dx-empty">未找到运行任务 {missingId}。没有改用其他任务。</p>
   }
   if (!run) {
     return <p className="dx-empty">这一层需要先从运行总览选定一条诊断任务。选定后切换页签不会重新计算。</p>
   }
-  if (tab === "l2") return <ScheduleLayer run={run} />
-  if (tab === "l3") return <EngineLayer run={run} engineId={engineId} />
-  if (tab === "l4") return <EvidenceLayer run={run} />
+  if (tab === "l4") return <L4Layer run={run} />
   if (tab === "l5") return <FeedbackLayer run={run} />
   if (tab === "harness") return <HarnessLayer run={run} />
   return <StrategyLayer run={run} />
+}
+
+function L4Layer({ run }: { run?: DiagnosticRun }) {
+  return (
+    <div className="dx-layer">
+      {run ? <RunMeta run={run} /> : null}
+      <L4Workbench />
+    </div>
+  )
 }
 
 function RunMeta({ run }: { run: DiagnosticRun }) {
@@ -40,74 +53,12 @@ function RunMeta({ run }: { run: DiagnosticRun }) {
   )
 }
 
-function ScheduleLayer({ run }: { run: DiagnosticRun }) {
-  const stage = run.stages.find((item) => item.stage === "l2")
+function EngineLayer({ run }: { run?: DiagnosticRun; engineId?: string }) {
+  const [handoff] = useState(() => consumeL3HandoffFocus())
   return (
     <div className="dx-layer">
-      <RunMeta run={run} />
-      <p>策略 {strategyLabel(run.strategyId)}</p>
-      <p>
-        调度步骤：{stage ? STAGE_STATE_LABEL[stage.state] : "未开始"}。{stage?.note}
-      </p>
-      <p>{run.cycleNote}</p>
-    </div>
-  )
-}
-
-function EngineLayer({ run, engineId }: { run: DiagnosticRun; engineId?: string }) {
-  const engines = engineBoard(useDiagnosticStore().runs)
-  return (
-    <div className="dx-layer">
-      <RunMeta run={run} />
-      <ul className="dx-engines">
-        {engines.map((engine) => (
-          <li key={engine.engineId} className={engine.engineId === engineId ? "is-current" : undefined}>
-            <div className="dx-engine dx-engine-static">
-              <span>
-                <strong>{engine.shortName}</strong>
-                <small>{engine.name}</small>
-              </span>
-              <span>
-                <small>能力</small>
-                <b>{AVAILABILITY_LABEL[engine.availability]}</b>
-              </span>
-              <span>
-                <small>执行</small>
-                <b>{EXECUTION_LABEL[engine.execution]}</b>
-              </span>
-            </div>
-            <p>{engine.lastResult}。本任务阶段 {run.currentStage ? STAGE_LABEL[run.currentStage] : "未开始"}。</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
-
-function EvidenceLayer({ run }: { run: DiagnosticRun }) {
-  const event = run.eventId ? eventById(run.eventId) : undefined
-  return (
-    <div className="dx-layer">
-      <RunMeta run={run} />
-      <p>这里保留假设、支持证据和反证。演示任务没有已确认故障。</p>
-      {event?.diagnosis ? (
-        <>
-          <h3>事件日志中的未确认推断</h3>
-          <ul>
-            {event.diagnosis.candidates.map((item) => (
-              <li key={item}>{item}（未确认）</li>
-            ))}
-          </ul>
-          <ul>
-            {event.diagnosis.evidence.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-          <p>{event.diagnosis.modelNote}</p>
-        </>
-      ) : (
-        <p>这条任务还没有可核对的证据条目。</p>
-      )}
+      {run ? <RunMeta run={run} /> : null}
+      <L3Workbench handoff={handoff} />
     </div>
   )
 }

@@ -1,0 +1,4844 @@
+{
+  "stats": {
+    "n": 19,
+    "candidates_total": 120,
+    "empty_candidate": 0,
+    "all_unconfirmed": 19,
+    "confirmed_leak": 0,
+    "anomaly_used_as_support": 0,
+    "ck_missing": 0,
+    "invalid_evidence_id": 0,
+    "lubrication_without_lube_obs_as_observed_cause": 0,
+    "outcomes": {
+      "candidates_generated": 16,
+      "insufficient_evidence": 3
+    },
+    "applicability": {
+      "applicable": 105,
+      "reference_only": 15
+    },
+    "mapping_levels": {
+      "equipment_type": 11,
+      "unresolved": 8
+    },
+    "propagation": {
+      "unknown": 19
+    }
+  },
+  "errors": [],
+  "detailed": [
+    {
+      "tag": "MA_bearing_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260314-00011",
+      "et": "main_mill_motor",
+      "eid": "MM-01",
+      "screen": "ABNORMAL",
+      "prelim": "轴承磨损",
+      "suff": "sufficient",
+      "l3_faults": [
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 7,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "润滑故障",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 2,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "CONTRADICT",
+          "support_count": 0,
+          "contradict_count": 1,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260314-00011:包络谱峰值(g)",
+            "mech:REC-MA-20260314-00011:bearing:BPFO幅值(g)",
+            "mech:REC-MA-20260314-00011:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260314-00011:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260314-00011:bearing:包络谱峰值(g)",
+            "mech:REC-MA-20260314-00011:lubrication:包络谱峰值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 6 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260314-00011:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260314-00011:lubrication:X向振动(mm/s)",
+            "mech:REC-MA-20260314-00011:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260314-00011:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [
+            "stat:REC-MA-20260314-00011:X向振动(mm/s)",
+            "stat:REC-MA-20260314-00011:Y向振动(mm/s)",
+            "stat:REC-MA-20260314-00011:包络谱峰值(g)",
+            "mech:REC-MA-20260314-00011:bearing:BPFO幅值(g)",
+            "mech:REC-MA-20260314-00011:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260314-00011:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260314-00011:bearing:包络谱峰值(g)",
+            "stat:REC-MA-20260314-00011:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260314-00011:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260314-00011:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 10 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260314-00011:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260314-00011:lubrication:X向振动(mm/s)",
+            "mech:REC-MA-20260314-00011:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260314-00011:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260314-00011:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260314-00011:lubrication:X向振动(mm/s)",
+            "mech:REC-MA-20260314-00011:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260314-00011:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "润滑故障",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [
+            "stat:REC-MA-20260314-00011:X向振动(mm/s)",
+            "stat:REC-MA-20260314-00011:Y向振动(mm/s)",
+            "stat:REC-MA-20260314-00011:包络谱峰值(g)",
+            "mech:REC-MA-20260314-00011:bearing:BPFO幅值(g)",
+            "mech:REC-MA-20260314-00011:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260314-00011:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260314-00011:bearing:包络谱峰值(g)",
+            "stat:REC-MA-20260314-00011:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260314-00011:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260314-00011:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 10 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260314-00011:1X转频幅值(mm/s)"
+          ],
+          "contra": [
+            "mech:REC-MA-20260314-00011:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "MM-01",
+        "equipment_type": "main_mill_motor",
+        "graph_node_id": "device-f803cb74ec718d83",
+        "graph_label": "棒线主轧机电机",
+        "mapping_level": "equipment_type",
+        "mapping_source": "kb05_graph_label_alignment",
+        "verification_status": "type_reference_verified",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。",
+        "asset_mapping": {
+          "equipment_id": "MM-01",
+          "equipment_type": "main_mill_motor",
+          "graph_node_id": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "explicit_unbound_pending_human_confirm",
+          "verification_status": "pending_human_confirm",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。"
+        },
+        "reference_topology_only": true
+      },
+      "propagation": "unknown",
+      "downstream": [
+        {
+          "graph_label": "棒线主减速机/齿轮箱",
+          "graph_node_id": "device-23b2e75b5fe45e6c",
+          "relation_direction": "out",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线轧辊系统",
+          "graph_node_id": "device-3d943744be9dd164",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线联轴器",
+          "graph_node_id": "device-39b4f4dfa3943920",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "主电源柜",
+          "graph_node_id": "device-a5a1353219d19094",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "高压供电系统",
+          "graph_node_id": "device-7b312c88854833bb",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "稀油站",
+          "graph_node_id": "device-df8b209c12257151",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        }
+      ],
+      "topology_paths": [
+        {
+          "direction": "out",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-3d943744be9dd164"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线轧辊系统"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-39b4f4dfa3943920"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线联轴器"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-a5a1353219d19094"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "主电源柜"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-7b312c88854833bb"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "高压供电系统"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-df8b209c12257151"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "稀油站"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        }
+      ],
+      "missing": [
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度持续上升（>80°C 为文档提及阈值，需对照本机规程）",
+        "油位/加油台账或油品指标",
+        "宽频噪声抬升（辅助）",
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）"
+      ],
+      "notes": [],
+      "l4_run_id": "L4R-09900636c713"
+    },
+    {
+      "tag": "MA_bearing_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260316-00043",
+      "et": "main_mill_motor",
+      "eid": "MM-01",
+      "screen": "ABNORMAL",
+      "prelim": "轴承磨损",
+      "suff": "sufficient",
+      "l3_faults": [
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 7,
+          "contradict_count": 1,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "润滑故障",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 2,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "CONTRADICT",
+          "support_count": 0,
+          "contradict_count": 1,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260316-00043:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00043:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260316-00043:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260316-00043:bearing:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00043:lubrication:包络谱峰值(g)"
+          ],
+          "contra": [
+            "mech:REC-MA-20260316-00043:bearing:BPFO幅值(g)"
+          ],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 5 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00043:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00043:lubrication:X向振动(mm/s)",
+            "mech:REC-MA-20260316-00043:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00043:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [
+            "stat:REC-MA-20260316-00043:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00043:Y向振动(mm/s)",
+            "stat:REC-MA-20260316-00043:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00043:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260316-00043:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260316-00043:bearing:包络谱峰值(g)",
+            "stat:REC-MA-20260316-00043:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260316-00043:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00043:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [
+            "mech:REC-MA-20260316-00043:bearing:BPFO幅值(g)"
+          ],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 9 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00043:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00043:lubrication:X向振动(mm/s)",
+            "mech:REC-MA-20260316-00043:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00043:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00043:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00043:lubrication:X向振动(mm/s)",
+            "mech:REC-MA-20260316-00043:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00043:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "润滑故障",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [
+            "stat:REC-MA-20260316-00043:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00043:Y向振动(mm/s)",
+            "stat:REC-MA-20260316-00043:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00043:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260316-00043:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260316-00043:bearing:包络谱峰值(g)",
+            "stat:REC-MA-20260316-00043:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260316-00043:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00043:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [
+            "mech:REC-MA-20260316-00043:bearing:BPFO幅值(g)"
+          ],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 9 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260316-00043:1X转频幅值(mm/s)"
+          ],
+          "contra": [
+            "mech:REC-MA-20260316-00043:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "MM-01",
+        "equipment_type": "main_mill_motor",
+        "graph_node_id": "device-f803cb74ec718d83",
+        "graph_label": "棒线主轧机电机",
+        "mapping_level": "equipment_type",
+        "mapping_source": "kb05_graph_label_alignment",
+        "verification_status": "type_reference_verified",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。",
+        "asset_mapping": {
+          "equipment_id": "MM-01",
+          "equipment_type": "main_mill_motor",
+          "graph_node_id": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "explicit_unbound_pending_human_confirm",
+          "verification_status": "pending_human_confirm",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。"
+        },
+        "reference_topology_only": true
+      },
+      "propagation": "unknown",
+      "downstream": [
+        {
+          "graph_label": "棒线主减速机/齿轮箱",
+          "graph_node_id": "device-23b2e75b5fe45e6c",
+          "relation_direction": "out",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线轧辊系统",
+          "graph_node_id": "device-3d943744be9dd164",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线联轴器",
+          "graph_node_id": "device-39b4f4dfa3943920",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "主电源柜",
+          "graph_node_id": "device-a5a1353219d19094",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "高压供电系统",
+          "graph_node_id": "device-7b312c88854833bb",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "稀油站",
+          "graph_node_id": "device-df8b209c12257151",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        }
+      ],
+      "topology_paths": [
+        {
+          "direction": "out",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-3d943744be9dd164"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线轧辊系统"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-39b4f4dfa3943920"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线联轴器"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-a5a1353219d19094"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "主电源柜"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-7b312c88854833bb"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "高压供电系统"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-df8b209c12257151"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "稀油站"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        }
+      ],
+      "missing": [
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度持续上升（>80°C 为文档提及阈值，需对照本机规程）",
+        "油位/加油台账或油品指标",
+        "宽频噪声抬升（辅助）",
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）"
+      ],
+      "notes": [],
+      "l4_run_id": "L4R-09900636c713"
+    },
+    {
+      "tag": "MA_unbalance_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260316-00035",
+      "et": "main_mill_motor",
+      "eid": "MM-01",
+      "screen": "ABNORMAL",
+      "prelim": "转子不平衡",
+      "suff": "sufficient",
+      "l3_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 4,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "齿轮异常",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 1,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260316-00035:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00035:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260316-00035:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 3 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "齿轮副啮合状态异常（胶合/点蚀/磨损/偏载等）",
+          "fault": "齿轮异常",
+          "ck": "CK-gear-mesh-abnormality",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00035:gear_mesh:啮合频率幅值(g)"
+          ],
+          "contra": [],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑油含水（如冷却器渗漏）",
+          "fault": "齿轮异常",
+          "ck": "CK-lube-water-gear-pitting",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00035:gear_mesh:啮合频率幅值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "MM-01",
+        "equipment_type": "main_mill_motor",
+        "graph_node_id": "device-f803cb74ec718d83",
+        "graph_label": "棒线主轧机电机",
+        "mapping_level": "equipment_type",
+        "mapping_source": "kb05_graph_label_alignment",
+        "verification_status": "type_reference_verified",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。",
+        "asset_mapping": {
+          "equipment_id": "MM-01",
+          "equipment_type": "main_mill_motor",
+          "graph_node_id": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "explicit_unbound_pending_human_confirm",
+          "verification_status": "pending_human_confirm",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。"
+        },
+        "reference_topology_only": true
+      },
+      "propagation": "unknown",
+      "downstream": [
+        {
+          "graph_label": "棒线主减速机/齿轮箱",
+          "graph_node_id": "device-23b2e75b5fe45e6c",
+          "relation_direction": "out",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线轧辊系统",
+          "graph_node_id": "device-3d943744be9dd164",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线联轴器",
+          "graph_node_id": "device-39b4f4dfa3943920",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "主电源柜",
+          "graph_node_id": "device-a5a1353219d19094",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "高压供电系统",
+          "graph_node_id": "device-7b312c88854833bb",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "稀油站",
+          "graph_node_id": "device-df8b209c12257151",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        }
+      ],
+      "topology_paths": [
+        {
+          "direction": "out",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-3d943744be9dd164"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线轧辊系统"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-39b4f4dfa3943920"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线联轴器"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-a5a1353219d19094"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "主电源柜"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-7b312c88854833bb"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "高压供电系统"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-df8b209c12257151"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "稀油站"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        }
+      ],
+      "missing": [
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）",
+        "1X调制边带",
+        "油品或齿面状态（验证级）",
+        "油品含水率检测",
+        "齿面点蚀或啮合异常证据",
+        "油冷却器渗漏检查（辅助）"
+      ],
+      "notes": [],
+      "l4_run_id": "L4R-09900636c713"
+    },
+    {
+      "tag": "MA_unbalance_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260316-00044",
+      "et": "main_mill_motor",
+      "eid": "MM-01",
+      "screen": "ABNORMAL",
+      "prelim": "转子不平衡",
+      "suff": "sufficient",
+      "l3_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 3,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "齿轮异常",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 1,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260316-00044:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00044:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260316-00044:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 3 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "齿轮副啮合状态异常（胶合/点蚀/磨损/偏载等）",
+          "fault": "齿轮异常",
+          "ck": "CK-gear-mesh-abnormality",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00044:gear_mesh:啮合频率幅值(g)"
+          ],
+          "contra": [],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑油含水（如冷却器渗漏）",
+          "fault": "齿轮异常",
+          "ck": "CK-lube-water-gear-pitting",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00044:gear_mesh:啮合频率幅值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "MM-01",
+        "equipment_type": "main_mill_motor",
+        "graph_node_id": "device-f803cb74ec718d83",
+        "graph_label": "棒线主轧机电机",
+        "mapping_level": "equipment_type",
+        "mapping_source": "kb05_graph_label_alignment",
+        "verification_status": "type_reference_verified",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。",
+        "asset_mapping": {
+          "equipment_id": "MM-01",
+          "equipment_type": "main_mill_motor",
+          "graph_node_id": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "explicit_unbound_pending_human_confirm",
+          "verification_status": "pending_human_confirm",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。"
+        },
+        "reference_topology_only": true
+      },
+      "propagation": "unknown",
+      "downstream": [
+        {
+          "graph_label": "棒线主减速机/齿轮箱",
+          "graph_node_id": "device-23b2e75b5fe45e6c",
+          "relation_direction": "out",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线轧辊系统",
+          "graph_node_id": "device-3d943744be9dd164",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线联轴器",
+          "graph_node_id": "device-39b4f4dfa3943920",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "主电源柜",
+          "graph_node_id": "device-a5a1353219d19094",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "高压供电系统",
+          "graph_node_id": "device-7b312c88854833bb",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "稀油站",
+          "graph_node_id": "device-df8b209c12257151",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        }
+      ],
+      "topology_paths": [
+        {
+          "direction": "out",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-3d943744be9dd164"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线轧辊系统"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-39b4f4dfa3943920"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线联轴器"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-a5a1353219d19094"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "主电源柜"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-7b312c88854833bb"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "高压供电系统"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-df8b209c12257151"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "稀油站"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        }
+      ],
+      "missing": [
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）",
+        "1X调制边带",
+        "油品或齿面状态（验证级）",
+        "油品含水率检测",
+        "齿面点蚀或啮合异常证据",
+        "油冷却器渗漏检查（辅助）"
+      ],
+      "notes": [],
+      "l4_run_id": "L4R-09900636c713"
+    },
+    {
+      "tag": "MA_lube_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260316-00051",
+      "et": "main_mill_motor",
+      "eid": "MM-01",
+      "screen": "ABNORMAL",
+      "prelim": "润滑故障",
+      "suff": "sufficient",
+      "l3_faults": [
+        {
+          "fault_type": "润滑故障",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 4,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 4,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "齿轮异常",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 1,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260316-00051:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00051:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:lubrication:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00051:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260316-00051:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00051:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 7 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260316-00051:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00051:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:lubrication:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00051:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260316-00051:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00051:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 7 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "润滑故障",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [
+            "mech:REC-MA-20260316-00051:bearing:BPFO幅值(g)",
+            "mech:REC-MA-20260316-00051:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260316-00051:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260316-00051:bearing:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00051:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 6 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260316-00051:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:bearing:BPFO幅值(g)",
+            "mech:REC-MA-20260316-00051:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260316-00051:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260316-00051:bearing:包络谱峰值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 6 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260316-00051:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00051:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:lubrication:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00051:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260316-00051:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00051:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 7 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [
+            "mech:REC-MA-20260316-00051:bearing:BPFO幅值(g)",
+            "mech:REC-MA-20260316-00051:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260316-00051:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260316-00051:bearing:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00051:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 6 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "齿轮副啮合状态异常（胶合/点蚀/磨损/偏载等）",
+          "fault": "齿轮异常",
+          "ck": "CK-gear-mesh-abnormality",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00051:gear_mesh:啮合频率幅值(g)"
+          ],
+          "contra": [],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑油含水（如冷却器渗漏）",
+          "fault": "齿轮异常",
+          "ck": "CK-lube-water-gear-pitting",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00051:gear_mesh:啮合频率幅值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "MM-01",
+        "equipment_type": "main_mill_motor",
+        "graph_node_id": "device-f803cb74ec718d83",
+        "graph_label": "棒线主轧机电机",
+        "mapping_level": "equipment_type",
+        "mapping_source": "kb05_graph_label_alignment",
+        "verification_status": "type_reference_verified",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。",
+        "asset_mapping": {
+          "equipment_id": "MM-01",
+          "equipment_type": "main_mill_motor",
+          "graph_node_id": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "explicit_unbound_pending_human_confirm",
+          "verification_status": "pending_human_confirm",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。"
+        },
+        "reference_topology_only": true
+      },
+      "propagation": "unknown",
+      "downstream": [
+        {
+          "graph_label": "棒线主减速机/齿轮箱",
+          "graph_node_id": "device-23b2e75b5fe45e6c",
+          "relation_direction": "out",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线轧辊系统",
+          "graph_node_id": "device-3d943744be9dd164",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线联轴器",
+          "graph_node_id": "device-39b4f4dfa3943920",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "主电源柜",
+          "graph_node_id": "device-a5a1353219d19094",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "高压供电系统",
+          "graph_node_id": "device-7b312c88854833bb",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "稀油站",
+          "graph_node_id": "device-df8b209c12257151",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        }
+      ],
+      "topology_paths": [
+        {
+          "direction": "out",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-3d943744be9dd164"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线轧辊系统"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-39b4f4dfa3943920"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线联轴器"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-a5a1353219d19094"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "主电源柜"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-7b312c88854833bb"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "高压供电系统"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-df8b209c12257151"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "稀油站"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        }
+      ],
+      "missing": [
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "轴承温度持续上升（>80°C 为文档提及阈值，需对照本机规程）",
+        "油位/加油台账或油品指标",
+        "宽频噪声抬升（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "1X调制边带",
+        "油品或齿面状态（验证级）",
+        "油品含水率检测",
+        "齿面点蚀或啮合异常证据",
+        "油冷却器渗漏检查（辅助）"
+      ],
+      "notes": [],
+      "l4_run_id": "L4R-09900636c713"
+    },
+    {
+      "tag": "MA_lube_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260318-00079",
+      "et": "main_mill_motor",
+      "eid": "MM-01",
+      "screen": "ABNORMAL",
+      "prelim": "润滑故障",
+      "suff": "sufficient",
+      "l3_faults": [
+        {
+          "fault_type": "润滑故障",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 4,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 4,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "CONTRADICT",
+          "support_count": 0,
+          "contradict_count": 1,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260318-00079:X向振动(mm/s)",
+            "stat:REC-MA-20260318-00079:包络谱峰值(g)",
+            "mech:REC-MA-20260318-00079:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260318-00079:lubrication:X向振动(mm/s)",
+            "stat:REC-MA-20260318-00079:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260318-00079:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260318-00079:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 7 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260318-00079:X向振动(mm/s)",
+            "stat:REC-MA-20260318-00079:包络谱峰值(g)",
+            "mech:REC-MA-20260318-00079:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260318-00079:lubrication:X向振动(mm/s)",
+            "stat:REC-MA-20260318-00079:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260318-00079:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260318-00079:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 7 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "润滑故障",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [
+            "mech:REC-MA-20260318-00079:bearing:BPFO幅值(g)",
+            "mech:REC-MA-20260318-00079:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260318-00079:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260318-00079:bearing:包络谱峰值(g)",
+            "mech:REC-MA-20260318-00079:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260318-00079:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 6 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260318-00079:包络谱峰值(g)",
+            "mech:REC-MA-20260318-00079:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260318-00079:bearing:BPFO幅值(g)",
+            "mech:REC-MA-20260318-00079:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260318-00079:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260318-00079:bearing:包络谱峰值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 6 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260318-00079:X向振动(mm/s)",
+            "stat:REC-MA-20260318-00079:包络谱峰值(g)",
+            "mech:REC-MA-20260318-00079:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260318-00079:lubrication:X向振动(mm/s)",
+            "stat:REC-MA-20260318-00079:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260318-00079:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260318-00079:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 7 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [
+            "mech:REC-MA-20260318-00079:bearing:BPFO幅值(g)",
+            "mech:REC-MA-20260318-00079:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260318-00079:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260318-00079:bearing:包络谱峰值(g)",
+            "mech:REC-MA-20260318-00079:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260318-00079:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 6 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-MA-20260318-00079:1X转频幅值(mm/s)"
+          ],
+          "contra": [
+            "mech:REC-MA-20260318-00079:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "MM-01",
+        "equipment_type": "main_mill_motor",
+        "graph_node_id": "device-f803cb74ec718d83",
+        "graph_label": "棒线主轧机电机",
+        "mapping_level": "equipment_type",
+        "mapping_source": "kb05_graph_label_alignment",
+        "verification_status": "type_reference_verified",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。",
+        "asset_mapping": {
+          "equipment_id": "MM-01",
+          "equipment_type": "main_mill_motor",
+          "graph_node_id": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "explicit_unbound_pending_human_confirm",
+          "verification_status": "pending_human_confirm",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。"
+        },
+        "reference_topology_only": true
+      },
+      "propagation": "unknown",
+      "downstream": [
+        {
+          "graph_label": "棒线主减速机/齿轮箱",
+          "graph_node_id": "device-23b2e75b5fe45e6c",
+          "relation_direction": "out",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线轧辊系统",
+          "graph_node_id": "device-3d943744be9dd164",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线联轴器",
+          "graph_node_id": "device-39b4f4dfa3943920",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "主电源柜",
+          "graph_node_id": "device-a5a1353219d19094",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "高压供电系统",
+          "graph_node_id": "device-7b312c88854833bb",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "稀油站",
+          "graph_node_id": "device-df8b209c12257151",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        }
+      ],
+      "topology_paths": [
+        {
+          "direction": "out",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-3d943744be9dd164"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线轧辊系统"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-39b4f4dfa3943920"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线联轴器"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-a5a1353219d19094"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "主电源柜"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-7b312c88854833bb"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "高压供电系统"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-df8b209c12257151"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "稀油站"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        }
+      ],
+      "missing": [
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "轴承温度持续上升（>80°C 为文档提及阈值，需对照本机规程）",
+        "油位/加油台账或油品指标",
+        "宽频噪声抬升（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）"
+      ],
+      "notes": [],
+      "l4_run_id": "L4R-09900636c713"
+    },
+    {
+      "tag": "MA_gear_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260321-00129",
+      "et": "main_mill_motor",
+      "eid": "MM-01",
+      "screen": "ABNORMAL",
+      "prelim": "齿轮异常",
+      "suff": "sufficient",
+      "l3_faults": [
+        {
+          "fault_type": "齿轮异常",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 3,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "CONTRADICT",
+          "support_count": 0,
+          "contradict_count": 1,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "齿轮副啮合状态异常（胶合/点蚀/磨损/偏载等）",
+          "fault": "齿轮异常",
+          "ck": "CK-gear-mesh-abnormality",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260321-00129:gear_mesh:啮合频率幅值(g)"
+          ],
+          "contra": [],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑油含水（如冷却器渗漏）",
+          "fault": "齿轮异常",
+          "ck": "CK-lube-water-gear-pitting",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260321-00129:gear_mesh:啮合频率幅值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [
+            "mech:REC-MA-20260321-00129:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "miss_n": 3,
+          "cause_state": "contradicted",
+          "fault_state": "contradicted",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "MM-01",
+        "equipment_type": "main_mill_motor",
+        "graph_node_id": "device-f803cb74ec718d83",
+        "graph_label": "棒线主轧机电机",
+        "mapping_level": "equipment_type",
+        "mapping_source": "kb05_graph_label_alignment",
+        "verification_status": "type_reference_verified",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。",
+        "asset_mapping": {
+          "equipment_id": "MM-01",
+          "equipment_type": "main_mill_motor",
+          "graph_node_id": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "explicit_unbound_pending_human_confirm",
+          "verification_status": "pending_human_confirm",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。"
+        },
+        "reference_topology_only": true
+      },
+      "propagation": "unknown",
+      "downstream": [
+        {
+          "graph_label": "棒线主减速机/齿轮箱",
+          "graph_node_id": "device-23b2e75b5fe45e6c",
+          "relation_direction": "out",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线轧辊系统",
+          "graph_node_id": "device-3d943744be9dd164",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线联轴器",
+          "graph_node_id": "device-39b4f4dfa3943920",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "主电源柜",
+          "graph_node_id": "device-a5a1353219d19094",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "高压供电系统",
+          "graph_node_id": "device-7b312c88854833bb",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "稀油站",
+          "graph_node_id": "device-df8b209c12257151",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        }
+      ],
+      "topology_paths": [
+        {
+          "direction": "out",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-3d943744be9dd164"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线轧辊系统"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-39b4f4dfa3943920"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线联轴器"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-a5a1353219d19094"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "主电源柜"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-7b312c88854833bb"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "高压供电系统"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-df8b209c12257151"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "稀油站"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        }
+      ],
+      "missing": [
+        "1X调制边带",
+        "油品或齿面状态（验证级）",
+        "油品含水率检测",
+        "齿面点蚀或啮合异常证据",
+        "油冷却器渗漏检查（辅助）",
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）"
+      ],
+      "notes": [],
+      "l4_run_id": "L4R-09900636c713"
+    },
+    {
+      "tag": "MA_lube_limited",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260529-01290",
+      "et": "main_mill_motor",
+      "eid": "MM-01",
+      "screen": "ABNORMAL",
+      "prelim": "润滑故障",
+      "suff": "limited",
+      "l3_faults": [
+        {
+          "fault_type": "润滑故障",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 1,
+          "contradict_count": 1,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "CONTRADICT",
+          "support_count": 0,
+          "contradict_count": 1,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260529-01290:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260529-01290:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260529-01290:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [
+            "mech:REC-MA-20260529-01290:lubrication:X向振动(mm/s)"
+          ],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 3 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260529-01290:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260529-01290:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260529-01290:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [
+            "mech:REC-MA-20260529-01290:lubrication:X向振动(mm/s)"
+          ],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 3 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "润滑故障",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [
+            "mech:REC-MA-20260529-01290:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260529-01290:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "contra": [],
+          "miss_n": 2,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 2 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [
+            "mech:REC-MA-20260529-01290:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "miss_n": 3,
+          "cause_state": "contradicted",
+          "fault_state": "contradicted",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "MM-01",
+        "equipment_type": "main_mill_motor",
+        "graph_node_id": "device-f803cb74ec718d83",
+        "graph_label": "棒线主轧机电机",
+        "mapping_level": "equipment_type",
+        "mapping_source": "kb05_graph_label_alignment",
+        "verification_status": "type_reference_verified",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。",
+        "asset_mapping": {
+          "equipment_id": "MM-01",
+          "equipment_type": "main_mill_motor",
+          "graph_node_id": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "explicit_unbound_pending_human_confirm",
+          "verification_status": "pending_human_confirm",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。"
+        },
+        "reference_topology_only": true
+      },
+      "propagation": "unknown",
+      "downstream": [
+        {
+          "graph_label": "棒线主减速机/齿轮箱",
+          "graph_node_id": "device-23b2e75b5fe45e6c",
+          "relation_direction": "out",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线轧辊系统",
+          "graph_node_id": "device-3d943744be9dd164",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线联轴器",
+          "graph_node_id": "device-39b4f4dfa3943920",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "主电源柜",
+          "graph_node_id": "device-a5a1353219d19094",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "高压供电系统",
+          "graph_node_id": "device-7b312c88854833bb",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "稀油站",
+          "graph_node_id": "device-df8b209c12257151",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        }
+      ],
+      "topology_paths": [
+        {
+          "direction": "out",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-3d943744be9dd164"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线轧辊系统"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-39b4f4dfa3943920"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线联轴器"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-a5a1353219d19094"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "主电源柜"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-7b312c88854833bb"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "高压供电系统"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-df8b209c12257151"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "稀油站"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        }
+      ],
+      "missing": [
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "轴承温度持续上升（>80°C 为文档提及阈值，需对照本机规程）",
+        "油位/加油台账或油品指标",
+        "宽频噪声抬升（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）"
+      ],
+      "notes": [],
+      "l4_run_id": "L4R-09900636c713"
+    },
+    {
+      "tag": "MA_bearing_insuff",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260314-00004",
+      "et": "main_mill_motor",
+      "eid": "MM-01",
+      "screen": "ABNORMAL",
+      "prelim": "轴承磨损",
+      "suff": "insufficient",
+      "l3_faults": [
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "润滑故障",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "insufficient_evidence",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "润滑故障",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "MM-01",
+        "equipment_type": "main_mill_motor",
+        "graph_node_id": "device-f803cb74ec718d83",
+        "graph_label": "棒线主轧机电机",
+        "mapping_level": "equipment_type",
+        "mapping_source": "kb05_graph_label_alignment",
+        "verification_status": "type_reference_verified",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。",
+        "asset_mapping": {
+          "equipment_id": "MM-01",
+          "equipment_type": "main_mill_motor",
+          "graph_node_id": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "explicit_unbound_pending_human_confirm",
+          "verification_status": "pending_human_confirm",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。"
+        },
+        "reference_topology_only": true
+      },
+      "propagation": "unknown",
+      "downstream": [
+        {
+          "graph_label": "棒线主减速机/齿轮箱",
+          "graph_node_id": "device-23b2e75b5fe45e6c",
+          "relation_direction": "out",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线轧辊系统",
+          "graph_node_id": "device-3d943744be9dd164",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线联轴器",
+          "graph_node_id": "device-39b4f4dfa3943920",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "主电源柜",
+          "graph_node_id": "device-a5a1353219d19094",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "高压供电系统",
+          "graph_node_id": "device-7b312c88854833bb",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "稀油站",
+          "graph_node_id": "device-df8b209c12257151",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        }
+      ],
+      "topology_paths": [
+        {
+          "direction": "out",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-3d943744be9dd164"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线轧辊系统"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-39b4f4dfa3943920"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线联轴器"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-a5a1353219d19094"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "主电源柜"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-7b312c88854833bb"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "高压供电系统"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-df8b209c12257151"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "稀油站"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        }
+      ],
+      "missing": [
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度/振动异常",
+        "轴承温度持续上升（>80°C 为文档提及阈值，需对照本机规程）",
+        "油位/加油台账或油品指标",
+        "宽频噪声抬升（辅助）",
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）"
+      ],
+      "notes": [],
+      "l4_run_id": "L4R-09900636c713"
+    },
+    {
+      "tag": "MA_insuff_reasoning",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260314-00008",
+      "et": "main_mill_motor",
+      "eid": "MM-01",
+      "screen": "ABNORMAL",
+      "prelim": "轴承磨损",
+      "suff": "limited",
+      "l3_faults": [
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 1,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "润滑故障",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "齿轮异常",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_reasoning_hypothesis",
+          "verdict": "INCONCLUSIVE",
+          "hypothesis_origin": "exploratory_hypothesis",
+          "raw_fault_type": "转子不平衡/联轴器对中不良（通用振动越限鉴别项）"
+        }
+      ],
+      "outcome": "insufficient_evidence",
+      "confirm": "unconfirmed",
+      "has_reasoning": true,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "仅有 1 条一般异常证据，不能证明该根因"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "润滑故障",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "仅有 1 条一般异常证据，不能证明该根因"
+        },
+        {
+          "cause": "齿轮副啮合状态异常（胶合/点蚀/磨损/偏载等）",
+          "fault": "齿轮异常",
+          "ck": "CK-gear-mesh-abnormality",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "润滑油含水（如冷却器渗漏）",
+          "fault": "齿轮异常",
+          "ck": "CK-lube-water-gear-pitting",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "MM-01",
+        "equipment_type": "main_mill_motor",
+        "graph_node_id": "device-f803cb74ec718d83",
+        "graph_label": "棒线主轧机电机",
+        "mapping_level": "equipment_type",
+        "mapping_source": "kb05_graph_label_alignment",
+        "verification_status": "type_reference_verified",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。",
+        "asset_mapping": {
+          "equipment_id": "MM-01",
+          "equipment_type": "main_mill_motor",
+          "graph_node_id": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "explicit_unbound_pending_human_confirm",
+          "verification_status": "pending_human_confirm",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。"
+        },
+        "reference_topology_only": true
+      },
+      "propagation": "unknown",
+      "downstream": [
+        {
+          "graph_label": "棒线主减速机/齿轮箱",
+          "graph_node_id": "device-23b2e75b5fe45e6c",
+          "relation_direction": "out",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线轧辊系统",
+          "graph_node_id": "device-3d943744be9dd164",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线联轴器",
+          "graph_node_id": "device-39b4f4dfa3943920",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "主电源柜",
+          "graph_node_id": "device-a5a1353219d19094",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "高压供电系统",
+          "graph_node_id": "device-7b312c88854833bb",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "稀油站",
+          "graph_node_id": "device-df8b209c12257151",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        }
+      ],
+      "topology_paths": [
+        {
+          "direction": "out",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-3d943744be9dd164"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线轧辊系统"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-39b4f4dfa3943920"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线联轴器"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-a5a1353219d19094"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "主电源柜"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-7b312c88854833bb"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "高压供电系统"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-df8b209c12257151"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "稀油站"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        }
+      ],
+      "missing": [
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度/振动异常",
+        "轴承温度持续上升（>80°C 为文档提及阈值，需对照本机规程）",
+        "油位/加油台账或油品指标",
+        "宽频噪声抬升（辅助）",
+        "啮合频率幅值",
+        "1X调制边带",
+        "油品或齿面状态（验证级）",
+        "油品含水率检测",
+        "齿面点蚀或啮合异常证据",
+        "油冷却器渗漏检查（辅助）",
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）"
+      ],
+      "notes": [],
+      "l4_run_id": "L4R-09900636c713"
+    },
+    {
+      "tag": "MA_no_reasoning",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260314-00003",
+      "et": "main_mill_motor",
+      "eid": "MM-02",
+      "screen": "ABNORMAL",
+      "prelim": "轴承磨损",
+      "suff": "insufficient",
+      "l3_faults": [
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "润滑故障",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "insufficient_evidence",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "润滑故障",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "reference_only",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "MM-02",
+        "equipment_type": "main_mill_motor",
+        "graph_node_id": "device-f803cb74ec718d83",
+        "graph_label": "棒线主轧机电机",
+        "mapping_level": "equipment_type",
+        "mapping_source": "kb05_graph_label_alignment",
+        "verification_status": "type_reference_verified",
+        "version": "l4_equipment_mapping_v1",
+        "notes": null,
+        "asset_mapping": null,
+        "reference_topology_only": true
+      },
+      "propagation": "unknown",
+      "downstream": [
+        {
+          "graph_label": "棒线主减速机/齿轮箱",
+          "graph_node_id": "device-23b2e75b5fe45e6c",
+          "relation_direction": "out",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线轧辊系统",
+          "graph_node_id": "device-3d943744be9dd164",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "棒线联轴器",
+          "graph_node_id": "device-39b4f4dfa3943920",
+          "relation_direction": "out",
+          "depth": 2,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "主电源柜",
+          "graph_node_id": "device-a5a1353219d19094",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "高压供电系统",
+          "graph_node_id": "device-7b312c88854833bb",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        },
+        {
+          "graph_label": "稀油站",
+          "graph_node_id": "device-df8b209c12257151",
+          "relation_direction": "in",
+          "depth": 1,
+          "binding": "reference_topology_only"
+        }
+      ],
+      "topology_paths": [
+        {
+          "direction": "out",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-3d943744be9dd164"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线轧辊系统"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "out",
+          "depth": 2,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-23b2e75b5fe45e6c",
+            "device-39b4f4dfa3943920"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "棒线主减速机/齿轮箱",
+            "棒线联轴器"
+          ],
+          "relation": "CONNECTS_TO",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-a5a1353219d19094"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "主电源柜"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-7b312c88854833bb"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "高压供电系统"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        },
+        {
+          "direction": "in",
+          "depth": 1,
+          "node_ids": [
+            "device-f803cb74ec718d83",
+            "device-df8b209c12257151"
+          ],
+          "labels": [
+            "棒线主轧机电机",
+            "稀油站"
+          ],
+          "relation": "CONNECTS_TO_REVERSE",
+          "source_edge": "graph.json:CONNECTS_TO"
+        }
+      ],
+      "missing": [
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度/振动异常",
+        "轴承温度持续上升（>80°C 为文档提及阈值，需对照本机规程）",
+        "油位/加油台账或油品指标",
+        "宽频噪声抬升（辅助）",
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）"
+      ],
+      "notes": [],
+      "l4_run_id": "L4R-09900636c713"
+    },
+    {
+      "tag": "DP_bearing_suf",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-00021",
+      "et": "high_pressure_descaling_pump",
+      "eid": "DP-01",
+      "screen": "ABNORMAL",
+      "prelim": "轴承磨损",
+      "suff": "sufficient",
+      "l3_faults": [
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 5,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 1,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00021:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00021:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-00021:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00021:bearing:包络谱峰值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00021:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00021:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-00021:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00021:bearing:包络谱峰值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00021:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "DP-01",
+        "equipment_type": "high_pressure_descaling_pump",
+        "graph_node_id": null,
+        "graph_label": null,
+        "mapping_level": "unresolved",
+        "mapping_source": "no_matching_device_in_graph_json",
+        "verification_status": "unresolved",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。",
+        "reference_topology_only": true,
+        "type_row": {
+          "equipment_type": "high_pressure_descaling_pump",
+          "graph_node_id": null,
+          "graph_label": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "no_matching_device_in_graph_json",
+          "verification_status": "unresolved",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。"
+        },
+        "asset_mapping": null
+      },
+      "propagation": "unknown",
+      "downstream": [],
+      "topology_paths": [],
+      "missing": [
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度/振动异常",
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）"
+      ],
+      "notes": [
+        "设备映射 unresolved：不生成具体下游设备影响。"
+      ],
+      "l4_run_id": "L4R-e178842e4621"
+    },
+    {
+      "tag": "DP_bearing_suf",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-00041",
+      "et": "high_pressure_descaling_pump",
+      "eid": "DP-01",
+      "screen": "ABNORMAL",
+      "prelim": "轴承磨损",
+      "suff": "sufficient",
+      "l3_faults": [
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 4,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00041:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00041:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-00041:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00041:bearing:包络谱峰值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00041:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00041:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-00041:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00041:bearing:包络谱峰值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00041:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "DP-01",
+        "equipment_type": "high_pressure_descaling_pump",
+        "graph_node_id": null,
+        "graph_label": null,
+        "mapping_level": "unresolved",
+        "mapping_source": "no_matching_device_in_graph_json",
+        "verification_status": "unresolved",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。",
+        "reference_topology_only": true,
+        "type_row": {
+          "equipment_type": "high_pressure_descaling_pump",
+          "graph_node_id": null,
+          "graph_label": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "no_matching_device_in_graph_json",
+          "verification_status": "unresolved",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。"
+        },
+        "asset_mapping": null
+      },
+      "propagation": "unknown",
+      "downstream": [],
+      "topology_paths": [],
+      "missing": [
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度/振动异常",
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）"
+      ],
+      "notes": [
+        "设备映射 unresolved：不生成具体下游设备影响。"
+      ],
+      "l4_run_id": "L4R-e178842e4621"
+    },
+    {
+      "tag": "DP_unbalance_suf",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-00031",
+      "et": "high_pressure_descaling_pump",
+      "eid": "DP-01",
+      "screen": "ABNORMAL",
+      "prelim": "转子不平衡",
+      "suff": "sufficient",
+      "l3_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 8,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 2,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-DP-20260314-00031:X向振动(mm/s)",
+            "stat:REC-DP-20260314-00031:Y向振动(mm/s)",
+            "stat:REC-DP-20260314-00031:最大振动(mm/s)",
+            "stat:REC-DP-20260314-00031:1X转频幅值(mm/s)",
+            "mech:REC-DP-20260314-00031:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 5 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00031:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00031:bearing:包络谱峰值(g)",
+            "mech:REC-DP-20260314-00031:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00031:bearing:BPFI幅值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00031:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00031:bearing:包络谱峰值(g)",
+            "mech:REC-DP-20260314-00031:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00031:bearing:BPFI幅值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "DP-01",
+        "equipment_type": "high_pressure_descaling_pump",
+        "graph_node_id": null,
+        "graph_label": null,
+        "mapping_level": "unresolved",
+        "mapping_source": "no_matching_device_in_graph_json",
+        "verification_status": "unresolved",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。",
+        "reference_topology_only": true,
+        "type_row": {
+          "equipment_type": "high_pressure_descaling_pump",
+          "graph_node_id": null,
+          "graph_label": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "no_matching_device_in_graph_json",
+          "verification_status": "unresolved",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。"
+        },
+        "asset_mapping": null
+      },
+      "propagation": "unknown",
+      "downstream": [],
+      "topology_paths": [],
+      "missing": [
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）",
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度/振动异常"
+      ],
+      "notes": [
+        "设备映射 unresolved：不生成具体下游设备影响。"
+      ],
+      "l4_run_id": "L4R-e178842e4621"
+    },
+    {
+      "tag": "DP_unbalance_suf",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-00051",
+      "et": "high_pressure_descaling_pump",
+      "eid": "DP-01",
+      "screen": "ABNORMAL",
+      "prelim": "转子不平衡",
+      "suff": "sufficient",
+      "l3_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 4,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "SUPPORT",
+          "support_count": 2,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [
+            "stat:REC-DP-20260314-00051:1X转频幅值(mm/s)",
+            "mech:REC-DP-20260314-00051:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 2 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00051:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00051:bearing:包络谱峰值(g)",
+            "mech:REC-DP-20260314-00051:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00051:bearing:BPFI幅值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00051:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00051:bearing:包络谱峰值(g)",
+            "mech:REC-DP-20260314-00051:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00051:bearing:BPFI幅值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "DP-01",
+        "equipment_type": "high_pressure_descaling_pump",
+        "graph_node_id": null,
+        "graph_label": null,
+        "mapping_level": "unresolved",
+        "mapping_source": "no_matching_device_in_graph_json",
+        "verification_status": "unresolved",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。",
+        "reference_topology_only": true,
+        "type_row": {
+          "equipment_type": "high_pressure_descaling_pump",
+          "graph_node_id": null,
+          "graph_label": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "no_matching_device_in_graph_json",
+          "verification_status": "unresolved",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。"
+        },
+        "asset_mapping": null
+      },
+      "propagation": "unknown",
+      "downstream": [],
+      "topology_paths": [],
+      "missing": [
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）",
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度/振动异常"
+      ],
+      "notes": [
+        "设备映射 unresolved：不生成具体下游设备影响。"
+      ],
+      "l4_run_id": "L4R-e178842e4621"
+    },
+    {
+      "tag": "DP_conflict",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-03404",
+      "et": "high_pressure_descaling_pump",
+      "eid": "DP-04",
+      "screen": "CONFLICT",
+      "prelim": null,
+      "suff": "limited",
+      "l3_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "CONTRADICT",
+          "support_count": 0,
+          "contradict_count": 2,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-03404:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-03404:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-03404:bearing:包络谱峰值(g)"
+          ],
+          "contra": [
+            "mech:REC-DP-20260314-03404:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-03404:bearing:BSF幅值(g)"
+          ],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 2 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-03404:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-03404:bearing:包络谱峰值(g)"
+          ],
+          "contra": [
+            "mech:REC-DP-20260314-03404:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-03404:bearing:BSF幅值(g)"
+          ],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 2 条与路径模式匹配的本机证据（仍为未确认根因）"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "DP-04",
+        "equipment_type": "high_pressure_descaling_pump",
+        "graph_node_id": null,
+        "graph_label": null,
+        "mapping_level": "unresolved",
+        "mapping_source": "no_matching_device_in_graph_json",
+        "verification_status": "unresolved",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。",
+        "reference_topology_only": true,
+        "type_row": {
+          "equipment_type": "high_pressure_descaling_pump",
+          "graph_node_id": null,
+          "graph_label": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "no_matching_device_in_graph_json",
+          "verification_status": "unresolved",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。"
+        },
+        "asset_mapping": null
+      },
+      "propagation": "unknown",
+      "downstream": [],
+      "topology_paths": [],
+      "missing": [
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）",
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度/振动异常"
+      ],
+      "notes": [
+        "设备映射 unresolved：不生成具体下游设备影响。"
+      ],
+      "l4_run_id": "L4R-e178842e4621"
+    },
+    {
+      "tag": "DP_conflict",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-02836",
+      "et": "high_pressure_descaling_pump",
+      "eid": "DP-06",
+      "screen": "CONFLICT",
+      "prelim": null,
+      "suff": "limited",
+      "l3_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "CONTRADICT",
+          "support_count": 0,
+          "contradict_count": 1,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [
+            "mech:REC-DP-20260314-02836:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "miss_n": 3,
+          "cause_state": "contradicted",
+          "fault_state": "contradicted",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-02836:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-02836:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-02836:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-02836:bearing:包络谱峰值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-02836:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-02836:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-02836:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-02836:bearing:包络谱峰值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "DP-06",
+        "equipment_type": "high_pressure_descaling_pump",
+        "graph_node_id": null,
+        "graph_label": null,
+        "mapping_level": "unresolved",
+        "mapping_source": "no_matching_device_in_graph_json",
+        "verification_status": "unresolved",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。",
+        "reference_topology_only": true,
+        "type_row": {
+          "equipment_type": "high_pressure_descaling_pump",
+          "graph_node_id": null,
+          "graph_label": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "no_matching_device_in_graph_json",
+          "verification_status": "unresolved",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。"
+        },
+        "asset_mapping": null
+      },
+      "propagation": "unknown",
+      "downstream": [],
+      "topology_paths": [],
+      "missing": [
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）",
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度/振动异常"
+      ],
+      "notes": [
+        "设备映射 unresolved：不生成具体下游设备影响。"
+      ],
+      "l4_run_id": "L4R-e178842e4621"
+    },
+    {
+      "tag": "DP_uncertain",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-00162",
+      "et": "high_pressure_descaling_pump",
+      "eid": "DP-02",
+      "screen": "UNCERTAIN",
+      "prelim": "正常",
+      "suff": "limited",
+      "l3_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "CONTRADICT",
+          "support_count": 0,
+          "contradict_count": 1,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "润滑故障",
+          "source": "l3_reasoning_hypothesis",
+          "verdict": "INCONCLUSIVE",
+          "hypothesis_origin": "exploratory_hypothesis",
+          "raw_fault_type": "润滑故障"
+        },
+        {
+          "fault_type": "齿轮异常",
+          "source": "l3_reasoning_hypothesis",
+          "verdict": "NOT_APPLICABLE",
+          "hypothesis_origin": "exploratory_hypothesis",
+          "raw_fault_type": "齿轮异常"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": true,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00162:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 1 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00162:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00162:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00162:bearing:包络谱峰值(g)"
+          ],
+          "contra": [
+            "mech:REC-DP-20260314-00162:bearing:BPFI幅值(g)"
+          ],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 3 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00162:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00162:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00162:bearing:包络谱峰值(g)"
+          ],
+          "contra": [
+            "mech:REC-DP-20260314-00162:bearing:BPFI幅值(g)"
+          ],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 3 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "润滑故障",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-00162:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00162:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00162:bearing:包络谱峰值(g)"
+          ],
+          "contra": [
+            "mech:REC-DP-20260314-00162:bearing:BPFI幅值(g)"
+          ],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 3 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "齿轮副啮合状态异常（胶合/点蚀/磨损/偏载等）",
+          "fault": "齿轮异常",
+          "ck": "CK-gear-mesh-abnormality",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "润滑油含水（如冷却器渗漏）",
+          "fault": "齿轮异常",
+          "ck": "CK-lube-water-gear-pitting",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "DP-02",
+        "equipment_type": "high_pressure_descaling_pump",
+        "graph_node_id": null,
+        "graph_label": null,
+        "mapping_level": "unresolved",
+        "mapping_source": "no_matching_device_in_graph_json",
+        "verification_status": "unresolved",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。",
+        "reference_topology_only": true,
+        "type_row": {
+          "equipment_type": "high_pressure_descaling_pump",
+          "graph_node_id": null,
+          "graph_label": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "no_matching_device_in_graph_json",
+          "verification_status": "unresolved",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。"
+        },
+        "asset_mapping": null
+      },
+      "propagation": "unknown",
+      "downstream": [],
+      "topology_paths": [],
+      "missing": [
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）",
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度/振动异常",
+        "轴承温度持续上升（>80°C 为文档提及阈值，需对照本机规程）",
+        "油位/加油台账或油品指标",
+        "宽频噪声抬升（辅助）",
+        "啮合频率幅值",
+        "1X调制边带",
+        "油品或齿面状态（验证级）",
+        "油品含水率检测",
+        "齿面点蚀或啮合异常证据",
+        "油冷却器渗漏检查（辅助）"
+      ],
+      "notes": [
+        "设备映射 unresolved：不生成具体下游设备影响。"
+      ],
+      "l4_run_id": "L4R-e178842e4621"
+    },
+    {
+      "tag": "DP_uncertain",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-02602",
+      "et": "high_pressure_descaling_pump",
+      "eid": "DP-02",
+      "screen": "UNCERTAIN",
+      "prelim": "正常",
+      "suff": "limited",
+      "l3_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "source": "l3_fault_type_review",
+          "verdict": "CONTRADICT",
+          "support_count": 0,
+          "contradict_count": 1,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        },
+        {
+          "fault_type": "轴承磨损",
+          "source": "l3_fault_type_review",
+          "verdict": "INCONCLUSIVE",
+          "support_count": 0,
+          "contradict_count": 0,
+          "note": "L3 复核不改写 L2 preliminary_fault"
+        }
+      ],
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "has_reasoning": false,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [
+            "mech:REC-DP-20260314-02602:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "miss_n": 3,
+          "cause_state": "contradicted",
+          "fault_state": "contradicted",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "联轴器对中不良或轴弯曲",
+          "fault": "转子不平衡",
+          "ck": "CK-misalignment-or-bend",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-02602:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-02602:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-02602:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-02602:bearing:包络谱峰值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "unknown",
+          "summary": "无本机故障特异证据；仅有异常类证据或缺失关键观测"
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-DP-20260314-02602:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-02602:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-02602:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-02602:bearing:包络谱峰值(g)"
+          ],
+          "contra": [],
+          "miss_n": 3,
+          "cause_state": "hypothesized",
+          "fault_state": "observed",
+          "summary": "存在 4 条与路径模式匹配的本机证据（仍为未确认根因）"
+        }
+      ],
+      "mapping": {
+        "equipment_id": "DP-02",
+        "equipment_type": "high_pressure_descaling_pump",
+        "graph_node_id": null,
+        "graph_label": null,
+        "mapping_level": "unresolved",
+        "mapping_source": "no_matching_device_in_graph_json",
+        "verification_status": "unresolved",
+        "version": "l4_equipment_mapping_v1",
+        "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。",
+        "reference_topology_only": true,
+        "type_row": {
+          "equipment_type": "high_pressure_descaling_pump",
+          "graph_node_id": null,
+          "graph_label": null,
+          "mapping_level": "unresolved",
+          "mapping_source": "no_matching_device_in_graph_json",
+          "verification_status": "unresolved",
+          "version": "l4_equipment_mapping_v1",
+          "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。"
+        },
+        "asset_mapping": null
+      },
+      "propagation": "unknown",
+      "downstream": [],
+      "topology_paths": [],
+      "missing": [
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）",
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）",
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）",
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）",
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度/振动异常"
+      ],
+      "notes": [
+        "设备映射 unresolved：不生成具体下游设备影响。"
+      ],
+      "l4_run_id": "L4R-e178842e4621"
+    }
+  ],
+  "elapsed_s": 0.4894111000467092
+}

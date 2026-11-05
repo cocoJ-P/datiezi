@@ -1,0 +1,10 @@
+{
+  "schema": "AlertRuleApprovalLog",
+  "version": "approvals_v1",
+  "notes": [
+    "生产环境默认无批准记录。",
+    "正式告警要求：规则 review_status=approved 且本日志存在匹配 rule_id+rule_version 的授权记录。",
+    "禁止仅通过前端/API 传入 approved 字符串完成批准。"
+  ],
+  "approvals": []
+}

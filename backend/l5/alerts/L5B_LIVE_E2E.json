@@ -1,0 +1,138 @@
+{
+  "alert_run": {
+    "alert_run_id": "L5AR-ddf66d18e518",
+    "source_l5_run_id": "L5R-8f4e1357ae2c",
+    "diagnosis_run_id": "DR-8c6cde64a303",
+    "analysis_run_id": "AR-82c631a14fd1",
+    "l4_run_id": "L4R-2b3535935e05",
+    "catalog_version": "alert_rule_catalog_v1",
+    "content_key": "3e7b662470d6fedd303ccd689a29289db8e2dcdbd7cf545de77a507dcbf7ed2f|force|L5AR-ddf66d18e518",
+    "status": "completed",
+    "selection": {
+      "record_ids": [
+        "REC-DP-20260314-00021",
+        "REC-DP-20260314-00162"
+      ],
+      "max_records": 5
+    },
+    "selected_record_count": 2,
+    "processed_record_count": 2,
+    "succeeded_record_count": 2,
+    "failed_record_count": 0,
+    "formal_alert_total": 0,
+    "error_summary": null,
+    "created_at": "2026-11-05T17:43:46Z",
+    "started_at": "2026-11-05T17:43:46Z",
+    "finished_at": "2026-11-05T17:43:46Z"
+  },
+  "summary": [
+    {
+      "record_id": "REC-DP-20260314-00021",
+      "formal": 0,
+      "reference": 4,
+      "triggered_ref": [
+        {
+          "rule_id": "YAML-DP-VIB-X-ALARM",
+          "feature": "X向振动(mm/s)",
+          "obs": 5.247,
+          "thr": 4.5,
+          "level": "alarm",
+          "status": "triggered",
+          "review": "needs_review",
+          "formal": false
+        },
+        {
+          "rule_id": "YAML-DP-VIB-Y-ALARM",
+          "feature": "Y向振动(mm/s)",
+          "obs": 6.862,
+          "thr": 4.5,
+          "level": "alarm",
+          "status": "triggered",
+          "review": "needs_review",
+          "formal": false
+        },
+        {
+          "rule_id": "YAML-DP-VIB-MAX-ALARM",
+          "feature": "最大振动(mm/s)",
+          "obs": 6.862,
+          "thr": 7.1,
+          "level": "alarm",
+          "status": "within_limit",
+          "review": "needs_review",
+          "formal": false
+        },
+        {
+          "rule_id": "YAML-DP-BEARING-TEMP-DE-ALARM",
+          "feature": "驱动端轴承温度(°C)",
+          "obs": 54.5,
+          "thr": 80.0,
+          "level": "alarm",
+          "status": "within_limit",
+          "review": "needs_review",
+          "formal": false
+        }
+      ],
+      "conflicts": [
+        "CONF-MM-BEARING-TEMP-YAML-MM-BEARING-TEMP-DE-AS-ALARM",
+        "CONF-MM-BEARING-TEMP-YAML-MM-BEARING-TEMP-NDE-AS-ALARM",
+        "NOTE-CWP-VS-DESCALING-NOT-EQUIVALENT",
+        "NOTE-GEARBOX-VS-MOTOR-NOT-EQUIVALENT",
+        "CONF-MM-BEARING-LEVEL-MISLABEL"
+      ]
+    },
+    {
+      "record_id": "REC-DP-20260314-00162",
+      "formal": 0,
+      "reference": 4,
+      "triggered_ref": [
+        {
+          "rule_id": "YAML-DP-VIB-X-ALARM",
+          "feature": "X向振动(mm/s)",
+          "obs": 3.221,
+          "thr": 4.5,
+          "level": "alarm",
+          "status": "within_limit",
+          "review": "needs_review",
+          "formal": false
+        },
+        {
+          "rule_id": "YAML-DP-VIB-Y-ALARM",
+          "feature": "Y向振动(mm/s)",
+          "obs": 4.31,
+          "thr": 4.5,
+          "level": "alarm",
+          "status": "within_limit",
+          "review": "needs_review",
+          "formal": false
+        },
+        {
+          "rule_id": "YAML-DP-VIB-MAX-ALARM",
+          "feature": "最大振动(mm/s)",
+          "obs": 4.31,
+          "thr": 7.1,
+          "level": "alarm",
+          "status": "within_limit",
+          "review": "needs_review",
+          "formal": false
+        },
+        {
+          "rule_id": "YAML-DP-BEARING-TEMP-DE-ALARM",
+          "feature": "驱动端轴承温度(°C)",
+          "obs": 52.5,
+          "thr": 80.0,
+          "level": "alarm",
+          "status": "within_limit",
+          "review": "needs_review",
+          "formal": false
+        }
+      ],
+      "conflicts": [
+        "CONF-MM-BEARING-TEMP-YAML-MM-BEARING-TEMP-DE-AS-ALARM",
+        "CONF-MM-BEARING-TEMP-YAML-MM-BEARING-TEMP-NDE-AS-ALARM",
+        "NOTE-CWP-VS-DESCALING-NOT-EQUIVALENT",
+        "NOTE-GEARBOX-VS-MOTOR-NOT-EQUIVALENT",
+        "CONF-MM-BEARING-LEVEL-MISLABEL"
+      ]
+    }
+  ]
+}

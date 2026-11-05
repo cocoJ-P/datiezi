@@ -1,0 +1,9 @@
+{
+  "method": "temperature_scaling",
+  "status": "applied",
+  "reason": "",
+  "temperature": 0.8072096526190008,
+  "params": {
+    "temperature": 0.8072096526190008
+  }
+}

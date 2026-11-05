@@ -36,21 +36,6 @@ class ManagementService:
     def connection(self) -> sqlite3.Connection:
         return connect(self.config.db_path)
 
-    def require_token(self, token: str | None) -> None:
-        expected = self.config.management_token
-        if not expected:
-            raise ManagementError(
-                "MANAGEMENT_UNAUTHORIZED",
-                "未配置 L2_MANAGEMENT_TOKEN，拒绝管理写操作。",
-                status_code=401,
-            )
-        if not token or token.strip() != expected:
-            raise ManagementError(
-                "MANAGEMENT_UNAUTHORIZED",
-                "管理 Token 无效。",
-                status_code=401,
-            )
-
     def list_equipment_types_api(self) -> dict[str, Any]:
         connection = self.connection()
         try:
@@ -166,6 +151,7 @@ class ManagementService:
         equipment_type: str,
         dataset_id: str | None = None,
         prepared_dataset_id: str | None = None,
+        parent_model_bundle_id: str | None = None,
     ) -> dict[str, Any]:
         if not has_equipment(equipment_type):
             raise ManagementError(
@@ -179,22 +165,44 @@ class ManagementService:
                 "必须提供 dataset_id 或 prepared_dataset_id。",
                 status_code=400,
             )
-        if prepared_dataset_id:
-            # PED-* 优先；也允许把 dataset_id 写成 PED-*
-            pass
-        elif dataset_id and str(dataset_id).startswith("PED-"):
-            prepared_dataset_id = dataset_id
-            dataset_id = prepared_dataset_id
-        elif dataset_id not in self.config.datasets:
-            raise ManagementError("DATASET_NOT_FOUND", f"数据集不存在：{dataset_id}", status_code=404)
+        parent_id = (parent_model_bundle_id or "").strip() or None
         connection = self.connection()
         try:
+            if parent_id:
+                try:
+                    parent = get_model(connection, parent_id)
+                except ManagementError as exc:
+                    if exc.error_code == "MODEL_NOT_FOUND":
+                        raise ManagementError(
+                            "PARENT_MODEL_INVALID",
+                            f"父模型不存在：{parent_id}",
+                            status_code=400,
+                        ) from exc
+                    raise
+                if parent.get("equipment_type") != equipment_type:
+                    raise ManagementError(
+                        "PARENT_MODEL_INVALID",
+                        (
+                            f"父模型设备类型不一致：parent={parent.get('equipment_type')}, "
+                            f"request={equipment_type}"
+                        ),
+                        status_code=400,
+                    )
+            if prepared_dataset_id:
+                # PED-* 优先；也允许把 dataset_id 写成 PED-*
+                pass
+            elif dataset_id and str(dataset_id).startswith("PED-"):
+                prepared_dataset_id = dataset_id
+                dataset_id = prepared_dataset_id
+            elif dataset_id not in self.config.datasets:
+                raise ManagementError("DATASET_NOT_FOUND", f"数据集不存在：{dataset_id}", status_code=404)
             job = create_training_job(
                 connection,
                 self.config,
                 equipment_type=equipment_type,
                 dataset_id=dataset_id or prepared_dataset_id or "",
                 prepared_dataset_id=prepared_dataset_id,
+                parent_model_bundle_id=parent_id,
             )
             connection.commit()
             return {
@@ -204,6 +212,8 @@ class ManagementService:
                 "dataset_id": job["dataset_id"],
                 "dataset_revision_id": job.get("dataset_revision_id"),
                 "created_at": job["created_at"],
+                "train_mode": job.get("train_mode") or "new",
+                "parent_model_bundle_id": job.get("parent_model_bundle_id"),
             }
         except KeyError as exc:
             raise ManagementError("DATASET_NOT_FOUND", f"数据集不存在：{exc}", status_code=404) from exc
@@ -332,9 +342,24 @@ class ManagementService:
     def activate(self, model_bundle_id: str) -> dict[str, Any]:
         connection = self.connection()
         try:
-            return activate_model(connection, self.config, model_bundle_id, manager=self.manager)
+            result = activate_model(connection, self.config, model_bundle_id, manager=self.manager)
         finally:
             connection.close()
+        try:
+            from l2.handoff.orchestrator import ORCHESTRATOR
+
+            ORCHESTRATOR.on_model_activated(
+                equipment_type=str(result.get("equipment_type") or ""),
+                model_bundle_id=str(result.get("activated_model_bundle_id") or model_bundle_id),
+            )
+        except Exception:  # noqa: BLE001 - 激活成功后衔接失败不回滚激活
+            import logging
+
+            logging.getLogger("l2.management").exception(
+                "handoff resume after activate failed model=%s",
+                model_bundle_id,
+            )
+        return result
 
     def rollback(self, *, equipment_type: str, target_model_bundle_id: str) -> dict[str, Any]:
         connection = self.connection()

@@ -14,7 +14,6 @@ sys.path.insert(0, str(ROOT / "backend") if (ROOT / "backend").is_dir() else str
 if not (ROOT / "l2").is_dir() and (ROOT.parent / "backend" / "l2").is_dir():
     sys.path.insert(0, str(ROOT.parent / "backend"))
 
-os.environ.setdefault("L2_MANAGEMENT_TOKEN", "local-dev-token")
 os.environ.setdefault("PYTHONUTF8", "1")
 
 from l2.inference.config import load_config

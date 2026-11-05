@@ -5,6 +5,7 @@ import { EventsPage } from "./events/EventsPage"
 import { EquipmentMonitoringPage } from "./pages/EquipmentMonitoringPage"
 import { KnowledgeGraphPage } from "./pages/KnowledgeGraphPage"
 import { PortalPage } from "./pages/PortalPage"
+import { ReportCenterPage } from "./report/ReportCenterPage"
 import { RouteProvider, useRoute, type PageId } from "./routing"
 
 const NAV_GROUPS: { label: string; items: { label: string; icon: string; page?: PageId }[] }[] = [
@@ -22,7 +23,7 @@ const NAV_GROUPS: { label: string; items: { label: string; icon: string; page?: 
     items: [
       { label: "智能诊断工作台", icon: "workbench", page: "diagnosis" },
       { label: "知识图谱", icon: "graph", page: "graph" },
-      { label: "报告中心", icon: "report" },
+      { label: "报告中心", icon: "report", page: "report" },
     ],
   },
   {
@@ -153,6 +154,7 @@ function AppShell() {
         {page === "events" && <EventsPage />}
         {page === "diagnosis" && <DiagnosisPage />}
         {page === "health" && <HealthPage />}
+        {page === "report" && <ReportCenterPage />}
       </div>
     </div>
   )

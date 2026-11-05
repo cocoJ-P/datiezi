@@ -1,0 +1,189 @@
+{
+  "summaries": [
+    {
+      "l5_run_id": "L5R-8f4e1357ae2c",
+      "record_id": "REC-DP-20260314-00162",
+      "outcome": "partial",
+      "review_status": "draft",
+      "equipment_status": "UNCERTAIN",
+      "fault_severity": null,
+      "priority": null,
+      "impact_degree": null,
+      "diagnosis_confidence": null,
+      "root_cause_confirmation": "unconfirmed",
+      "verification_count": 12,
+      "l4_hash_unchanged": true,
+      "source_run_ids": {
+        "diagnosis_run_id": "DR-8c6cde64a303",
+        "analysis_run_id": "AR-82c631a14fd1",
+        "l4_run_id": "L4R-2b3535935e05",
+        "l3_reasoning_run_id": null,
+        "l4_reasoning_run_id": null,
+        "enrichment_run_id": null
+      },
+      "null_reasons": {
+        "fault_severity": "no_validated_severity_scale",
+        "priority": "no_validated_p0_p3_rules",
+        "impact_degree": "no_validated_impact_degree_scale",
+        "diagnosis_confidence": "no_unified_confidence_definition"
+      }
+    },
+    {
+      "l5_run_id": "L5R-8f4e1357ae2c",
+      "record_id": "REC-DP-20260314-00021",
+      "outcome": "partial",
+      "review_status": "draft",
+      "equipment_status": "ABNORMAL",
+      "fault_severity": null,
+      "priority": null,
+      "impact_degree": null,
+      "diagnosis_confidence": null,
+      "root_cause_confirmation": "unconfirmed",
+      "verification_count": 13,
+      "l4_hash_unchanged": true,
+      "source_run_ids": {
+        "diagnosis_run_id": "DR-8c6cde64a303",
+        "analysis_run_id": "AR-82c631a14fd1",
+        "l4_run_id": "L4R-2b3535935e05",
+        "l3_reasoning_run_id": null,
+        "l4_reasoning_run_id": null,
+        "enrichment_run_id": null
+      },
+      "null_reasons": {
+        "fault_severity": "no_validated_severity_scale",
+        "priority": "no_validated_p0_p3_rules",
+        "impact_degree": "no_validated_impact_degree_scale",
+        "diagnosis_confidence": "no_unified_confidence_definition"
+      }
+    },
+    {
+      "l5_run_id": "L5R-3782d99ebd16",
+      "record_id": "REC-MA-20260314-00011",
+      "outcome": "partial",
+      "review_status": "draft",
+      "equipment_status": "ABNORMAL",
+      "fault_severity": null,
+      "priority": null,
+      "impact_degree": null,
+      "diagnosis_confidence": null,
+      "root_cause_confirmation": "unconfirmed",
+      "verification_count": 9,
+      "l4_hash_unchanged": true,
+      "source_run_ids": {
+        "diagnosis_run_id": "DR-f2e65a5a86cd",
+        "analysis_run_id": "AR-5c5c1ec454e0",
+        "l4_run_id": "L4R-dc727d0b06a3",
+        "l3_reasoning_run_id": null,
+        "l4_reasoning_run_id": null,
+        "enrichment_run_id": null
+      },
+      "null_reasons": {
+        "fault_severity": "no_validated_severity_scale",
+        "priority": "no_validated_p0_p3_rules",
+        "impact_degree": "no_validated_impact_degree_scale",
+        "diagnosis_confidence": "no_unified_confidence_definition"
+      }
+    },
+    {
+      "l5_run_id": "L5R-f59276524697",
+      "record_id": "REC-MA-20260314-00008",
+      "outcome": "partial",
+      "review_status": "draft",
+      "equipment_status": "ABNORMAL",
+      "fault_severity": null,
+      "priority": null,
+      "impact_degree": null,
+      "diagnosis_confidence": null,
+      "root_cause_confirmation": "unconfirmed",
+      "verification_count": 19,
+      "l4_hash_unchanged": true,
+      "source_run_ids": {
+        "diagnosis_run_id": "DR-f2e65a5a86cd",
+        "analysis_run_id": "AR-5c5c1ec454e0",
+        "l4_run_id": "L4R-87cd58b190ff",
+        "l3_reasoning_run_id": null,
+        "l4_reasoning_run_id": null,
+        "enrichment_run_id": null
+      },
+      "null_reasons": {
+        "fault_severity": "no_validated_severity_scale",
+        "priority": "no_validated_p0_p3_rules",
+        "impact_degree": "no_validated_impact_degree_scale",
+        "diagnosis_confidence": "no_unified_confidence_definition"
+      }
+    },
+    {
+      "l5_run_id": "L5R-c37afcde8672",
+      "record_id": "REC-MA-20260407-00407",
+      "outcome": "partial",
+      "review_status": "draft",
+      "equipment_status": "ABNORMAL",
+      "fault_severity": null,
+      "priority": null,
+      "impact_degree": null,
+      "diagnosis_confidence": null,
+      "root_cause_confirmation": "unconfirmed",
+      "verification_count": 6,
+      "l4_hash_unchanged": true,
+      "source_run_ids": {
+        "diagnosis_run_id": "DR-f2e65a5a86cd",
+        "analysis_run_id": "AR-5c5c1ec454e0",
+        "l4_run_id": "L4R-6819e31506c8",
+        "l3_reasoning_run_id": null,
+        "l4_reasoning_run_id": null,
+        "enrichment_run_id": null
+      },
+      "null_reasons": {
+        "fault_severity": "no_validated_severity_scale",
+        "priority": "no_validated_p0_p3_rules",
+        "impact_degree": "no_validated_impact_degree_scale",
+        "diagnosis_confidence": "no_unified_confidence_definition"
+      }
+    }
+  ],
+  "batch": {
+    "l5_run_id": "L5R-92f9ed699d86",
+    "diagnosis_run_id": "DR-8c6cde64a303",
+    "analysis_run_id": "AR-82c631a14fd1",
+    "l4_run_id": "L4R-2b3535935e05",
+    "l3_reasoning_run_id": null,
+    "l4_reasoning_run_id": null,
+    "enrichment_run_id": null,
+    "aggregation_schema_version": "final_diagnosis_assessment_v1",
+    "recommendation_rule_version": "l5a_verification_v1",
+    "content_key": "7039aa3d8cbff3bbfcb55ed9cb6373caa0a3f0edc5a46a195c417e102dd2d3f6|force|L5R-92f9ed699d86",
+    "status": "partial",
+    "selection": {
+      "record_ids": [
+        "REC-DP-20260314-00021",
+        "REC-DP-20260314-00162"
+      ],
+      "max_records": 50
+    },
+    "source_versions": {
+      "model_bundle_id": "TR-afb202b407bf",
+      "prepared_dataset_id": "PED-123f9bf255a0",
+      "dataset_revision_id": "rev-PD-569b27f6095f",
+      "equipment_type": "high_pressure_descaling_pump",
+      "l2_model_bundle_id": "TR-afb202b407bf",
+      "l2_prepared_dataset_id": "PED-123f9bf255a0",
+      "l2_dataset_revision_id": "rev-PD-569b27f6095f",
+      "l2_equipment_type": "high_pressure_descaling_pump",
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2",
+      "equipment_mapping_version": "l4_equipment_mapping_v1",
+      "knowledge_snapshot_id": "KS-757bbb5b681923d8",
+      "applicability_version": "l4_applicability_v1_2",
+      "evidence_match_version": "l4_evidence_match_v1_2"
+    },
+    "selected_record_count": 2,
+    "processed_record_count": 2,
+    "succeeded_record_count": 0,
+    "partial_record_count": 2,
+    "failed_record_count": 0,
+    "error_summary": null,
+    "created_at": "2026-11-05T17:33:51Z",
+    "started_at": "2026-11-05T17:33:51Z",
+    "finished_at": "2026-11-05T17:33:51Z"
+  },
+  "mismatch": "unexpected_success"
+}

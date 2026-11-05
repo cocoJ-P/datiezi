@@ -173,8 +173,8 @@ export function DiagnosisPage() {
         <DiagnosticOverview onOpenLayer={(id) => openTab(id)} />
       </section>
       {active.id !== "overview" ? (
-        <section className={active.id === "l1" ? "dx-panel is-flush" : "dx-panel"} role="tabpanel" id={`dx-panel-${active.id}`} aria-labelledby={`dx-tab-${active.id}`} tabIndex={0}>
-          {active.id === "l1" ? null : <PanelHead tab={active} />}
+        <section className={active.id === "l1" || active.id === "l2" ? "dx-panel is-flush" : "dx-panel"} role="tabpanel" id={`dx-panel-${active.id}`} aria-labelledby={`dx-tab-${active.id}`} tabIndex={0}>
+          {active.id === "l1" || active.id === "l2" ? null : <PanelHead tab={active} />}
           <div className="dx-workspace">
             <LayerPanel tab={active.id} run={run} missingId={missingId} engineId={route.engine} />
           </div>

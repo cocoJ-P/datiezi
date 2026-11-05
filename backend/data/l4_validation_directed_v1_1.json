@@ -1,0 +1,1851 @@
+{
+  "stats": {
+    "n": 19,
+    "candidates_total": 67,
+    "refs_total": 10,
+    "excluded_faults_total": 10,
+    "bpfo_seal": 0,
+    "mesh_water": 0,
+    "wrong_appl": 0,
+    "bad_expand": 0,
+    "cause_specific": 28,
+    "manif": 105,
+    "all_unconfirmed": 19,
+    "propagation_unknown": 19,
+    "outcome:candidates_generated": 12,
+    "outcome:insufficient_evidence": 7
+  },
+  "detailed": [
+    {
+      "tag": "MA_bearing_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260314-00011",
+      "et": "main_mill_motor",
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 8,
+      "n_cands": 4,
+      "n_refs": 0,
+      "n_excluded_faults": 1,
+      "cause_specific": 6,
+      "manif": 9,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 3,
+      "downstream_n": 3,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "stat:REC-MA-20260314-00011:包络谱峰值(g)",
+            "mech:REC-MA-20260314-00011:bearing:BPFO幅值(g)",
+            "mech:REC-MA-20260314-00011:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260314-00011:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260314-00011:bearing:包络谱峰值(g)",
+            "mech:REC-MA-20260314-00011:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260314-00011:X向振动(mm/s)",
+            "stat:REC-MA-20260314-00011:Y向振动(mm/s)",
+            "mech:REC-MA-20260314-00011:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260314-00011:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260314-00011:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260314-00011:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260314-00011:X向振动(mm/s)",
+            "stat:REC-MA-20260314-00011:Y向振动(mm/s)",
+            "mech:REC-MA-20260314-00011:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260314-00011:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260314-00011:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260314-00011:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260314-00011:X向振动(mm/s)",
+            "stat:REC-MA-20260314-00011:Y向振动(mm/s)",
+            "mech:REC-MA-20260314-00011:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260314-00011:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260314-00011:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260314-00011:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260314-00011:X向振动(mm/s)",
+            "stat:REC-MA-20260314-00011:Y向振动(mm/s)",
+            "mech:REC-MA-20260314-00011:lubrication:X向振动(mm/s)"
+          ]
+        }
+      ],
+      "excluded_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "eligibility": "excluded_contradicted",
+          "exclusion_reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "expand_root_cause": false,
+          "normalized_verdicts": [
+            "CONTRADICTED"
+          ],
+          "l3_core_verdict": "CONTRADICTED",
+          "l3_reasoning_verdict": null,
+          "contradicting_evidence_ids": [
+            "mech:REC-MA-20260314-00011:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "evidence_citation_missing": false,
+          "source_analysis_run_id": "AR-5c5c1ec454e0",
+          "source_reasoning_run_id": "RR-e1944d6b5bb5",
+          "needs_review": false,
+          "evidence_hint": {
+            "contradict_count": 1,
+            "support_count": 0
+          },
+          "source_row": {
+            "source": "l3_fault_type_review",
+            "verdict": "CONTRADICT"
+          }
+        }
+      ],
+      "reference_candidates": [],
+      "notes": [
+        "已排除 1 个 L3 否定/不适用/冲突故障，不进入有效根因展开。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "MA_bearing_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260316-00043",
+      "et": "main_mill_motor",
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 8,
+      "n_cands": 4,
+      "n_refs": 0,
+      "n_excluded_faults": 1,
+      "cause_specific": 6,
+      "manif": 8,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 3,
+      "downstream_n": 3,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "stat:REC-MA-20260316-00043:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00043:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260316-00043:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260316-00043:bearing:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00043:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00043:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00043:Y向振动(mm/s)",
+            "thr:REC-MA-20260316-00043:mill_vib_x_alarm",
+            "mech:REC-MA-20260316-00043:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00043:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00043:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260316-00043:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00043:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00043:Y向振动(mm/s)",
+            "thr:REC-MA-20260316-00043:mill_vib_x_alarm",
+            "mech:REC-MA-20260316-00043:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00043:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00043:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260316-00043:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00043:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00043:Y向振动(mm/s)",
+            "thr:REC-MA-20260316-00043:mill_vib_x_alarm",
+            "mech:REC-MA-20260316-00043:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00043:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00043:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260316-00043:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00043:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00043:Y向振动(mm/s)",
+            "thr:REC-MA-20260316-00043:mill_vib_x_alarm",
+            "mech:REC-MA-20260316-00043:lubrication:X向振动(mm/s)"
+          ]
+        }
+      ],
+      "excluded_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "eligibility": "excluded_contradicted",
+          "exclusion_reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "expand_root_cause": false,
+          "normalized_verdicts": [
+            "CONTRADICTED"
+          ],
+          "l3_core_verdict": "CONTRADICTED",
+          "l3_reasoning_verdict": null,
+          "contradicting_evidence_ids": [
+            "mech:REC-MA-20260316-00043:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "evidence_citation_missing": false,
+          "source_analysis_run_id": "AR-5c5c1ec454e0",
+          "source_reasoning_run_id": "RR-e1944d6b5bb5",
+          "needs_review": false,
+          "evidence_hint": {
+            "contradict_count": 1,
+            "support_count": 0
+          },
+          "source_row": {
+            "source": "l3_fault_type_review",
+            "verdict": "CONTRADICT"
+          }
+        }
+      ],
+      "reference_candidates": [],
+      "notes": [
+        "已排除 1 个 L3 否定/不适用/冲突故障，不进入有效根因展开。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "MA_unbalance_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260316-00035",
+      "et": "main_mill_motor",
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 4,
+      "n_cands": 2,
+      "n_refs": 2,
+      "n_excluded_faults": 0,
+      "cause_specific": 0,
+      "manif": 6,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 3,
+      "downstream_n": 3,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "stat:REC-MA-20260316-00035:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260316-00035:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00035:X向振动(mm/s)",
+            "thr:REC-MA-20260316-00035:mill_vib_x_alarm"
+          ]
+        },
+        {
+          "cause": "齿轮副啮合状态异常（胶合/点蚀/磨损/偏载等）",
+          "fault": "齿轮异常",
+          "ck": "CK-gear-mesh-abnormality",
+          "appl": "associated_unconfirmed",
+          "sup": [],
+          "manif": [
+            "mech:REC-MA-20260316-00035:gear_mesh:啮合频率幅值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00035:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00035:1X转频幅值(mm/s)",
+            "thr:REC-MA-20260316-00035:mill_vib_x_alarm"
+          ]
+        }
+      ],
+      "excluded_faults": [],
+      "reference_candidates": [
+        {
+          "ck": "CK-misalignment-or-bend",
+          "appl": "reference_only",
+          "cause": "联轴器对中不良或轴弯曲"
+        },
+        {
+          "ck": "CK-lube-water-gear-pitting",
+          "appl": "reference_only",
+          "cause": "润滑油含水（如冷却器渗漏）"
+        }
+      ],
+      "notes": [],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "MA_unbalance_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260316-00044",
+      "et": "main_mill_motor",
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 4,
+      "n_cands": 2,
+      "n_refs": 2,
+      "n_excluded_faults": 0,
+      "cause_specific": 0,
+      "manif": 6,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 3,
+      "downstream_n": 3,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "stat:REC-MA-20260316-00044:1X转频幅值(mm/s)",
+            "mech:REC-MA-20260316-00044:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00044:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "齿轮副啮合状态异常（胶合/点蚀/磨损/偏载等）",
+          "fault": "齿轮异常",
+          "ck": "CK-gear-mesh-abnormality",
+          "appl": "associated_unconfirmed",
+          "sup": [],
+          "manif": [
+            "mech:REC-MA-20260316-00044:gear_mesh:啮合频率幅值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00044:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00044:1X转频幅值(mm/s)"
+          ]
+        }
+      ],
+      "excluded_faults": [],
+      "reference_candidates": [
+        {
+          "ck": "CK-misalignment-or-bend",
+          "appl": "reference_only",
+          "cause": "联轴器对中不良或轴弯曲"
+        },
+        {
+          "ck": "CK-lube-water-gear-pitting",
+          "appl": "reference_only",
+          "cause": "润滑油含水（如冷却器渗漏）"
+        }
+      ],
+      "notes": [],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "MA_lube_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260316-00051",
+      "et": "main_mill_motor",
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 8,
+      "n_cands": 5,
+      "n_refs": 1,
+      "n_excluded_faults": 0,
+      "cause_specific": 6,
+      "manif": 11,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 3,
+      "downstream_n": 3,
+      "cands": [
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00051:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00051:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260316-00051:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00051:X向振动(mm/s)",
+            "mech:REC-MA-20260316-00051:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00051:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00051:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260316-00051:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00051:X向振动(mm/s)",
+            "mech:REC-MA-20260316-00051:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "stat:REC-MA-20260316-00051:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:bearing:BPFO幅值(g)",
+            "mech:REC-MA-20260316-00051:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260316-00051:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260316-00051:bearing:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00051:X向振动(mm/s)",
+            "mech:REC-MA-20260316-00051:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260316-00051:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260316-00051:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260316-00051:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00051:X向振动(mm/s)",
+            "mech:REC-MA-20260316-00051:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "齿轮副啮合状态异常（胶合/点蚀/磨损/偏载等）",
+          "fault": "齿轮异常",
+          "ck": "CK-gear-mesh-abnormality",
+          "appl": "associated_unconfirmed",
+          "sup": [],
+          "manif": [
+            "mech:REC-MA-20260316-00051:gear_mesh:啮合频率幅值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260316-00051:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00051:包络谱峰值(g)",
+            "mech:REC-MA-20260316-00051:lubrication:X向振动(mm/s)",
+            "stat:REC-MA-20260316-00051:1X转频幅值(mm/s)"
+          ]
+        }
+      ],
+      "excluded_faults": [],
+      "reference_candidates": [
+        {
+          "ck": "CK-lube-water-gear-pitting",
+          "appl": "reference_only",
+          "cause": "润滑油含水（如冷却器渗漏）"
+        }
+      ],
+      "notes": [],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "MA_lube_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260318-00079",
+      "et": "main_mill_motor",
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 8,
+      "n_cands": 4,
+      "n_refs": 0,
+      "n_excluded_faults": 1,
+      "cause_specific": 6,
+      "manif": 9,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 3,
+      "downstream_n": 3,
+      "cands": [
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260318-00079:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260318-00079:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260318-00079:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260318-00079:X向振动(mm/s)",
+            "mech:REC-MA-20260318-00079:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260318-00079:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260318-00079:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260318-00079:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260318-00079:X向振动(mm/s)",
+            "mech:REC-MA-20260318-00079:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "stat:REC-MA-20260318-00079:包络谱峰值(g)",
+            "mech:REC-MA-20260318-00079:lubrication:包络谱峰值(g)",
+            "mech:REC-MA-20260318-00079:bearing:BPFO幅值(g)",
+            "mech:REC-MA-20260318-00079:bearing:BPFI幅值(g)",
+            "mech:REC-MA-20260318-00079:bearing:BSF幅值(g)",
+            "mech:REC-MA-20260318-00079:bearing:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260318-00079:X向振动(mm/s)",
+            "mech:REC-MA-20260318-00079:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260318-00079:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260318-00079:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260318-00079:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260318-00079:X向振动(mm/s)",
+            "mech:REC-MA-20260318-00079:lubrication:X向振动(mm/s)"
+          ]
+        }
+      ],
+      "excluded_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "eligibility": "excluded_contradicted",
+          "exclusion_reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "expand_root_cause": false,
+          "normalized_verdicts": [
+            "CONTRADICTED"
+          ],
+          "l3_core_verdict": "CONTRADICTED",
+          "l3_reasoning_verdict": null,
+          "contradicting_evidence_ids": [
+            "mech:REC-MA-20260318-00079:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "evidence_citation_missing": false,
+          "source_analysis_run_id": "AR-5c5c1ec454e0",
+          "source_reasoning_run_id": "RR-e1944d6b5bb5",
+          "needs_review": false,
+          "evidence_hint": {
+            "contradict_count": 1,
+            "support_count": 0
+          },
+          "source_row": {
+            "source": "l3_fault_type_review",
+            "verdict": "CONTRADICT"
+          }
+        }
+      ],
+      "reference_candidates": [],
+      "notes": [
+        "已排除 1 个 L3 否定/不适用/冲突故障，不进入有效根因展开。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "MA_gear_suf",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260321-00129",
+      "et": "main_mill_motor",
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 4,
+      "n_cands": 1,
+      "n_refs": 1,
+      "n_excluded_faults": 1,
+      "cause_specific": 0,
+      "manif": 2,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 3,
+      "downstream_n": 3,
+      "cands": [
+        {
+          "cause": "齿轮副啮合状态异常（胶合/点蚀/磨损/偏载等）",
+          "fault": "齿轮异常",
+          "ck": "CK-gear-mesh-abnormality",
+          "appl": "associated_unconfirmed",
+          "sup": [],
+          "manif": [
+            "mech:REC-MA-20260321-00129:gear_mesh:啮合频率幅值(g)"
+          ],
+          "ctx": [
+            "stat:REC-MA-20260321-00129:Y向振动(mm/s)",
+            "stat:REC-MA-20260321-00129:包络谱峰值(g)"
+          ]
+        }
+      ],
+      "excluded_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "eligibility": "excluded_contradicted",
+          "exclusion_reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "expand_root_cause": false,
+          "normalized_verdicts": [
+            "CONTRADICTED"
+          ],
+          "l3_core_verdict": "CONTRADICTED",
+          "l3_reasoning_verdict": null,
+          "contradicting_evidence_ids": [
+            "mech:REC-MA-20260321-00129:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "evidence_citation_missing": false,
+          "source_analysis_run_id": "AR-5c5c1ec454e0",
+          "source_reasoning_run_id": "RR-e1944d6b5bb5",
+          "needs_review": false,
+          "evidence_hint": {
+            "contradict_count": 1,
+            "support_count": 0
+          },
+          "source_row": {
+            "source": "l3_fault_type_review",
+            "verdict": "CONTRADICT"
+          }
+        }
+      ],
+      "reference_candidates": [
+        {
+          "ck": "CK-lube-water-gear-pitting",
+          "appl": "reference_only",
+          "cause": "润滑油含水（如冷却器渗漏）"
+        }
+      ],
+      "notes": [
+        "已排除 1 个 L3 否定/不适用/冲突故障，不进入有效根因展开。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "MA_lube_limited",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260529-01290",
+      "et": "main_mill_motor",
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 5,
+      "n_cands": 2,
+      "n_refs": 0,
+      "n_excluded_faults": 1,
+      "cause_specific": 4,
+      "manif": 2,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 3,
+      "downstream_n": 3,
+      "cands": [
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260529-01290:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260529-01290:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260529-01290:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "mech:REC-MA-20260529-01290:lubrication:X向振动(mm/s)"
+          ]
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [
+            "mech:REC-MA-20260529-01290:lubrication:驱动端轴承温度(°C)",
+            "mech:REC-MA-20260529-01290:lubrication:非驱动端轴承温度(°C)"
+          ],
+          "manif": [
+            "mech:REC-MA-20260529-01290:lubrication:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "mech:REC-MA-20260529-01290:lubrication:X向振动(mm/s)"
+          ]
+        }
+      ],
+      "excluded_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "eligibility": "excluded_contradicted",
+          "exclusion_reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "expand_root_cause": false,
+          "normalized_verdicts": [
+            "CONTRADICTED"
+          ],
+          "l3_core_verdict": "CONTRADICTED",
+          "l3_reasoning_verdict": null,
+          "contradicting_evidence_ids": [
+            "mech:REC-MA-20260529-01290:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "evidence_citation_missing": false,
+          "source_analysis_run_id": "AR-5c5c1ec454e0",
+          "source_reasoning_run_id": "RR-e1944d6b5bb5",
+          "needs_review": false,
+          "evidence_hint": {
+            "contradict_count": 1,
+            "support_count": 0
+          },
+          "source_row": {
+            "source": "l3_fault_type_review",
+            "verdict": "CONTRADICT"
+          }
+        }
+      ],
+      "reference_candidates": [],
+      "notes": [
+        "已排除 1 个 L3 否定/不适用/冲突故障，不进入有效根因展开。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "MA_bearing_insuff",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260314-00004",
+      "et": "main_mill_motor",
+      "outcome": "insufficient_evidence",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 8,
+      "n_cands": 5,
+      "n_refs": 1,
+      "n_excluded_faults": 0,
+      "cause_specific": 0,
+      "manif": 0,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 3,
+      "downstream_n": 3,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        }
+      ],
+      "excluded_faults": [],
+      "reference_candidates": [
+        {
+          "ck": "CK-misalignment-or-bend",
+          "appl": "reference_only",
+          "cause": "联轴器对中不良或轴弯曲"
+        }
+      ],
+      "notes": [],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "MA_insuff_reasoning",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260314-00008",
+      "et": "main_mill_motor",
+      "outcome": "insufficient_evidence",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 10,
+      "n_cands": 6,
+      "n_refs": 2,
+      "n_excluded_faults": 0,
+      "cause_specific": 0,
+      "manif": 0,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 3,
+      "downstream_n": 3,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": [
+            "thr:REC-MA-20260314-00008:mill_vib_x_alarm"
+          ]
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": [
+            "thr:REC-MA-20260314-00008:mill_vib_x_alarm"
+          ]
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": [
+            "thr:REC-MA-20260314-00008:mill_vib_x_alarm"
+          ]
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": [
+            "thr:REC-MA-20260314-00008:mill_vib_x_alarm"
+          ]
+        },
+        {
+          "cause": "齿轮副啮合状态异常（胶合/点蚀/磨损/偏载等）",
+          "fault": "齿轮异常",
+          "ck": "CK-gear-mesh-abnormality",
+          "appl": "associated_unconfirmed",
+          "sup": [],
+          "manif": [],
+          "ctx": [
+            "thr:REC-MA-20260314-00008:mill_vib_x_alarm"
+          ]
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": [
+            "thr:REC-MA-20260314-00008:mill_vib_x_alarm"
+          ]
+        }
+      ],
+      "excluded_faults": [],
+      "reference_candidates": [
+        {
+          "ck": "CK-lube-water-gear-pitting",
+          "appl": "reference_only",
+          "cause": "润滑油含水（如冷却器渗漏）"
+        },
+        {
+          "ck": "CK-misalignment-or-bend",
+          "appl": "reference_only",
+          "cause": "联轴器对中不良或轴弯曲"
+        }
+      ],
+      "notes": [],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "MA_no_reasoning",
+      "ar": "AR-5c5c1ec454e0",
+      "rid": "REC-MA-20260314-00003",
+      "et": "main_mill_motor",
+      "outcome": "insufficient_evidence",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 8,
+      "n_cands": 5,
+      "n_refs": 1,
+      "n_excluded_faults": 0,
+      "cause_specific": 0,
+      "manif": 0,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 3,
+      "downstream_n": 3,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        }
+      ],
+      "excluded_faults": [],
+      "reference_candidates": [
+        {
+          "ck": "CK-misalignment-or-bend",
+          "appl": "reference_only",
+          "cause": "联轴器对中不良或轴弯曲"
+        }
+      ],
+      "notes": [],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "DP_bearing_suf",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-00021",
+      "et": "high_pressure_descaling_pump",
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 5,
+      "n_cands": 4,
+      "n_refs": 0,
+      "n_excluded_faults": 0,
+      "cause_specific": 0,
+      "manif": 8,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 0,
+      "downstream_n": 0,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-00021:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00021:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-00021:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00021:bearing:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "thr:REC-DP-20260314-00021:pump_vib_x_alarm",
+            "thr:REC-DP-20260314-00021:pump_vib_y_alarm"
+          ]
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": [
+            "thr:REC-DP-20260314-00021:pump_vib_x_alarm",
+            "thr:REC-DP-20260314-00021:pump_vib_y_alarm"
+          ]
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-00021:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00021:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-00021:bearing:BSF幅值(g)"
+          ],
+          "ctx": [
+            "thr:REC-DP-20260314-00021:pump_vib_x_alarm",
+            "thr:REC-DP-20260314-00021:pump_vib_y_alarm",
+            "mech:REC-DP-20260314-00021:bearing:包络谱峰值(g)"
+          ]
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-00021:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "ctx": [
+            "thr:REC-DP-20260314-00021:pump_vib_x_alarm",
+            "thr:REC-DP-20260314-00021:pump_vib_y_alarm"
+          ]
+        }
+      ],
+      "excluded_faults": [],
+      "reference_candidates": [],
+      "notes": [
+        "设备映射 unresolved：不生成具体设备级影响结论。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "DP_bearing_suf",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-00041",
+      "et": "high_pressure_descaling_pump",
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 5,
+      "n_cands": 4,
+      "n_refs": 0,
+      "n_excluded_faults": 0,
+      "cause_specific": 0,
+      "manif": 8,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 0,
+      "downstream_n": 0,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-00041:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00041:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-00041:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00041:bearing:包络谱峰值(g)"
+          ],
+          "ctx": [
+            "thr:REC-DP-20260314-00041:pump_vib_x_alarm"
+          ]
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": [
+            "thr:REC-DP-20260314-00041:pump_vib_x_alarm"
+          ]
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-00041:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00041:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-00041:bearing:BSF幅值(g)"
+          ],
+          "ctx": [
+            "thr:REC-DP-20260314-00041:pump_vib_x_alarm",
+            "mech:REC-DP-20260314-00041:bearing:包络谱峰值(g)"
+          ]
+        },
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-00041:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "ctx": [
+            "thr:REC-DP-20260314-00041:pump_vib_x_alarm"
+          ]
+        }
+      ],
+      "excluded_faults": [],
+      "reference_candidates": [],
+      "notes": [
+        "设备映射 unresolved：不生成具体设备级影响结论。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "DP_unbalance_suf",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-00031",
+      "et": "high_pressure_descaling_pump",
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 5,
+      "n_cands": 4,
+      "n_refs": 0,
+      "n_excluded_faults": 0,
+      "cause_specific": 0,
+      "manif": 9,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 0,
+      "downstream_n": 0,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "stat:REC-DP-20260314-00031:1X转频幅值(mm/s)",
+            "mech:REC-DP-20260314-00031:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "ctx": [
+            "stat:REC-DP-20260314-00031:X向振动(mm/s)",
+            "stat:REC-DP-20260314-00031:Y向振动(mm/s)",
+            "stat:REC-DP-20260314-00031:最大振动(mm/s)",
+            "thr:REC-DP-20260314-00031:pump_vib_x_alarm",
+            "thr:REC-DP-20260314-00031:pump_vib_y_alarm",
+            "thr:REC-DP-20260314-00031:pump_vib_max_alarm"
+          ]
+        },
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-00031:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00031:bearing:包络谱峰值(g)",
+            "mech:REC-DP-20260314-00031:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00031:bearing:BPFI幅值(g)"
+          ],
+          "ctx": [
+            "stat:REC-DP-20260314-00031:X向振动(mm/s)",
+            "stat:REC-DP-20260314-00031:Y向振动(mm/s)",
+            "stat:REC-DP-20260314-00031:最大振动(mm/s)",
+            "thr:REC-DP-20260314-00031:pump_vib_x_alarm",
+            "thr:REC-DP-20260314-00031:pump_vib_y_alarm",
+            "thr:REC-DP-20260314-00031:pump_vib_max_alarm"
+          ]
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": [
+            "stat:REC-DP-20260314-00031:X向振动(mm/s)",
+            "stat:REC-DP-20260314-00031:Y向振动(mm/s)",
+            "stat:REC-DP-20260314-00031:最大振动(mm/s)",
+            "thr:REC-DP-20260314-00031:pump_vib_x_alarm",
+            "thr:REC-DP-20260314-00031:pump_vib_y_alarm",
+            "thr:REC-DP-20260314-00031:pump_vib_max_alarm"
+          ]
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-00031:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00031:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00031:bearing:BPFI幅值(g)"
+          ],
+          "ctx": [
+            "stat:REC-DP-20260314-00031:X向振动(mm/s)",
+            "stat:REC-DP-20260314-00031:Y向振动(mm/s)",
+            "stat:REC-DP-20260314-00031:最大振动(mm/s)",
+            "thr:REC-DP-20260314-00031:pump_vib_x_alarm",
+            "thr:REC-DP-20260314-00031:pump_vib_y_alarm",
+            "thr:REC-DP-20260314-00031:pump_vib_max_alarm",
+            "mech:REC-DP-20260314-00031:bearing:包络谱峰值(g)"
+          ]
+        }
+      ],
+      "excluded_faults": [],
+      "reference_candidates": [],
+      "notes": [
+        "设备映射 unresolved：不生成具体设备级影响结论。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "DP_unbalance_suf",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-00051",
+      "et": "high_pressure_descaling_pump",
+      "outcome": "candidates_generated",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 5,
+      "n_cands": 4,
+      "n_refs": 0,
+      "n_excluded_faults": 0,
+      "cause_specific": 0,
+      "manif": 9,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 0,
+      "downstream_n": 0,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "stat:REC-DP-20260314-00051:1X转频幅值(mm/s)",
+            "mech:REC-DP-20260314-00051:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "ctx": [
+            "thr:REC-DP-20260314-00051:pump_vib_x_alarm",
+            "thr:REC-DP-20260314-00051:pump_vib_y_alarm"
+          ]
+        },
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-00051:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00051:bearing:包络谱峰值(g)",
+            "mech:REC-DP-20260314-00051:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00051:bearing:BPFI幅值(g)"
+          ],
+          "ctx": [
+            "thr:REC-DP-20260314-00051:pump_vib_x_alarm",
+            "thr:REC-DP-20260314-00051:pump_vib_y_alarm"
+          ]
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": [
+            "thr:REC-DP-20260314-00051:pump_vib_x_alarm",
+            "thr:REC-DP-20260314-00051:pump_vib_y_alarm"
+          ]
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-00051:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-00051:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00051:bearing:BPFI幅值(g)"
+          ],
+          "ctx": [
+            "thr:REC-DP-20260314-00051:pump_vib_x_alarm",
+            "thr:REC-DP-20260314-00051:pump_vib_y_alarm",
+            "mech:REC-DP-20260314-00051:bearing:包络谱峰值(g)"
+          ]
+        }
+      ],
+      "excluded_faults": [],
+      "reference_candidates": [],
+      "notes": [
+        "设备映射 unresolved：不生成具体设备级影响结论。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "DP_conflict",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-03404",
+      "et": "high_pressure_descaling_pump",
+      "outcome": "insufficient_evidence",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 5,
+      "n_cands": 1,
+      "n_refs": 0,
+      "n_excluded_faults": 1,
+      "cause_specific": 0,
+      "manif": 1,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 0,
+      "downstream_n": 0,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-03404:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "ctx": []
+        }
+      ],
+      "excluded_faults": [
+        {
+          "fault_type": "轴承磨损",
+          "eligibility": "excluded_contradicted",
+          "exclusion_reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "expand_root_cause": false,
+          "normalized_verdicts": [
+            "CONTRADICTED"
+          ],
+          "l3_core_verdict": "CONTRADICTED",
+          "l3_reasoning_verdict": null,
+          "contradicting_evidence_ids": [
+            "mech:REC-DP-20260314-03404:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-03404:bearing:BSF幅值(g)"
+          ],
+          "evidence_citation_missing": false,
+          "source_analysis_run_id": "AR-82c631a14fd1",
+          "source_reasoning_run_id": "RR-f15b1a2aafc8",
+          "needs_review": false,
+          "evidence_hint": {
+            "contradict_count": 2,
+            "support_count": 0
+          },
+          "source_row": {
+            "source": "l3_fault_type_review",
+            "verdict": "CONTRADICT"
+          }
+        }
+      ],
+      "reference_candidates": [],
+      "notes": [
+        "已排除 1 个 L3 否定/不适用/冲突故障，不进入有效根因展开。",
+        "设备映射 unresolved：不生成具体设备级影响结论。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "DP_conflict",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-02836",
+      "et": "high_pressure_descaling_pump",
+      "outcome": "insufficient_evidence",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 5,
+      "n_cands": 3,
+      "n_refs": 0,
+      "n_excluded_faults": 1,
+      "cause_specific": 0,
+      "manif": 7,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 0,
+      "downstream_n": 0,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-02836:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-02836:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-02836:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-02836:bearing:包络谱峰值(g)"
+          ],
+          "ctx": []
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-02836:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-02836:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-02836:bearing:BSF幅值(g)"
+          ],
+          "ctx": [
+            "mech:REC-DP-20260314-02836:bearing:包络谱峰值(g)"
+          ]
+        }
+      ],
+      "excluded_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "eligibility": "excluded_contradicted",
+          "exclusion_reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "expand_root_cause": false,
+          "normalized_verdicts": [
+            "CONTRADICTED"
+          ],
+          "l3_core_verdict": "CONTRADICTED",
+          "l3_reasoning_verdict": null,
+          "contradicting_evidence_ids": [
+            "mech:REC-DP-20260314-02836:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "evidence_citation_missing": false,
+          "source_analysis_run_id": "AR-82c631a14fd1",
+          "source_reasoning_run_id": "RR-f15b1a2aafc8",
+          "needs_review": false,
+          "evidence_hint": {
+            "contradict_count": 1,
+            "support_count": 0
+          },
+          "source_row": {
+            "source": "l3_fault_type_review",
+            "verdict": "CONTRADICT"
+          }
+        }
+      ],
+      "reference_candidates": [],
+      "notes": [
+        "已排除 1 个 L3 否定/不适用/冲突故障，不进入有效根因展开。",
+        "设备映射 unresolved：不生成具体设备级影响结论。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "DP_uncertain",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-00162",
+      "et": "high_pressure_descaling_pump",
+      "outcome": "insufficient_evidence",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 10,
+      "n_cands": 4,
+      "n_refs": 0,
+      "n_excluded_faults": 2,
+      "cause_specific": 0,
+      "manif": 3,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 0,
+      "downstream_n": 0,
+      "cands": [
+        {
+          "cause": "转子质量分布不均",
+          "fault": "转子不平衡",
+          "ck": "CK-rotor-mass-imbalance",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-00162:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "ctx": []
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "润滑故障",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        },
+        {
+          "cause": "润滑系统油品/脂量、质、压、温偏离",
+          "fault": "润滑故障",
+          "ck": "CK-lube-fault-as-mode",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "润滑故障",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-00162:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-00162:bearing:BSF幅值(g)"
+          ],
+          "ctx": [
+            "mech:REC-DP-20260314-00162:bearing:包络谱峰值(g)"
+          ]
+        }
+      ],
+      "excluded_faults": [
+        {
+          "fault_type": "轴承磨损",
+          "eligibility": "excluded_core_reasoning_conflict",
+          "exclusion_reason": "L3 Core 与 Reasoning 对同一故障结论冲突；不自动展开有效根因，保留待复核。",
+          "reason": "L3 Core 与 Reasoning 对同一故障结论冲突；不自动展开有效根因，保留待复核。",
+          "expand_root_cause": false,
+          "normalized_verdicts": [
+            "CONTRADICTED",
+            "INCONCLUSIVE"
+          ],
+          "l3_core_verdict": "CONTRADICTED",
+          "l3_reasoning_verdict": "INCONCLUSIVE",
+          "contradicting_evidence_ids": [
+            "mech:REC-DP-20260314-00162:bearing:BPFI幅值(g)"
+          ],
+          "evidence_citation_missing": false,
+          "source_analysis_run_id": "AR-82c631a14fd1",
+          "source_reasoning_run_id": "RR-f15b1a2aafc8",
+          "needs_review": true,
+          "evidence_hint": {
+            "contradict_count": 1,
+            "support_count": 0
+          },
+          "source_row": {
+            "source": "l3_fault_type_review",
+            "verdict": "CONTRADICT"
+          }
+        },
+        {
+          "fault_type": "齿轮异常",
+          "eligibility": "excluded_not_applicable",
+          "exclusion_reason": "L3 判定 NOT_APPLICABLE，禁止生成适用根因。",
+          "reason": "L3 判定 NOT_APPLICABLE，禁止生成适用根因。",
+          "expand_root_cause": false,
+          "normalized_verdicts": [
+            "NOT_APPLICABLE"
+          ],
+          "l3_core_verdict": null,
+          "l3_reasoning_verdict": "NOT_APPLICABLE",
+          "contradicting_evidence_ids": [],
+          "evidence_citation_missing": true,
+          "source_analysis_run_id": "AR-82c631a14fd1",
+          "source_reasoning_run_id": "RR-f15b1a2aafc8",
+          "needs_review": false,
+          "evidence_hint": {
+            "contradict_count": null,
+            "support_count": null
+          },
+          "source_row": {
+            "source": "l3_reasoning_hypothesis",
+            "verdict": "NOT_APPLICABLE"
+          }
+        }
+      ],
+      "reference_candidates": [],
+      "notes": [
+        "已排除 2 个 L3 否定/不适用/冲突故障，不进入有效根因展开。",
+        "设备映射 unresolved：不生成具体设备级影响结论。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    },
+    {
+      "tag": "DP_uncertain",
+      "ar": "AR-82c631a14fd1",
+      "rid": "REC-DP-20260314-02602",
+      "et": "high_pressure_descaling_pump",
+      "outcome": "insufficient_evidence",
+      "confirm": "unconfirmed",
+      "prev_n_cands": 5,
+      "n_cands": 3,
+      "n_refs": 0,
+      "n_excluded_faults": 1,
+      "cause_specific": 0,
+      "manif": 7,
+      "bpfo_seal": 0,
+      "mesh_water": 0,
+      "wrong_appl": 0,
+      "bad_expand": 0,
+      "propagation": "unknown",
+      "upstream_n": 0,
+      "downstream_n": 0,
+      "cands": [
+        {
+          "cause": "滚动接触疲劳累积",
+          "fault": "轴承磨损",
+          "ck": "CK-bearing-contact-fatigue",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-02602:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-02602:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-02602:bearing:BSF幅值(g)",
+            "mech:REC-DP-20260314-02602:bearing:包络谱峰值(g)"
+          ],
+          "ctx": []
+        },
+        {
+          "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+          "fault": "轴承磨损",
+          "ck": "CK-lube-film-loss-bearing",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [],
+          "ctx": []
+        },
+        {
+          "cause": "机封泄漏导致介质进入轴承室",
+          "fault": "轴承磨损",
+          "ck": "CK-seal-leak-bearing-lube-fail",
+          "appl": "applicable",
+          "sup": [],
+          "manif": [
+            "mech:REC-DP-20260314-02602:bearing:BPFO幅值(g)",
+            "mech:REC-DP-20260314-02602:bearing:BPFI幅值(g)",
+            "mech:REC-DP-20260314-02602:bearing:BSF幅值(g)"
+          ],
+          "ctx": [
+            "mech:REC-DP-20260314-02602:bearing:包络谱峰值(g)"
+          ]
+        }
+      ],
+      "excluded_faults": [
+        {
+          "fault_type": "转子不平衡",
+          "eligibility": "excluded_contradicted",
+          "exclusion_reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "reason": "L3 判定 CONTRADICTED/CONTRADICT，默认不展开有效根因。",
+          "expand_root_cause": false,
+          "normalized_verdicts": [
+            "CONTRADICTED"
+          ],
+          "l3_core_verdict": "CONTRADICTED",
+          "l3_reasoning_verdict": null,
+          "contradicting_evidence_ids": [
+            "mech:REC-DP-20260314-02602:unbalance_1x:1X转频幅值(mm/s)"
+          ],
+          "evidence_citation_missing": false,
+          "source_analysis_run_id": "AR-82c631a14fd1",
+          "source_reasoning_run_id": "RR-f15b1a2aafc8",
+          "needs_review": false,
+          "evidence_hint": {
+            "contradict_count": 1,
+            "support_count": 0
+          },
+          "source_row": {
+            "source": "l3_fault_type_review",
+            "verdict": "CONTRADICT"
+          }
+        }
+      ],
+      "reference_candidates": [],
+      "notes": [
+        "已排除 1 个 L3 否定/不适用/冲突故障，不进入有效根因展开。",
+        "设备映射 unresolved：不生成具体设备级影响结论。"
+      ],
+      "causal_knowledge_version": "l4_causal_knowledge_v1_2"
+    }
+  ],
+  "elapsed_s": 0.323
+}

@@ -1,0 +1,544 @@
+[
+  {
+    "label": "ABNORMAL",
+    "outcome_class": "live_llm_success",
+    "reasoning_run_id": "RR-5f5cc2c819c2",
+    "analysis_run_id": "AR-5c5c1ec454e0",
+    "record_id": "REC-MA-20260314-00008",
+    "mode": "llm_tool_calling",
+    "status": "succeeded",
+    "latency_s": 28.2,
+    "model": "deepseek-flash",
+    "tools": [
+      {
+        "tool": "get_l2_diagnosis",
+        "ok": true,
+        "arg_keys": []
+      },
+      {
+        "tool": "get_l3_evidence",
+        "ok": true,
+        "arg_keys": [
+          "include_items"
+        ]
+      },
+      {
+        "tool": "get_reasoning_trace",
+        "ok": true,
+        "arg_keys": []
+      },
+      {
+        "tool": "search_fault_knowledge",
+        "ok": true,
+        "arg_keys": [
+          "component",
+          "fault_mode",
+          "query",
+          "top_k"
+        ]
+      },
+      {
+        "tool": "search_fault_knowledge",
+        "ok": true,
+        "arg_keys": [
+          "fault_mode",
+          "query",
+          "top_k"
+        ]
+      },
+      {
+        "tool": "search_fault_knowledge",
+        "ok": true,
+        "arg_keys": [
+          "fault_mode",
+          "query",
+          "top_k"
+        ]
+      },
+      {
+        "tool": "query_equipment_graph",
+        "ok": false,
+        "arg_keys": [
+          "view"
+        ]
+      },
+      {
+        "tool": "query_equipment_graph",
+        "ok": true,
+        "arg_keys": [
+          "fault_mode",
+          "view"
+        ]
+      }
+    ],
+    "hypotheses": [
+      {
+        "fault_type": "轴承磨损",
+        "assessment": "SUPPORTED",
+        "origin": "l2_preliminary",
+        "support": [
+          "thr:REC-MA-20260314-00008:mill_vib_x_alarm"
+        ],
+        "contradict": [],
+        "knowledge": [
+          "K-697cc448bae9e2bd",
+          "K-1ad6ad966127942e",
+          "K-cbe9b231b9a0eb46",
+          "K-39bb2959ea9c5a2b"
+        ],
+        "missing": [
+          "包络谱峰值频率位置与 BPFO/BPFI/BSF 具体数值及幅值(g)",
+          "峭度/峰值因子数值",
+          "振动时间趋势（历史基线）",
+          "温度（驱动端/非驱动端轴承温度）",
+          "完整频谱与谐波（2X/3X）分布"
+        ]
+      },
+      {
+        "fault_type": "润滑故障",
+        "assessment": "INCONCLUSIVE",
+        "origin": "l2_preliminary",
+        "support": [],
+        "contradict": [],
+        "knowledge": [
+          "K-d8b11c91017c265a",
+          "K-08c4bf7715740631",
+          "K-d9352ba399e1a28c"
+        ],
+        "missing": [
+          "轴承温度测点数值与趋势",
+          "加油记录/润滑周期",
+          "油位检查记录",
+          "油品/油液分析结果"
+        ]
+      },
+      {
+        "fault_type": "齿轮异常",
+        "assessment": "INCONCLUSIVE",
+        "origin": "l2_preliminary",
+        "support": [],
+        "contradict": [],
+        "knowledge": [
+          "K-9ba23c2d53fbf955"
+        ],
+        "missing": [
+          "啮合频率幅值数值与其边带分布",
+          "完整频谱曲线",
+          "齿轮箱侧测点数据"
+        ]
+      },
+      {
+        "fault_type": "松动或对中不良（联轴器/基础）",
+        "assessment": "INCONCLUSIVE",
+        "origin": "exploratory_hypothesis",
+        "support": [],
+        "contradict": [],
+        "knowledge": [
+          "K-914bafa4d21ee5b7"
+        ],
+        "missing": [
+          "1X/2X 幅值与相位",
+          "振动方向性（X/Y/轴向）对比",
+          "联轴器与地脚检查记录"
+        ]
+      }
+    ],
+    "evidence_references": [],
+    "knowledge_references": [],
+    "missing_evidence": [
+      "包络谱中 BPFO/BPFI/BSF 峰值频率位置与幅值(g) 的具体数值（当前仅有标量观察项名称，无数值证据）",
+      "峭度、峰值因子数值",
+      "振动历史趋势与基线（insufficient_history）",
+      "驱动端/非驱动端轴承温度数值与趋势",
+      "加油记录、润滑周期与油位检查记录",
+      "油液/油品分析结果",
+      "完整频谱曲线、边带分布、相位、2X 幅值",
+      "传感器安装位置与测点-部件映射（影响定位）",
+      "1X/2X 幅值与方向性对比（用于探索性假设 H4）"
+    ],
+    "limitations": [
+      "证据数量为 1，且为阈值型标量证据，无法支撑模式级确认",
+      "仅基于标量幅值复核；未验证多阶谐波或完整包络谱形状",
+      "无完整频谱时不验证边带分布",
+      "润滑复核仅反映温度/振动/包络变化迹象，不能确认油量或油品问题",
+      "传感器-部件映射不足，不能仅凭 X/Y 方向推断驱动端/非驱动端",
+      "无正式 1–5 级严重度规则，不强制分级",
+      "L2 spectral_reference 仅为 reference_only，不作为已验证频谱证据",
+      "推理链为 trace_reconstructed_from_evidence_items_for_knowledge_overlay",
+      "知识库检索相似度与案例数量不构成物理验证；案例结论不是当前记录真值",
+      "部分知识条目 applicability_status 为 unspecified_scope，其判据仅作待验证参照",
+      "H4 为 L2 训练类别之外的探索性假设，缺乏本记录任何证据支持",
+      "llm_output_sanitized"
+    ],
+    "explanation": "本次复核在不可变输入下读取了 L2 结论（ABNORMAL，preliminary_fault=轴承磨损）、L3 证据束与推理链，并检索了轴承磨损、润滑故障、齿轮异常相关知识及设备图谱。可用 EvidenceItem 仅 1 条：X向振动 7.958 mm/s 超出上限阈值 7.1 mm/s（mill_vib_x_alarm，mill_thresholds_v1，来源标注 ISO10816-class-ref-internal），其 related_fault_mode 为轴承磨损，故轴承磨损假设获得有限的阈值层面支持（SUPPORTED 仅表示当前证据支持，不等于确诊）。该证据为总振动幅值超",
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "status": "validated"
+    },
+    "overlay": {
+      "reasoning_run_id": "RR-5f5cc2c819c2",
+      "hypothesis_count": 4,
+      "tool_result_count": 8,
+      "assessment_status": "succeeded"
+    },
+    "overlay_types": {
+      "OBSERVATION": 1,
+      "EVIDENCE": 1,
+      "CONCLUSION": 3,
+      "TOOL_RESULT": 8,
+      "HYPOTHESIS": 4,
+      "KNOWLEDGE_REFERENCE": 8
+    },
+    "l2": {
+      "screening": "ABNORMAL",
+      "fault": "轴承磨损"
+    },
+    "credibility_errors": [],
+    "snapshot": "KS-757bbb5b681923d8"
+  },
+  {
+    "label": "CONFLICT",
+    "outcome_class": "llm_invalid_json_fallback",
+    "reasoning_run_id": "RR-f765a3f730c7",
+    "analysis_run_id": "AR-82c631a14fd1",
+    "record_id": "REC-DP-20260314-03404",
+    "mode": "llm_invalid_json_fallback",
+    "status": "insufficient",
+    "latency_s": 5.07,
+    "model": "deepseek-flash",
+    "tools": [
+      {
+        "tool": "get_l2_diagnosis",
+        "ok": true,
+        "arg_keys": []
+      },
+      {
+        "tool": "get_l3_evidence",
+        "ok": true,
+        "arg_keys": [
+          "include_items"
+        ]
+      },
+      {
+        "tool": "get_reasoning_trace",
+        "ok": true,
+        "arg_keys": []
+      },
+      {
+        "tool": "search_fault_knowledge",
+        "ok": true,
+        "arg_keys": [
+          "component",
+          "fault_mode",
+          "query",
+          "top_k"
+        ]
+      },
+      {
+        "tool": "search_fault_knowledge",
+        "ok": true,
+        "arg_keys": [
+          "component",
+          "fault_mode",
+          "query",
+          "top_k"
+        ]
+      },
+      {
+        "tool": "query_equipment_graph",
+        "ok": true,
+        "arg_keys": [
+          "view"
+        ]
+      },
+      {
+        "tool": "get_related_cases",
+        "ok": true,
+        "arg_keys": [
+          "fault_mode",
+          "query"
+        ]
+      },
+      {
+        "tool": "search_fault_knowledge",
+        "ok": true,
+        "arg_keys": [
+          "query",
+          "top_k"
+        ]
+      }
+    ],
+    "hypotheses": [
+      {
+        "fault_type": "转子不平衡",
+        "assessment": "INCONCLUSIVE",
+        "origin": "l3_core",
+        "support": [],
+        "contradict": [],
+        "knowledge": [],
+        "missing": []
+      },
+      {
+        "fault_type": "轴承磨损",
+        "assessment": "CONTRADICTED",
+        "origin": "l3_core",
+        "support": [],
+        "contradict": [
+          "mech:REC-DP-20260314-03404:bearing:BPFI幅值(g)",
+          "mech:REC-DP-20260314-03404:bearing:BSF幅值(g)"
+        ],
+        "knowledge": [],
+        "missing": []
+      }
+    ],
+    "evidence_references": [
+      "mech:REC-DP-20260314-03404:unbalance_1x:1X转频幅值(mm/s)",
+      "mech:REC-DP-20260314-03404:bearing:BPFO幅值(g)",
+      "mech:REC-DP-20260314-03404:bearing:BPFI幅值(g)",
+      "mech:REC-DP-20260314-03404:bearing:BSF幅值(g)",
+      "mech:REC-DP-20260314-03404:bearing:包络谱峰值(g)"
+    ],
+    "knowledge_references": [],
+    "missing_evidence": [],
+    "limitations": [
+      "仅基于标量幅值复核；未验证多阶谐波或完整包络谱形状",
+      "缺少相位与 2X 幅值时无法完成完整不平衡确证",
+      "no_final_root_cause",
+      "no_repair_action",
+      "deterministic_alignment_without_claiming_diagnosis",
+      "llm_json_parse_failed",
+      "used_deterministic_alignment_after_invalid_llm_json"
+    ],
+    "explanation": "\n\n<｜｜DSML｜｜ calls>\n<｜｜DSML｜｜ invoke name=\"get_knowledge_item\">\n<｜｜DSML｜｜ parameter name=\"knowledge_ids\" string=\"false\">[\"K-0755bf0400bef52c\"]</｜｜DSML｜｜ parameter>\n</｜｜DSML｜｜ invoke>\n<｜｜DSML｜｜ invoke name=\"get_knowledge_item\">\n<｜｜DSML｜｜ parameter name=\"knowledge_ids\" string=\"false\">[\"K-184154954fdf3c",
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "status": "validated"
+    },
+    "overlay": {
+      "reasoning_run_id": "RR-f765a3f730c7",
+      "hypothesis_count": 2,
+      "tool_result_count": 8,
+      "assessment_status": "insufficient"
+    },
+    "overlay_types": {
+      "OBSERVATION": 5,
+      "EVIDENCE": 5,
+      "CONCLUSION": 2,
+      "TOOL_RESULT": 8,
+      "HYPOTHESIS": 2
+    },
+    "l2": {
+      "screening": "CONFLICT",
+      "fault": null
+    },
+    "credibility_errors": [],
+    "snapshot": "KS-757bbb5b681923d8"
+  },
+  {
+    "label": "UNCERTAIN",
+    "outcome_class": "live_llm_success",
+    "reasoning_run_id": "RR-80d11fc8411e",
+    "analysis_run_id": "AR-82c631a14fd1",
+    "record_id": "REC-DP-20260314-00162",
+    "mode": "llm_tool_calling",
+    "status": "succeeded",
+    "latency_s": 17.59,
+    "model": "deepseek-flash",
+    "tools": [
+      {
+        "tool": "get_l2_diagnosis",
+        "ok": true,
+        "arg_keys": []
+      },
+      {
+        "tool": "get_l3_evidence",
+        "ok": true,
+        "arg_keys": [
+          "include_items"
+        ]
+      },
+      {
+        "tool": "get_reasoning_trace",
+        "ok": true,
+        "arg_keys": []
+      },
+      {
+        "tool": "query_equipment_graph",
+        "ok": true,
+        "arg_keys": [
+          "view"
+        ]
+      },
+      {
+        "tool": "search_fault_knowledge",
+        "ok": true,
+        "arg_keys": [
+          "component",
+          "fault_mode",
+          "query",
+          "top_k"
+        ]
+      },
+      {
+        "tool": "search_fault_knowledge",
+        "ok": true,
+        "arg_keys": [
+          "fault_mode",
+          "query",
+          "top_k"
+        ]
+      },
+      {
+        "tool": "get_related_cases",
+        "ok": true,
+        "arg_keys": [
+          "fault_mode",
+          "query"
+        ]
+      },
+      {
+        "tool": "get_related_cases",
+        "ok": true,
+        "arg_keys": [
+          "fault_mode",
+          "query"
+        ]
+      }
+    ],
+    "hypotheses": [
+      {
+        "fault_type": "转子不平衡",
+        "assessment": "INCONCLUSIVE",
+        "origin": "l2_training_class",
+        "support": [
+          "mech:REC-DP-20260314-00162:unbalance_1x:1X转频幅值(mm/s)"
+        ],
+        "contradict": [],
+        "knowledge": [
+          "K-890644824aa3d28a",
+          "K-298229c5f9b61d5f"
+        ],
+        "missing": [
+          "1X 相位稳定性（多次采集相位漂移）",
+          "2X 幅值与 1X 幅值比（判据参考 <20%）",
+          "X/Y 径向及轴向 1X 对比",
+          "完整频谱曲线确认 1X 主导",
+          "负荷变化下 1X 幅值变化趋势",
+          "历史基线与传感器-部件映射"
+        ]
+      },
+      {
+        "fault_type": "轴承磨损",
+        "assessment": "INCONCLUSIVE",
+        "origin": "l2_training_class",
+        "support": [],
+        "contradict": [
+          "mech:REC-DP-20260314-00162:bearing:BPFI幅值(g)"
+        ],
+        "knowledge": [
+          "K-697cc448bae9e2bd",
+          "K-1ad6ad966127942e"
+        ],
+        "missing": [
+          "包络谱形状与特征频率谐波（2X/3X）",
+          "边带分布与 1X 调制",
+          "峭度（参考 >5）与峰值因子（参考 >5）",
+          "BPFO/BPFI/BSF 绝对量级与阈值对照规则",
+          "BSF 上升趋势持续性与采样间隔",
+          "传感器-部件映射（驱动端/非驱动端）"
+        ]
+      },
+      {
+        "fault_type": "正常（无明确故障，特征波动属基线范围）",
+        "assessment": "INCONCLUSIVE",
+        "origin": "exploratory_hypothesis",
+        "support": [
+          "mech:REC-DP-20260314-00162:bearing:BPFO幅值(g)",
+          "mech:REC-DP-20260314-00162:bearing:BPFI幅值(g)",
+          "mech:REC-DP-20260314-00162:bearing:包络谱峰值(g)",
+          "mech:REC-DP-20260314-00162:unbalance_1x:1X转频幅值(mm/s)"
+        ],
+        "contradict": [
+          "mech:REC-DP-20260314-00162:bearing:BSF幅值(g)"
+        ],
+        "knowledge": [],
+        "missing": [
+          "设备专属幅值报警阈值规则（图谱 rules 为空）",
+          "长期趋势基线与工况（压力/流量/转速）归一化数据",
+          "多测点一致性检查"
+        ]
+      },
+      {
+        "fault_type": "测点/通道数据质量异常（传感器、安装或采集链路）",
+        "assessment": "INCONCLUSIVE",
+        "origin": "exploratory_hypothesis",
+        "support": [],
+        "contradict": [],
+        "knowledge": [],
+        "missing": [
+          "传感器灵敏度与校验记录",
+          "同部件冗余测点对比",
+          "采集设置（采样率、量程、滤波）",
+          "同一时段其他记录一致性"
+        ]
+      }
+    ],
+    "evidence_references": [
+      "mech:REC-DP-20260314-00162:unbalance_1x:1X转频幅值(mm/s)",
+      "mech:REC-DP-20260314-00162:bearing:BPFO幅值(g)",
+      "mech:REC-DP-20260314-00162:bearing:BPFI幅值(g)",
+      "mech:REC-DP-20260314-00162:bearing:BSF幅值(g)",
+      "mech:REC-DP-20260314-00162:bearing:包络谱峰值(g)"
+    ],
+    "knowledge_references": [
+      "K-890644824aa3d28a",
+      "K-298229c5f9b61d5f",
+      "K-697cc448bae9e2bd",
+      "K-1ad6ad966127942e"
+    ],
+    "missing_evidence": [
+      "1X 相位稳定性与 2X 幅值比",
+      "完整频谱曲线、包络谱形状、边带分布",
+      "峭度与峰值因子",
+      "设备专属幅值阈值与严重度分级规程",
+      "传感器-部件映射与冗余测点对比",
+      "工况（转速/压力/流量）归一化与长期基数基线",
+      "BSF 上升趋势的持续性与采样间隔"
+    ],
+    "limitations": [
+      "仅基于标量幅值复核，未验证多阶谐波与完整包络谱形状",
+      "设备图谱中未匹配到部件、规则或阈值参数，无法引用设备专属规程",
+      "知识条目 applicability_status=unspecified_scope，设备适用性未标注，故仅作通用参考",
+      "未检索到相似案例（graph_cases 与 rag_cases 均为空），无历史对照",
+      "L2 为 UNCERTAIN、preliminary_fault=正常，L3 不改写 L2 概率/类别"
+    ],
+    "explanation": "本记录为 L2 UNCERTAIN 触发的 L3 复核。5 条标量特征均相对历史中位数计算：1X 转频 0.776（1.28×）、BPFO 0.047（0.91×）、BPFI 0.015（0.65×）、BSF 0.045（1.43×）、包络谱峰值 0.666（1.20×）。与知识库参考判据对照：转子不平衡需要 1X 主导、2X<1X 的 20%、1X 相位稳定及径向对比，当前仅有 1X 幅度轻度抬升，缺相位与 2X，故 H1 为 INCONCLUSIVE；轴承磨损需包络谱出现明显 BPFO/BPFI/BSF 及谐波、1X 调制、峭度与峰值因子上升，当前 BPFI 低于基线且包络谱峰值未显著抬升",
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "status": "validated"
+    },
+    "overlay": {
+      "reasoning_run_id": "RR-80d11fc8411e",
+      "hypothesis_count": 4,
+      "tool_result_count": 8,
+      "assessment_status": "succeeded"
+    },
+    "overlay_types": {
+      "OBSERVATION": 5,
+      "EVIDENCE": 5,
+      "CONCLUSION": 2,
+      "TOOL_RESULT": 8,
+      "HYPOTHESIS": 4,
+      "KNOWLEDGE_REFERENCE": 4
+    },
+    "l2": {
+      "screening": "UNCERTAIN",
+      "fault": "正常"
+    },
+    "credibility_errors": [],
+    "snapshot": "KS-757bbb5b681923d8"
+  }
+]

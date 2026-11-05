@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
 import { diagnosisTabQuery } from "./events/diagnosisNav"
 
-export type PageId = "portal" | "graph" | "monitor" | "events" | "diagnosis" | "health"
+export type PageId = "portal" | "graph" | "monitor" | "events" | "diagnosis" | "health" | "report"
 
 export type AppRoute = {
   page: PageId
@@ -18,8 +18,8 @@ export type AppRoute = {
 
 const RouteContext = createContext<{ route: AppRoute; navigate: (next: AppRoute, mode?: "push" | "replace") => void } | null>(null)
 
-const PAGES = new Set<PageId>(["portal", "graph", "monitor", "events", "diagnosis", "health"])
-// 设备健康中心使用 /health，未知路径仍回到产线总览。
+const PAGES = new Set<PageId>(["portal", "graph", "monitor", "events", "diagnosis", "health", "report"])
+// 设备健康中心使用 /health，报告中心使用 /report，未知路径仍回到产线总览。
 
 export function readRoute(location: Location = window.location): AppRoute {
   const path = location.pathname.replace(/\/+$/, "") || "/"

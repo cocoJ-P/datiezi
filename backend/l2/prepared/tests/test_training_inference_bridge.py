@@ -44,7 +44,6 @@ def test_create_training_job_binds_immutable_revision(published, tmp_path: Path)
         datasets={},
         training_config_path=TRAINING_CONFIG,
         poll_interval_sec=0.1,
-        management_token="t",
     )
     init_db(config.db_path)
     connection = __import__("l2.management.database", fromlist=["connect"]).connect(config.db_path)
@@ -86,7 +85,6 @@ def test_management_lists_both_sources(published, tmp_path: Path):
         },
         training_config_path=TRAINING_CONFIG,
         poll_interval_sec=0.1,
-        management_token="t",
     )
     init_db(config.db_path)
     service = ManagementService(config=config, manager=ModelManager())

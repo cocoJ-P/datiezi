@@ -1,0 +1,72 @@
+{
+  "model_id": "L5P-f037a960e2e1",
+  "dataset_fingerprint": "9abd57a8e3a99362c0e9f0dd9279e66f5628d3be993e9a52e3e9baa1db3f742a",
+  "by_target_internal_val": {
+    "设备状态": {
+      "channel": "internal_val",
+      "accuracy": 0.9924876730264289,
+      "macro_f1": 0.9497673318485153,
+      "n_equip": 6,
+      "adjacent_hit_rate": 1.0,
+      "ordinal_mae": 0.007512326973571068
+    },
+    "故障类型": {
+      "channel": "internal_val",
+      "accuracy": 0.9945563594520893,
+      "macro_f1": 0.9932899235097746,
+      "n_equip": 6
+    },
+    "故障严重度": {
+      "channel": "internal_val",
+      "accuracy": 0.930251167353961,
+      "macro_f1": 0.8049047034298261,
+      "n_equip": 6,
+      "adjacent_hit_rate": 0.9950049417394923,
+      "ordinal_mae": 0.07516029748166118
+    },
+    "故障位置": {
+      "channel": "internal_val",
+      "accuracy": 0.7463302917982281,
+      "macro_f1": 0.5284282401130329,
+      "n_equip": 6
+    },
+    "诊断置信度": {
+      "channel": "internal_val",
+      "mae": 0.035834697130588504,
+      "n_equip": 6
+    },
+    "频谱描述": {
+      "channel": "internal_val",
+      "accuracy": 0.9970715481279934,
+      "macro_f1": 0.9970200158371977,
+      "n_equip": 6
+    },
+    "根因分析": {
+      "channel": "internal_val",
+      "accuracy": 0.8505180212865452,
+      "macro_f1": 0.6990888460323291,
+      "n_equip": 6
+    },
+    "建议措施": {
+      "channel": "internal_val",
+      "accuracy": 0.9698006887855048,
+      "macro_f1": 0.9094698679878324,
+      "n_equip": 6
+    },
+    "优先级": {
+      "channel": "internal_val",
+      "accuracy": 0.8986117336810605,
+      "macro_f1": 0.7624198597571296,
+      "n_equip": 6,
+      "adjacent_hit_rate": 1.0,
+      "ordinal_mae": 0.10138826631893948
+    },
+    "影响程度": {
+      "channel": "internal_val",
+      "accuracy": 0.9710501686024005,
+      "macro_f1": 0.9282444526433656,
+      "n_equip": 6
+    }
+  },
+  "train_column_fact": "train_xlsx_has_33_columns; official_dev_has_34th_数据集划分_excluded"
+}

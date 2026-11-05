@@ -46,14 +46,16 @@ def publish_from_l1_prepared(
     l1_version_id: str,
     *,
     equipment_type: str | None = None,
+    equipment_category: str | None = None,
     release_mode: str = "training_and_inference",
 ) -> dict[str, Any]:
     meta = get_l1_prepared_meta(l1_version_id)
-    # 取一行探测设备类别
-    probe_category = None
-    for row in iter_l1_prepared_rows(l1_version_id):
-        probe_category = row.get("equipment_category")
-        break
+    # 取一行探测设备类别（可被调用方指定覆盖，用于多设备分组发布）
+    probe_category = equipment_category
+    if probe_category is None:
+        for row in iter_l1_prepared_rows(l1_version_id):
+            probe_category = row.get("equipment_category")
+            break
     mapping = resolve_equipment_type(
         dataset_id=meta.dataset_id,
         original_filename=meta.original_filename,
@@ -89,6 +91,10 @@ def publish_from_l1_prepared(
 
     bridge_notes: list[str] = []
     for row in iter_l1_prepared_rows(l1_version_id):
+        if equipment_category is not None:
+            row_cat = (row.get("equipment_category") or "").strip()
+            if row_cat != str(equipment_category).strip():
+                continue
         mapped, missing, applied = map_l1_features_to_spec(row["input_features"], spec)
         if missing:
             excluded += 1

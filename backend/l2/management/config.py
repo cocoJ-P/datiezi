@@ -42,8 +42,8 @@ class ManagementConfig:
     datasets: dict[str, DatasetRef]
     training_config_path: Path
     poll_interval_sec: float
-    management_token: str
     max_concurrent_training_jobs: int = 1
+    management_token: str = ""
 
 
 def default_datasets() -> dict[str, DatasetRef]:

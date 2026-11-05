@@ -1,0 +1,329 @@
+{
+  "causal_knowledge_version": "l4_causal_knowledge_v1_2",
+  "rules_version": "l4_evidence_match_v1_2",
+  "applicability_version": "l4_applicability_v1_2",
+  "validation_default": "candidate_mechanism",
+  "note": "v1.2：结构化 feature_id/analyzer_id/feature_group 匹配；同层机理不得产生 cause_specific；适用性区分本体/关联/未知。",
+  "entries": [
+    {
+      "causal_knowledge_id": "CK-bearing-contact-fatigue",
+      "cause": "滚动接触疲劳累积",
+      "mechanism": "内/外圈或滚动体滚道出现点蚀、剥落等渐进式损伤",
+      "resulting_fault": "轴承磨损",
+      "equipment_scope": ["main_mill_motor", "high_pressure_descaling_pump"],
+      "component_scope": ["驱动端轴承", "非驱动端轴承", "轴承"],
+      "required_components": ["轴承"],
+      "required_observations": [
+        "BPFO或BPFI或BSF特征频率幅值",
+        "包络谱谐波或峭度/峰值因子",
+        "轴承温度趋势（辅助）"
+      ],
+      "evidence_matching": {
+        "same_layer_as_resulting_fault": true,
+        "cause_specific_feature_ids": [],
+        "fault_manifestation_feature_ids": ["bpfo_amp", "bpfi_amp", "bsf_amp", "envelope_peak"],
+        "contextual_feature_ids": ["vib_x", "vib_y"],
+        "allowed_feature_groups": ["bearing"],
+        "allowed_analyzer_ids": ["mechanical_feature", "statistical"],
+        "required_feature_ids": ["bpfo_amp"],
+        "note": "接触疲劳与轴承磨损同层机理描述；BPFO 等仅作故障表现，不作为上游根因特异支持"
+      },
+      "supporting_patterns": [],
+      "contradicting_patterns": [],
+      "source_knowledge_ids": [],
+      "source_document_locations": [
+        {
+          "document": "KB-02_故障模式诊断知识库.docx",
+          "section": "KB-02 故障模式诊断知识库 / 轴承磨损",
+          "locator": "段落 第5-9行",
+          "quote": "滚动轴承内圈、外圈、滚动体或保持架的渐进式损伤，按损伤机理可分为点蚀、剥落、磨损…"
+        }
+      ],
+      "validation_status": "candidate_mechanism",
+      "version": "l4_causal_knowledge_v1_2",
+      "related_l3_fault_aliases": ["轴承磨损"]
+    },
+    {
+      "causal_knowledge_id": "CK-lube-film-loss-bearing",
+      "cause": "润滑量/质偏离设计（缺油、油品失效等）",
+      "mechanism": "摩擦副未能形成有效油膜，摩擦与温升加剧",
+      "resulting_fault": "轴承磨损",
+      "equipment_scope": ["main_mill_motor", "high_pressure_descaling_pump"],
+      "component_scope": ["轴承", "润滑系统"],
+      "required_components": ["轴承", "润滑系统"],
+      "required_observations": [
+        "轴承温度持续上升",
+        "加油/油位或油品检测记录",
+        "宽频噪声或中低频能量（辅助）"
+      ],
+      "evidence_matching": {
+        "same_layer_as_resulting_fault": false,
+        "cause_specific_feature_ids": ["bearing_temp_de", "bearing_temp_nde"],
+        "fault_manifestation_feature_ids": ["envelope_peak"],
+        "contextual_feature_ids": ["vib_x", "vib_y"],
+        "allowed_feature_groups": ["lubrication"],
+        "allowed_analyzer_ids": ["mechanical_feature", "statistical"],
+        "required_feature_ids": ["bearing_temp_de"],
+        "note": "温度可作润滑相关特异候选支持；一般振动不得进入 cause_specific；油位/油品常缺失"
+      },
+      "supporting_patterns": [],
+      "contradicting_patterns": [],
+      "source_knowledge_ids": ["K-13c3a5e27786865b", "K-d9352ba399e1a28c"],
+      "source_document_locations": [
+        {
+          "document": "KB-02_故障模式诊断知识库.docx",
+          "section": "KB-02 故障模式诊断知识库 / 润滑故障",
+          "locator": "段落 第32-35行",
+          "quote": "油品/脂的量、质、压、温任一指标偏离设计状态，导致摩擦副未能形成有效油膜。"
+        },
+        {
+          "document": "KB-04_专家经验与典型案例.docx",
+          "section": "EXP-2024-004：润滑脂不足导致温升案例",
+          "locator": "段落 第24-29行",
+          "quote": "温度单参数异常+振动未变时，优先考虑润滑问题（案例经验，非当前事实）。"
+        }
+      ],
+      "validation_status": "candidate_mechanism",
+      "version": "l4_causal_knowledge_v1_2",
+      "related_l3_fault_aliases": ["轴承磨损", "润滑故障"]
+    },
+    {
+      "causal_knowledge_id": "CK-lube-fault-as-mode",
+      "cause": "润滑系统油品/脂量、质、压、温偏离",
+      "mechanism": "有效油膜失效并引发摩擦副异常",
+      "resulting_fault": "润滑故障",
+      "equipment_scope": ["main_mill_motor", "high_pressure_descaling_pump"],
+      "component_scope": ["润滑系统", "轴承室"],
+      "required_components": ["润滑系统"],
+      "required_observations": [
+        "轴承温度持续上升（>80°C 为文档提及阈值，需对照本机规程）",
+        "油位/加油台账或油品指标",
+        "宽频噪声抬升（辅助）"
+      ],
+      "evidence_matching": {
+        "same_layer_as_resulting_fault": false,
+        "cause_specific_feature_ids": ["bearing_temp_de", "bearing_temp_nde"],
+        "fault_manifestation_feature_ids": ["envelope_peak"],
+        "contextual_feature_ids": ["vib_x", "vib_y"],
+        "allowed_feature_groups": ["lubrication"],
+        "allowed_analyzer_ids": ["mechanical_feature", "statistical"],
+        "required_feature_ids": ["bearing_temp_de"]
+      },
+      "supporting_patterns": [],
+      "contradicting_patterns": [],
+      "source_knowledge_ids": ["K-13c3a5e27786865b"],
+      "source_document_locations": [
+        {
+          "document": "KB-02_故障模式诊断知识库.docx",
+          "section": "KB-02 故障模式诊断知识库 / 润滑故障",
+          "locator": "段落 第30-37行",
+          "quote": "润滑系统…偏离设计状态，导致摩擦副未能形成有效油膜。"
+        }
+      ],
+      "validation_status": "candidate_mechanism",
+      "version": "l4_causal_knowledge_v1_2",
+      "related_l3_fault_aliases": ["润滑故障"]
+    },
+    {
+      "causal_knowledge_id": "CK-rotor-mass-imbalance",
+      "cause": "转子质量分布不均",
+      "mechanism": "旋转离心力激发并以1X转频为主导的振动响应",
+      "resulting_fault": "转子不平衡",
+      "equipment_scope": ["main_mill_motor", "high_pressure_descaling_pump"],
+      "component_scope": ["转子"],
+      "required_components": ["转子"],
+      "required_observations": [
+        "1X转频幅值主导",
+        "2X幅值相对1X的比例（文档：一般<1X的20%）",
+        "1X相位稳定性（文档要求，当前 PED 常缺失）"
+      ],
+      "evidence_matching": {
+        "same_layer_as_resulting_fault": false,
+        "cause_specific_feature_ids": [],
+        "fault_manifestation_feature_ids": ["amp_1x"],
+        "contextual_feature_ids": ["vib_x", "vib_y"],
+        "allowed_feature_groups": ["unbalance_1x", "statistical"],
+        "allowed_analyzer_ids": ["mechanical_feature", "statistical"],
+        "required_feature_ids": ["amp_1x"],
+        "note": "1X 支持不平衡故障表现，不能单独确认质量偏心这一上游物理原因"
+      },
+      "supporting_patterns": [],
+      "contradicting_patterns": [],
+      "source_knowledge_ids": ["K-890644824aa3d28a"],
+      "source_document_locations": [
+        {
+          "document": "KB-02_故障模式诊断知识库.docx",
+          "section": "KB-02 故障模式诊断知识库 / 转子不平衡",
+          "locator": "段落 第14-19行",
+          "quote": "转子质量分布不均导致旋转时产生离心力，引发1X频率主导的振动。"
+        }
+      ],
+      "validation_status": "candidate_mechanism",
+      "version": "l4_causal_knowledge_v1_2",
+      "related_l3_fault_aliases": ["转子不平衡"]
+    },
+    {
+      "causal_knowledge_id": "CK-misalignment-or-bend",
+      "cause": "联轴器对中不良或轴弯曲",
+      "mechanism": "2X 分量明显抬升并可能伴随噪声（需相位进一步鉴别）",
+      "resulting_fault": "转子不平衡",
+      "equipment_scope": ["main_mill_motor"],
+      "component_scope": ["联轴器", "转子", "轴"],
+      "required_components": ["联轴器", "转子"],
+      "required_observations": [
+        "2X幅值明显上升",
+        "相位分析",
+        "对中或轴弯曲解体测量（验证级）"
+      ],
+      "evidence_matching": {
+        "same_layer_as_resulting_fault": false,
+        "cause_specific_feature_ids": ["amp_2x"],
+        "fault_manifestation_feature_ids": ["amp_1x"],
+        "contextual_feature_ids": ["vib_x", "vib_y"],
+        "allowed_feature_groups": ["misalignment", "statistical", "unbalance_1x"],
+        "allowed_analyzer_ids": ["mechanical_feature", "statistical"],
+        "required_feature_ids": ["amp_2x"]
+      },
+      "supporting_patterns": [],
+      "contradicting_patterns": [],
+      "source_knowledge_ids": ["K-a5dd6d8290456a4b"],
+      "source_document_locations": [
+        {
+          "document": "KB-04_专家经验与典型案例.docx",
+          "section": "EXP-2024-006：高速轴弯曲案例 / 经验教训",
+          "locator": "段落 第43行",
+          "quote": "2X幅值明显时，往往意味着转子弯曲或对中不良；需结合相位分析进一步判断。"
+        }
+      ],
+      "validation_status": "candidate_mechanism",
+      "version": "l4_causal_knowledge_v1_2",
+      "related_l3_fault_aliases": ["转子不平衡"],
+      "notes": "案例经验指向鉴别方向；不得当作本记录已发生轴弯曲的事实。",
+      "force_reference_outside_case_equipment": true,
+      "source_case_equipment_types": ["high_speed_shaft"]
+    },
+    {
+      "causal_knowledge_id": "CK-gear-mesh-abnormality",
+      "cause": "齿轮副啮合状态异常（胶合/点蚀/磨损/偏载等）",
+      "mechanism": "啮合频率及其边带能量上升，可能伴随调制裙边",
+      "resulting_fault": "齿轮异常",
+      "equipment_scope": ["main_mill_motor"],
+      "component_scope": ["齿轮", "齿轮箱"],
+      "required_components": ["齿轮"],
+      "required_observations": [
+        "啮合频率幅值",
+        "1X调制边带",
+        "油品或齿面状态（验证级）"
+      ],
+      "evidence_matching": {
+        "same_layer_as_resulting_fault": true,
+        "cause_specific_feature_ids": [],
+        "fault_manifestation_feature_ids": ["gear_mesh_amp"],
+        "contextual_feature_ids": ["vib_x", "vib_y"],
+        "allowed_feature_groups": ["gear_mesh"],
+        "allowed_analyzer_ids": ["mechanical_feature"],
+        "required_feature_ids": ["gear_mesh_amp"],
+        "note": "啮合异常与齿轮异常同层；啮合幅值仅作故障表现"
+      },
+      "supporting_patterns": [],
+      "contradicting_patterns": [],
+      "source_knowledge_ids": [],
+      "source_document_locations": [
+        {
+          "document": "KB-02_故障模式诊断知识库.docx",
+          "section": "KB-02 故障模式诊断知识库 / 齿轮异常",
+          "locator": "段落 第23-28行",
+          "quote": "齿轮副啮合时出现的胶合、点蚀、磨损、断齿、偏载等异常状态，振动信号中以啮合频率及其边带为特征。"
+        }
+      ],
+      "validation_status": "candidate_mechanism",
+      "version": "l4_causal_knowledge_v1_2",
+      "related_l3_fault_aliases": ["齿轮异常"],
+      "notes": "齿轮为电机关联传动部件（未确认本体 BOM）；观测可来自 gear_mesh 特征组。",
+      "not_applicable_equipment_types": ["high_pressure_descaling_pump"]
+    },
+    {
+      "causal_knowledge_id": "CK-lube-water-gear-pitting",
+      "cause": "润滑油含水（如冷却器渗漏）",
+      "mechanism": "油膜承载破坏并加速齿面点蚀",
+      "resulting_fault": "齿轮异常",
+      "equipment_scope": ["main_mill_motor"],
+      "component_scope": ["齿轮箱", "齿轮"],
+      "required_components": ["齿轮", "润滑系统"],
+      "required_observations": [
+        "油品含水率检测",
+        "齿面点蚀或啮合异常证据",
+        "油冷却器渗漏检查（辅助）"
+      ],
+      "evidence_matching": {
+        "same_layer_as_resulting_fault": false,
+        "cause_specific_feature_ids": ["oil_water_content"],
+        "fault_manifestation_feature_ids": ["gear_mesh_amp"],
+        "contextual_feature_ids": [],
+        "allowed_feature_groups": ["lubrication", "oil", "gear_mesh"],
+        "allowed_analyzer_ids": ["mechanical_feature", "statistical"],
+        "required_feature_ids": ["oil_water_content"],
+        "note": "仅油品含水率可作 cause_specific；啮合幅值仅为故障表现"
+      },
+      "supporting_patterns": [],
+      "contradicting_patterns": [],
+      "source_knowledge_ids": ["K-d326d5b3d7e00320", "K-74b2612c6ede7847"],
+      "source_document_locations": [
+        {
+          "document": "KB-04_专家经验与典型案例.docx",
+          "section": "EXP-2024-005：润滑油含水导致齿面点蚀案例",
+          "locator": "段落 第31-36行",
+          "quote": "概述：齿轮箱…齿面出现密集点蚀坑，油品检测含水率0.3%。"
+        }
+      ],
+      "validation_status": "candidate_mechanism",
+      "version": "l4_causal_knowledge_v1_2",
+      "related_l3_fault_aliases": ["齿轮异常"],
+      "notes": "来源为齿轮箱历史案例；缺少油品含水观测时不得视为本机已发生。",
+      "force_reference_outside_case_equipment": true,
+      "source_case_equipment_types": ["gearbox"],
+      "not_applicable_equipment_types": ["high_pressure_descaling_pump"]
+    },
+    {
+      "causal_knowledge_id": "CK-seal-leak-bearing-lube-fail",
+      "cause": "机封泄漏导致介质进入轴承室",
+      "mechanism": "轴承润滑失效并加速损伤",
+      "resulting_fault": "轴承磨损",
+      "equipment_scope": ["high_pressure_descaling_pump"],
+      "component_scope": ["机封", "轴承"],
+      "required_components": ["机封", "轴承"],
+      "required_observations": [
+        "机封泄漏迹象",
+        "轴承室进水或油品含水",
+        "轴承温度/振动异常"
+      ],
+      "evidence_matching": {
+        "same_layer_as_resulting_fault": false,
+        "cause_specific_feature_ids": ["oil_water_content"],
+        "fault_manifestation_feature_ids": ["bpfo_amp", "bpfi_amp", "bsf_amp", "bearing_temp_de", "bearing_temp_nde"],
+        "contextual_feature_ids": ["vib_x", "vib_y", "envelope_peak"],
+        "allowed_feature_groups": ["seal", "lubrication", "bearing"],
+        "allowed_analyzer_ids": ["mechanical_feature", "statistical"],
+        "required_feature_ids": ["oil_water_content"],
+        "note": "BPFO/包络仅故障表现；无含水/机封特异观测则 cause_specific 为空"
+      },
+      "supporting_patterns": [],
+      "contradicting_patterns": [],
+      "source_knowledge_ids": ["K-d603851ee21aab56", "K-b693f4e1e04b8483"],
+      "source_document_locations": [
+        {
+          "document": "KB-04_专家经验与典型案例.docx",
+          "section": "EXP-2024-007：机封泄漏进水导致轴承失效案例",
+          "locator": "段落 第45-50行",
+          "quote": "机封O型圈老化导致水进入轴承室，轴承润滑失效。"
+        }
+      ],
+      "validation_status": "candidate_mechanism",
+      "version": "l4_causal_knowledge_v1_2",
+      "related_l3_fault_aliases": ["轴承磨损", "润滑故障"],
+      "notes": "案例设备为泵类机封系统；对主轧机电机 not_applicable。类型白名单含机封≠资产 BOM。",
+      "not_applicable_equipment_types": ["main_mill_motor"],
+      "source_case_equipment_types": ["cooling_water_pump", "high_pressure_descaling_pump"]
+    }
+  ]
+}

@@ -41,7 +41,9 @@ def run_prepare(dataset_id: str, config: dict | None = None) -> dict:
             (dataset_id, signature),
         ).fetchone()
         if existing and not config.get("force"):
-            return _prepare_public(existing)
+            body = _prepare_public(existing)
+            _enqueue_l2_handoff(body)
+            return body
 
         current = connection.execute(
             "SELECT MAX(revision) AS revision FROM prepare_runs WHERE dataset_id = ?",
@@ -162,6 +164,7 @@ def run_prepare(dataset_id: str, config: dict | None = None) -> dict:
         row = connection.execute("SELECT * FROM prepare_runs WHERE run_id = ?", (prepare_run_id,)).fetchone()
         body = _prepare_public(row)
         body["report"] = report
+        _enqueue_l2_handoff(body)
         return body
     except Exception:
         if started:
@@ -169,6 +172,31 @@ def run_prepare(dataset_id: str, config: dict | None = None) -> dict:
         raise
     finally:
         connection.close()
+
+
+def _enqueue_l2_handoff(prepare_body: dict) -> None:
+    """P8/prepare 持久化成功后可靠入队 L2 Handoff（不阻塞、不 HTTP 自调用）。"""
+    try:
+        from l2.handoff.orchestrator import ORCHESTRATOR
+
+        version_id = prepare_body.get("version_id")
+        dataset_id = prepare_body.get("dataset_id")
+        if not version_id or not dataset_id:
+            return
+        ORCHESTRATOR.enqueue_after_prepare(
+            dataset_id=str(dataset_id),
+            pd_version_id=str(version_id),
+            prepare_run_id=prepare_body.get("run_id"),
+            prepare_status=prepare_body.get("status"),
+        )
+    except Exception:  # noqa: BLE001 - 入队失败不回滚 L1；依赖重启补偿扫描
+        import logging
+
+        logging.getLogger("l1.prepare").exception(
+            "enqueue L2 handoff failed dataset=%s pd=%s",
+            prepare_body.get("dataset_id"),
+            prepare_body.get("version_id"),
+        )
 
 
 def get_prepare_run(run_id: str) -> dict:

@@ -150,6 +150,10 @@ def save_model_bundle(
             if "applied" in {binary_status, multi_status}
             else "unverified",
         }
+        parent_model_bundle_id = training_config.get("parent_model_bundle_id")
+        if parent_model_bundle_id is not None:
+            parent_text = str(parent_model_bundle_id).strip()
+            parent_model_bundle_id = parent_text or None
         manifest = {
             "model_bundle_id": run_id,
             "equipment_type": equipment_type,
@@ -184,6 +188,11 @@ def save_model_bundle(
                 "params": binary_calibration.params,
             },
         }
+        if parent_model_bundle_id:
+            manifest["parent_model_bundle_id"] = parent_model_bundle_id
+            manifest["train_mode"] = "retrain"
+        else:
+            manifest["train_mode"] = training_config.get("train_mode") or "new"
         _write_json(tmp / "manifest.json", manifest)
 
         # 加载自检后再发布

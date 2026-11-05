@@ -1,0 +1,250 @@
+[
+  {
+    "label": "ABNORMAL",
+    "rr": "RR-e1944d6b5bb5",
+    "mode": "insufficient_evidence",
+    "outcome_class": "insufficient_evidence",
+    "status": "insufficient_evidence",
+    "latency_s": 17.94,
+    "core_unchanged": true,
+    "forbidden": [],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "format_errors": [],
+      "reference_errors": [],
+      "semantic_errors": [],
+      "association_errors": [],
+      "status": "validated"
+    },
+    "audit": {
+      "prompt_tokens": 31617,
+      "completion_tokens": 2688,
+      "total_tokens": 34305,
+      "llm_call_count": 4,
+      "tool_call_count": 8,
+      "execution_duration": 17.827,
+      "finish_reason": "stop",
+      "error_type": null,
+      "estimated_cost": null
+    },
+    "run_token_usage_keys": [
+      "prompt_tokens",
+      "completion_tokens",
+      "total_tokens",
+      "llm_call_count",
+      "tool_call_count",
+      "execution_duration",
+      "records"
+    ],
+    "hyps": [
+      {
+        "fault": "轴承磨损",
+        "assessment": "INCONCLUSIVE",
+        "origin": "l2_preliminary",
+        "support": [
+          "thr:REC-MA-20260314-00008:mill_vib_x_alarm"
+        ],
+        "roles": {
+          "thr:REC-MA-20260314-00008:mill_vib_x_alarm": "anomaly_evidence"
+        }
+      },
+      {
+        "fault": "润滑故障",
+        "assessment": "INCONCLUSIVE",
+        "origin": "knowledge_fault_mode",
+        "support": [],
+        "roles": {}
+      },
+      {
+        "fault": "齿轮异常",
+        "assessment": "INCONCLUSIVE",
+        "origin": "knowledge_fault_mode",
+        "support": [],
+        "roles": {}
+      },
+      {
+        "fault": "转子不平衡/联轴器对中不良（通用振动越限鉴别项）",
+        "assessment": "INCONCLUSIVE",
+        "origin": "exploratory_hypothesis",
+        "support": [
+          "thr:REC-MA-20260314-00008:mill_vib_x_alarm"
+        ],
+        "roles": {
+          "thr:REC-MA-20260314-00008:mill_vib_x_alarm": "anomaly_evidence"
+        }
+      }
+    ],
+    "anomaly_only_supported": false,
+    "tools": [
+      "get_l2_diagnosis",
+      "get_l3_evidence",
+      "get_reasoning_trace",
+      "search_fault_knowledge",
+      "search_fault_knowledge",
+      "query_equipment_graph",
+      "get_related_cases",
+      "query_equipment_graph"
+    ]
+  },
+  {
+    "label": "CONFLICT",
+    "rr": "RR-4829d0dc1d92",
+    "mode": "insufficient_evidence",
+    "outcome_class": "insufficient_evidence",
+    "status": "insufficient_evidence",
+    "latency_s": 18.45,
+    "core_unchanged": true,
+    "forbidden": [],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "format_errors": [],
+      "reference_errors": [],
+      "semantic_errors": [],
+      "association_errors": [],
+      "status": "validated"
+    },
+    "audit": {
+      "prompt_tokens": 25742,
+      "completion_tokens": 3351,
+      "total_tokens": 29093,
+      "llm_call_count": 4,
+      "tool_call_count": 8,
+      "execution_duration": 18.225,
+      "finish_reason": "stop",
+      "error_type": null,
+      "estimated_cost": null
+    },
+    "run_token_usage_keys": [
+      "prompt_tokens",
+      "completion_tokens",
+      "total_tokens",
+      "llm_call_count",
+      "tool_call_count",
+      "execution_duration",
+      "records"
+    ],
+    "hyps": [
+      {
+        "fault": "转子不平衡",
+        "assessment": "INCONCLUSIVE",
+        "origin": "l3_core",
+        "support": [
+          "mech:REC-DP-20260314-03404:unbalance_1x:1X转频幅值(mm/s)"
+        ],
+        "roles": {
+          "mech:REC-DP-20260314-03404:unbalance_1x:1X转频幅值(mm/s)": "fault_specific_evidence"
+        }
+      },
+      {
+        "fault": "轴承磨损",
+        "assessment": "INCONCLUSIVE",
+        "origin": "l3_core",
+        "support": [
+          "mech:REC-DP-20260314-03404:bearing:BPFO幅值(g)",
+          "mech:REC-DP-20260314-03404:bearing:包络谱峰值(g)"
+        ],
+        "roles": {
+          "mech:REC-DP-20260314-03404:bearing:BPFO幅值(g)": "fault_specific_evidence",
+          "mech:REC-DP-20260314-03404:bearing:包络谱峰值(g)": "fault_specific_evidence"
+        }
+      },
+      {
+        "fault": "润滑故障",
+        "assessment": "INCONCLUSIVE",
+        "origin": "exploratory_hypothesis",
+        "support": [
+          "mech:REC-DP-20260314-03404:bearing:包络谱峰值(g)"
+        ],
+        "roles": {
+          "mech:REC-DP-20260314-03404:bearing:包络谱峰值(g)": "fault_specific_evidence"
+        }
+      },
+      {
+        "fault": "齿轮异常",
+        "assessment": "INCONCLUSIVE",
+        "origin": "exploratory_hypothesis",
+        "support": [],
+        "roles": {}
+      }
+    ],
+    "anomaly_only_supported": false,
+    "tools": [
+      "get_l2_diagnosis",
+      "get_l3_evidence",
+      "get_reasoning_trace",
+      "search_fault_knowledge",
+      "search_fault_knowledge",
+      "query_equipment_graph",
+      "get_related_cases",
+      "get_related_cases"
+    ]
+  },
+  {
+    "label": "UNCERTAIN",
+    "rr": "RR-ccd4477eee54",
+    "mode": "llm_invalid_json_fallback",
+    "outcome_class": "llm_invalid_json_fallback",
+    "status": "llm_invalid_json_fallback",
+    "latency_s": 4.65,
+    "core_unchanged": true,
+    "forbidden": [],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "format_errors": [],
+      "reference_errors": [],
+      "semantic_errors": [],
+      "association_errors": [],
+      "status": "validated"
+    },
+    "audit": {
+      "prompt_tokens": 26048,
+      "completion_tokens": 618,
+      "total_tokens": 26666,
+      "llm_call_count": 4,
+      "tool_call_count": 8,
+      "execution_duration": 4.493,
+      "finish_reason": "stop",
+      "error_type": "invalid_json",
+      "estimated_cost": null
+    },
+    "run_token_usage_keys": [
+      "prompt_tokens",
+      "completion_tokens",
+      "total_tokens",
+      "llm_call_count",
+      "tool_call_count",
+      "execution_duration",
+      "records"
+    ],
+    "hyps": [
+      {
+        "fault": "转子不平衡",
+        "assessment": "INCONCLUSIVE",
+        "origin": "l3_core",
+        "support": [],
+        "roles": {}
+      },
+      {
+        "fault": "轴承磨损",
+        "assessment": "INCONCLUSIVE",
+        "origin": "l3_core",
+        "support": [],
+        "roles": {}
+      }
+    ],
+    "anomaly_only_supported": false,
+    "tools": [
+      "get_l2_diagnosis",
+      "get_l3_evidence",
+      "get_reasoning_trace",
+      "search_fault_knowledge",
+      "search_fault_knowledge",
+      "query_equipment_graph",
+      "query_equipment_graph",
+      "get_related_cases"
+    ]
+  }
+]

@@ -34,6 +34,8 @@ def test_clear_abnormal():
     )
     assert result["screening_result"] == "ABNORMAL"
     assert result["preliminary_fault"] == "轴承磨损"
+    assert result["route"] == "l3_review_recommended"
+    assert result["status"] == "l3_review_recommended"
     assert "CLEAR_ABNORMAL" in result["reason_codes"]
 
 

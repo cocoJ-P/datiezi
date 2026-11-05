@@ -296,6 +296,23 @@ def list_models(
     }
 
 
+def _parent_from_bundle(bundle_path: str | None) -> str | None:
+    if not bundle_path:
+        return None
+    manifest_path = Path(bundle_path) / "manifest.json"
+    if not manifest_path.is_file():
+        return None
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(manifest, dict):
+        return None
+    parent = manifest.get("parent_model_bundle_id")
+    text = str(parent).strip() if parent is not None else ""
+    return text or None
+
+
 def _serialize_model(row: dict[str, Any]) -> dict[str, Any]:
     metrics = row.get("metrics_summary_json")
     calibration = row.get("calibration_status_json")
@@ -312,4 +329,5 @@ def _serialize_model(row: dict[str, Any]) -> dict[str, Any]:
     out["calibration_status"] = calibration_obj
     out.pop("metrics_summary_json", None)
     out.pop("calibration_status_json", None)
+    out["parent_model_bundle_id"] = _parent_from_bundle(out.get("bundle_path"))
     return out

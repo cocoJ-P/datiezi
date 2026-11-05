@@ -1,0 +1,614 @@
+{
+  "catalog_version": "alert_rule_catalog_v1_1",
+  "schema": "AlertRuleCatalog",
+  "notes": [
+    "本目录为 L5b 结构化阈值来源审计结果。",
+    "KB-03 文本存在 ≠ 现场运营方已批准；默认 review_status=needs_review。",
+    "legacy YAML 与 KB-03 冲突条目标记 conflict，不得自动择优。",
+    "冷却水泵规程不得用于高压除鳞泵。",
+    "v1_1: 纠正 measurement_kind，不再将 X/Y 振动猜测为 RMS。",
+    "v1_1: statistic=unresolved 时不得形成 triggered/formal；最大振动与 X/Y 分量不等价。",
+    "KB-03 仅写 mm/s，未写 RMS；L1 Schema X/Y 为速度，统计量未声明。"
+  ],
+  "rules": [
+    {
+      "rule_id": "KB03-MM-VIB-XY-ALARM",
+      "rule_version": "kb03_extract_v1+sem_v1_1",
+      "source_document_id": "KB-03",
+      "source_locator": "棒线主轧机电机操作规程 / 振动限值表",
+      "source_type": "kb03_markdown",
+      "equipment_type": "main_mill_motor",
+      "equipment_id": null,
+      "component_scope": "motor_body",
+      "measurement_location": [
+        "X",
+        "Y"
+      ],
+      "canonical_feature_ids": [
+        "X向振动(mm/s)",
+        "Y向振动(mm/s)"
+      ],
+      "measurement_kind": "vibration_velocity",
+      "unit": "mm/s",
+      "operating_conditions": [
+        "棒线主轧机电机；5000–9000kW / 10kV 适用范围以原文为准"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 7.1,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "原文写 ≤7.1 为报警；比较采用 >7.1 触发报警",
+        "未单独区分测点安装方向以外条件",
+        "v1_1: 不再标注 vibration_rms；统计量 unresolved"
+      ],
+      "statistic": "unresolved"
+    },
+    {
+      "rule_id": "KB03-MM-VIB-XY-DANGER",
+      "rule_version": "kb03_extract_v1+sem_v1_1",
+      "source_document_id": "KB-03",
+      "source_locator": "棒线主轧机电机操作规程 / 振动限值表",
+      "source_type": "kb03_markdown",
+      "equipment_type": "main_mill_motor",
+      "equipment_id": null,
+      "component_scope": "motor_body",
+      "measurement_location": [
+        "X",
+        "Y"
+      ],
+      "canonical_feature_ids": [
+        "X向振动(mm/s)",
+        "Y向振动(mm/s)"
+      ],
+      "measurement_kind": "vibration_velocity",
+      "unit": "mm/s",
+      "operating_conditions": [
+        "同电机规程"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 11.2,
+      "alert_level": "danger",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "原文 >11.2 为危险",
+        "v1_1: 不再标注 vibration_rms；统计量 unresolved"
+      ],
+      "statistic": "unresolved"
+    },
+    {
+      "rule_id": "KB03-MM-BEARING-TEMP-ALARM",
+      "rule_version": "kb03_extract_v1+sem_v1_1",
+      "source_document_id": "KB-03",
+      "source_locator": "棒线主轧机电机操作规程 / 轴承温度限值",
+      "source_type": "kb03_markdown",
+      "equipment_type": "main_mill_motor",
+      "equipment_id": null,
+      "component_scope": "bearing",
+      "measurement_location": [
+        "DE",
+        "NDE"
+      ],
+      "canonical_feature_ids": [
+        "驱动端轴承温度(°C)",
+        "非驱动端轴承温度(°C)"
+      ],
+      "measurement_kind": "temperature",
+      "unit": "°C",
+      "operating_conditions": [
+        "同电机规程"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 75.0,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "原文报警75°C；与 legacy YAML 85°C upper_alarm 冲突，见 conflict 记录"
+      ],
+      "statistic": "point"
+    },
+    {
+      "rule_id": "KB03-MM-BEARING-TEMP-DANGER",
+      "rule_version": "kb03_extract_v1+sem_v1_1",
+      "source_document_id": "KB-03",
+      "source_locator": "棒线主轧机电机操作规程 / 轴承温度限值",
+      "source_type": "kb03_markdown",
+      "equipment_type": "main_mill_motor",
+      "equipment_id": null,
+      "component_scope": "bearing",
+      "measurement_location": [
+        "DE",
+        "NDE"
+      ],
+      "canonical_feature_ids": [
+        "驱动端轴承温度(°C)",
+        "非驱动端轴承温度(°C)"
+      ],
+      "measurement_kind": "temperature",
+      "unit": "°C",
+      "operating_conditions": [
+        "同电机规程"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 85.0,
+      "alert_level": "danger",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "原文危险85°C"
+      ],
+      "statistic": "point"
+    },
+    {
+      "rule_id": "KB03-GB-VIB-ALARM",
+      "rule_version": "kb03_extract_v1+sem_v1_1",
+      "source_document_id": "KB-03",
+      "source_locator": "棒线齿轮箱操作规程 / 振动限值",
+      "source_type": "kb03_markdown",
+      "equipment_type": "gearbox",
+      "equipment_id": null,
+      "component_scope": "gearbox_body",
+      "measurement_location": [
+        "unspecified"
+      ],
+      "canonical_feature_ids": [
+        "X向振动(mm/s)",
+        "Y向振动(mm/s)"
+      ],
+      "measurement_kind": "vibration_velocity",
+      "unit": "mm/s",
+      "operating_conditions": [
+        "三级减速硬齿面齿轮箱"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 8.5,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "不得套用到 main_mill_motor",
+        "v1_1: 已从本规则移除最大振动，避免与 X/Y 分量等价",
+        "v1_1: 统计量 unresolved（KB-03/字段未声明 RMS）"
+      ],
+      "statistic": "unresolved"
+    },
+    {
+      "rule_id": "KB03-GB-VIB-DANGER",
+      "rule_version": "kb03_extract_v1+sem_v1_1",
+      "source_document_id": "KB-03",
+      "source_locator": "棒线齿轮箱操作规程 / 振动限值",
+      "source_type": "kb03_markdown",
+      "equipment_type": "gearbox",
+      "equipment_id": null,
+      "component_scope": "gearbox_body",
+      "measurement_location": [
+        "unspecified"
+      ],
+      "canonical_feature_ids": [
+        "X向振动(mm/s)",
+        "Y向振动(mm/s)"
+      ],
+      "measurement_kind": "vibration_velocity",
+      "unit": "mm/s",
+      "operating_conditions": [
+        "三级减速硬齿面齿轮箱"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 12.5,
+      "alert_level": "danger",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "不得套用到 main_mill_motor",
+        "v1_1: 已从本规则移除最大振动，避免与 X/Y 分量等价",
+        "v1_1: 统计量 unresolved（KB-03/字段未声明 RMS）"
+      ],
+      "statistic": "unresolved"
+    },
+    {
+      "rule_id": "KB03-GB-OIL-TEMP-ALARM",
+      "rule_version": "kb03_extract_v1+sem_v1_1",
+      "source_document_id": "KB-03",
+      "source_locator": "棒线齿轮箱操作规程 / 油温",
+      "source_type": "kb03_markdown",
+      "equipment_type": "gearbox",
+      "equipment_id": null,
+      "component_scope": "lubrication",
+      "measurement_location": [
+        "oil"
+      ],
+      "canonical_feature_ids": [
+        "油温(°C)",
+        "齿轮箱油温(°C)"
+      ],
+      "measurement_kind": "temperature",
+      "unit": "°C",
+      "operating_conditions": [
+        "运行油温 60–85°C 为正常区间描述；报警85°C"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 85.0,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "非电机轴承温度；不得用于 main_mill_motor"
+      ],
+      "statistic": "point"
+    },
+    {
+      "rule_id": "KB03-GB-OIL-TEMP-DANGER",
+      "rule_version": "kb03_extract_v1+sem_v1_1",
+      "source_document_id": "KB-03",
+      "source_locator": "棒线齿轮箱操作规程 / 油温",
+      "source_type": "kb03_markdown",
+      "equipment_type": "gearbox",
+      "equipment_id": null,
+      "component_scope": "lubrication",
+      "measurement_location": [
+        "oil"
+      ],
+      "canonical_feature_ids": [
+        "油温(°C)",
+        "齿轮箱油温(°C)"
+      ],
+      "measurement_kind": "temperature",
+      "unit": "°C",
+      "operating_conditions": [
+        "齿轮箱"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 90.0,
+      "alert_level": "danger",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [],
+      "statistic": "point"
+    },
+    {
+      "rule_id": "KB03-CWP-VIB-ALARM",
+      "rule_version": "kb03_extract_v1+sem_v1_1",
+      "source_document_id": "KB-03",
+      "source_locator": "棒线冷却水循环泵操作规程 / 振动限值",
+      "source_type": "kb03_markdown",
+      "equipment_type": "cooling_water_circulation_pump",
+      "equipment_id": null,
+      "component_scope": "pump_body",
+      "measurement_location": [
+        "unspecified"
+      ],
+      "canonical_feature_ids": [
+        "X向振动(mm/s)",
+        "Y向振动(mm/s)"
+      ],
+      "measurement_kind": "vibration_velocity",
+      "unit": "mm/s",
+      "operating_conditions": [
+        "冷却水循环泵"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 6.5,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "KB-03 未给出危险级振动限值",
+        "严禁用于 high_pressure_descaling_pump",
+        "v1_1: 已从本规则移除最大振动，避免与 X/Y 分量等价",
+        "v1_1: 统计量 unresolved（KB-03/字段未声明 RMS）"
+      ],
+      "statistic": "unresolved"
+    },
+    {
+      "rule_id": "KB03-CWP-BEARING-TEMP-ALARM",
+      "rule_version": "kb03_extract_v1+sem_v1_1",
+      "source_document_id": "KB-03",
+      "source_locator": "棒线冷却水循环泵操作规程 / 轴承温度限值",
+      "source_type": "kb03_markdown",
+      "equipment_type": "cooling_water_circulation_pump",
+      "equipment_id": null,
+      "component_scope": "bearing",
+      "measurement_location": [
+        "bearing"
+      ],
+      "canonical_feature_ids": [
+        "驱动端轴承温度(°C)",
+        "非驱动端轴承温度(°C)"
+      ],
+      "measurement_kind": "temperature",
+      "unit": "°C",
+      "operating_conditions": [
+        "冷却水循环泵"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 72.0,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "严禁用于 high_pressure_descaling_pump"
+      ],
+      "statistic": "point"
+    },
+    {
+      "rule_id": "KB03-CWP-BEARING-TEMP-DANGER",
+      "rule_version": "kb03_extract_v1+sem_v1_1",
+      "source_document_id": "KB-03",
+      "source_locator": "棒线冷却水循环泵操作规程 / 轴承温度限值",
+      "source_type": "kb03_markdown",
+      "equipment_type": "cooling_water_circulation_pump",
+      "equipment_id": null,
+      "component_scope": "bearing",
+      "measurement_location": [
+        "bearing"
+      ],
+      "canonical_feature_ids": [
+        "驱动端轴承温度(°C)",
+        "非驱动端轴承温度(°C)"
+      ],
+      "measurement_kind": "temperature",
+      "unit": "°C",
+      "operating_conditions": [
+        "冷却水循环泵"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 82.0,
+      "alert_level": "danger",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "严禁用于 high_pressure_descaling_pump"
+      ],
+      "statistic": "point"
+    },
+    {
+      "rule_id": "YAML-MM-VIB-X-ALARM",
+      "rule_version": "mill_thresholds_v1+sem_v1_1",
+      "source_document_id": "l3/config/thresholds/main_mill_motor.yaml",
+      "source_locator": "mill_vib_x_alarm",
+      "source_type": "legacy_yaml",
+      "equipment_type": "main_mill_motor",
+      "equipment_id": null,
+      "component_scope": "motor_body",
+      "measurement_location": [
+        "X"
+      ],
+      "canonical_feature_ids": [
+        "X向振动(mm/s)"
+      ],
+      "measurement_kind": "vibration_velocity",
+      "unit": "mm/s",
+      "operating_conditions": [
+        "legacy L3 YAML；source_reference=ISO10816-class-ref-internal"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 7.1,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "数值与 KB-03 报警级一致，但来源引用非 KB-03 原文定位；未经运营审核",
+        "v1_1: 不再标注 vibration_rms；统计量 unresolved"
+      ],
+      "statistic": "unresolved"
+    },
+    {
+      "rule_id": "YAML-MM-VIB-Y-ALARM",
+      "rule_version": "mill_thresholds_v1+sem_v1_1",
+      "source_document_id": "l3/config/thresholds/main_mill_motor.yaml",
+      "source_locator": "mill_vib_y_alarm",
+      "source_type": "legacy_yaml",
+      "equipment_type": "main_mill_motor",
+      "equipment_id": null,
+      "component_scope": "motor_body",
+      "measurement_location": [
+        "Y"
+      ],
+      "canonical_feature_ids": [
+        "Y向振动(mm/s)"
+      ],
+      "measurement_kind": "vibration_velocity",
+      "unit": "mm/s",
+      "operating_conditions": [
+        "legacy L3 YAML"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 7.1,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "同 YAML-MM-VIB-X-ALARM",
+        "v1_1: 不再标注 vibration_rms；统计量 unresolved"
+      ],
+      "statistic": "unresolved"
+    },
+    {
+      "rule_id": "YAML-MM-BEARING-TEMP-DE-AS-ALARM",
+      "rule_version": "mill_thresholds_v1+sem_v1_1",
+      "source_document_id": "l3/config/thresholds/main_mill_motor.yaml",
+      "source_locator": "mill_bearing_temp_de_alarm",
+      "source_type": "legacy_yaml",
+      "equipment_type": "main_mill_motor",
+      "equipment_id": null,
+      "component_scope": "bearing",
+      "measurement_location": [
+        "DE"
+      ],
+      "canonical_feature_ids": [
+        "驱动端轴承温度(°C)"
+      ],
+      "measurement_kind": "temperature",
+      "unit": "°C",
+      "operating_conditions": [
+        "legacy YAML 将 85 标为 upper_alarm"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 85.0,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "conflict",
+      "limitations": [
+        "与 KB03-MM-BEARING-TEMP-ALARM(75) / DANGER(85) 级别定义冲突",
+        "禁止在冲突解决前作为正式告警"
+      ],
+      "statistic": "point"
+    },
+    {
+      "rule_id": "YAML-MM-BEARING-TEMP-NDE-AS-ALARM",
+      "rule_version": "mill_thresholds_v1+sem_v1_1",
+      "source_document_id": "l3/config/thresholds/main_mill_motor.yaml",
+      "source_locator": "mill_bearing_temp_nde_alarm",
+      "source_type": "legacy_yaml",
+      "equipment_type": "main_mill_motor",
+      "equipment_id": null,
+      "component_scope": "bearing",
+      "measurement_location": [
+        "NDE"
+      ],
+      "canonical_feature_ids": [
+        "非驱动端轴承温度(°C)"
+      ],
+      "measurement_kind": "temperature",
+      "unit": "°C",
+      "operating_conditions": [
+        "legacy YAML 将 85 标为 upper_alarm"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 85.0,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "conflict",
+      "limitations": [
+        "同驱动端温度冲突"
+      ],
+      "statistic": "point"
+    },
+    {
+      "rule_id": "YAML-DP-VIB-X-ALARM",
+      "rule_version": "pump_thresholds_v1+sem_v1_1",
+      "source_document_id": "l3/config/thresholds/high_pressure_descaling_pump.yaml",
+      "source_locator": "pump_vib_x_alarm",
+      "source_type": "legacy_yaml",
+      "equipment_type": "high_pressure_descaling_pump",
+      "equipment_id": null,
+      "component_scope": "pump_body",
+      "measurement_location": [
+        "X"
+      ],
+      "canonical_feature_ids": [
+        "X向振动(mm/s)"
+      ],
+      "measurement_kind": "vibration_velocity",
+      "unit": "mm/s",
+      "operating_conditions": [
+        "legacy YAML；非 KB-03 冷却水泵规程"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 4.5,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "KB-03 无高压除鳞泵专用限值",
+        "不得解释为冷却水泵规程的自动迁移",
+        "v1_1: 不再标注 vibration_rms；统计量 unresolved"
+      ],
+      "statistic": "unresolved"
+    },
+    {
+      "rule_id": "YAML-DP-VIB-Y-ALARM",
+      "rule_version": "pump_thresholds_v1+sem_v1_1",
+      "source_document_id": "l3/config/thresholds/high_pressure_descaling_pump.yaml",
+      "source_locator": "pump_vib_y_alarm",
+      "source_type": "legacy_yaml",
+      "equipment_type": "high_pressure_descaling_pump",
+      "equipment_id": null,
+      "component_scope": "pump_body",
+      "measurement_location": [
+        "Y"
+      ],
+      "canonical_feature_ids": [
+        "Y向振动(mm/s)"
+      ],
+      "measurement_kind": "vibration_velocity",
+      "unit": "mm/s",
+      "operating_conditions": [
+        "legacy YAML"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 4.5,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "同 YAML-DP-VIB-X-ALARM",
+        "v1_1: 不再标注 vibration_rms；统计量 unresolved"
+      ],
+      "statistic": "unresolved"
+    },
+    {
+      "rule_id": "YAML-DP-VIB-MAX-ALARM",
+      "rule_version": "pump_thresholds_v1+sem_v1_1",
+      "source_document_id": "l3/config/thresholds/high_pressure_descaling_pump.yaml",
+      "source_locator": "pump_vib_max_alarm",
+      "source_type": "legacy_yaml",
+      "equipment_type": "high_pressure_descaling_pump",
+      "equipment_id": null,
+      "component_scope": "pump_body",
+      "measurement_location": [
+        "max"
+      ],
+      "canonical_feature_ids": [
+        "最大振动(mm/s)"
+      ],
+      "measurement_kind": "vibration_velocity_max",
+      "unit": "mm/s",
+      "operating_conditions": [
+        "legacy YAML"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 7.1,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "非 KB-03 冷却泵限值"
+      ],
+      "statistic": "max"
+    },
+    {
+      "rule_id": "YAML-DP-BEARING-TEMP-DE-ALARM",
+      "rule_version": "pump_thresholds_v1+sem_v1_1",
+      "source_document_id": "l3/config/thresholds/high_pressure_descaling_pump.yaml",
+      "source_locator": "pump_bearing_temp_de_alarm",
+      "source_type": "legacy_yaml",
+      "equipment_type": "high_pressure_descaling_pump",
+      "equipment_id": null,
+      "component_scope": "bearing",
+      "measurement_location": [
+        "DE"
+      ],
+      "canonical_feature_ids": [
+        "驱动端轴承温度(°C)"
+      ],
+      "measurement_kind": "temperature",
+      "unit": "°C",
+      "operating_conditions": [
+        "legacy YAML 80°C；非冷却泵 72/82"
+      ],
+      "comparison_operator": ">",
+      "threshold_value": 80.0,
+      "alert_level": "alarm",
+      "applicability_status": "equipment_type_scoped",
+      "review_status": "needs_review",
+      "limitations": [
+        "禁止将冷却水泵 KB-03 限值自动替换或合并到本规则"
+      ],
+      "statistic": "point"
+    }
+  ]
+}

@@ -65,15 +65,9 @@
   line-height: 1.5;
 }
 
+/* 旧五列大卡片布局已由 overview/flow.css 的渐进式流程图替代 */
 .dx-layer-flow {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 28px;
-  width: 100%;
-  margin: 0;
-  padding: 16px 14px 18px;
-  box-sizing: border-box;
-  list-style: none;
+  display: none;
 }
 
 .dx-layer-step {
@@ -210,6 +204,96 @@
 
 .dx-layer-node.is-fail em {
   color: var(--danger);
+}
+
+.dx-layer-node.is-busy {
+  background: #eef4fb;
+  border-color: #8eb0d8;
+}
+
+.dx-layer-node.is-busy em {
+  color: #2a5f9e;
+}
+
+.dx-layer-node.is-warn {
+  background: #fff8e8;
+  border-color: #e0c070;
+}
+
+.dx-layer-node.is-warn em {
+  color: #8a6a12;
+}
+
+.dx-layer-node.is-idle {
+  background: #f5f6f8;
+  border-color: #d5d8de;
+}
+
+.dx-layer-node.is-idle em {
+  color: var(--muted);
+}
+
+.dx-l2-handoff {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fafbfc;
+  display: grid;
+  gap: 8px;
+}
+
+.dx-l2-handoff-summary,
+.dx-l2-handoff-progress {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.dx-l2-step-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.dx-l2-step-list li {
+  display: grid;
+  gap: 2px;
+  font-size: 12px;
+}
+
+.dx-l2-step-list li.is-done span {
+  color: var(--ok, #1f7a4d);
+}
+
+.dx-l2-step-list li.is-busy span {
+  color: #2a5f9e;
+}
+
+.dx-l2-step-list li.is-todo span {
+  color: #8a6a12;
+}
+
+.dx-l2-step-list small {
+  color: var(--muted);
+}
+
+.dx-l2-train-box {
+  display: grid;
+  gap: 8px;
+}
+
+.dx-l2-train-box p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.dx-l2-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .dx-layer-node:hover {

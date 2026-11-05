@@ -10,6 +10,18 @@ export default defineConfig({
         target: "http://127.0.0.1:8000",
         changeOrigin: true,
       },
+      "/l2": {
+        target: "http://127.0.0.1:8000",
+        changeOrigin: true,
+      },
+      "/l3": {
+        target: "http://127.0.0.1:8000",
+        changeOrigin: true,
+      },
+      "/l4": {
+        target: "http://127.0.0.1:8000",
+        changeOrigin: true,
+      },
     },
   },
 })

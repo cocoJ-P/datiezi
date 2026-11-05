@@ -1,0 +1,16 @@
+{
+  "l4_run_id": "L4R-6fe2de06f689",
+  "n": 200,
+  "elapsed_s": 4.84123139991425,
+  "succeeded": 200,
+  "failed": 0,
+  "idempotent": false,
+  "outcomes": {
+    "insufficient_evidence": 7,
+    "candidates_generated": 193
+  },
+  "empty": 0,
+  "avg_cands": 6.565,
+  "fingerprint_stable": true,
+  "l3_unchanged": true
+}

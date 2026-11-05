@@ -29,6 +29,10 @@ def _cmd_train(args: argparse.Namespace) -> int:
         config["dataset_revision_id"] = args.dataset_revision_id
     if getattr(args, "source_kind", None):
         config["source_kind"] = args.source_kind
+    if getattr(args, "parent_model_bundle_id", None):
+        # 仅记录谱系，不用于权重初始化 / warm start。
+        config["parent_model_bundle_id"] = args.parent_model_bundle_id
+        config["train_mode"] = "retrain"
     result = run_training(
         config=config,
         features_path=args.features,
@@ -109,6 +113,11 @@ def build_parser() -> argparse.ArgumentParser:
     train.add_argument("--dataset-id", default=None, help="覆盖配置中的 dataset_id（如 PED-*）")
     train.add_argument("--dataset-revision-id", default=None, help="覆盖配置中的 dataset_revision_id")
     train.add_argument("--source-kind", default=None, help="数据来源标记，如 l1_prepared / csv_pair")
+    train.add_argument(
+        "--parent-model-bundle-id",
+        default=None,
+        help="再训练父模型编号（仅谱系记录，不加载父模型权重）",
+    )
     train.set_defaults(func=_cmd_train)
 
     evaluate = sub.add_parser("evaluate", help="读取模型包并在给定数据上评测")

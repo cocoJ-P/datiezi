@@ -273,7 +273,7 @@ export function GroupingWorkspace({
             <span>{applied?.run ? `修订 ${applied.run.revision}` : "P2 未执行"}</span>
             <span>业务记录 {balance?.business_count ?? fields?.business_count ?? 0}</span>
             {balance?.ok ? <span>数量守恒</span> : null}
-            <span>{detail?.filename || detail?.dataset_id || datasetId}</span>
+            <span>{detail?.original_filename || detail?.dataset_id || datasetId}</span>
           </p>
           </div>
           {view === "equipment" ? (

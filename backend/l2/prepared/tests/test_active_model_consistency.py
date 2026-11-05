@@ -133,7 +133,6 @@ def active_env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
         datasets={},
         training_config_path=TRAINING_CONFIG,
         poll_interval_sec=0.1,
-        management_token="tok",
     )
     init_db(config.db_path)
     manager = ModelManager()

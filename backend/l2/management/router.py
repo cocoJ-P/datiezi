@@ -3,13 +3,19 @@
 from __future__ import annotations
 
 import uuid
-from typing import Any
 
-from fastapi import APIRouter, Header, Query, Request
+from fastapi import APIRouter, Query, Request
 from fastapi.responses import JSONResponse
 
+from l2.equipment.onboarding.service import ONBOARDING_SERVICE
 from l2.management.errors import ManagementError
-from l2.management.schemas import RollbackRequest, TrainJobCreateRequest
+from l2.management.schemas import (
+    OnboardingConfirmRequest,
+    OnboardingPrepareRequest,
+    OnboardingValidateRequest,
+    RollbackRequest,
+    TrainJobCreateRequest,
+)
 from l2.management.service import MANAGEMENT_SERVICE
 
 router = APIRouter(prefix="/l2/management", tags=["l2-management"])
@@ -32,10 +38,6 @@ def _error(exc: ManagementError, request_id: str) -> JSONResponse:
     )
 
 
-def _auth_write(token: str | None) -> None:
-    MANAGEMENT_SERVICE.require_token(token)
-
-
 @router.get("/equipment-types")
 def list_equipment_types():
     return MANAGEMENT_SERVICE.list_equipment_types_api()
@@ -56,18 +58,14 @@ def list_datasets():
 
 
 @router.post("/train/jobs")
-def create_train_job(
-    payload: TrainJobCreateRequest,
-    request: Request,
-    x_l2_management_token: str | None = Header(default=None, alias="X-L2-Management-Token"),
-):
+def create_train_job(payload: TrainJobCreateRequest, request: Request):
     request_id = _request_id(request)
     try:
-        _auth_write(x_l2_management_token)
         return MANAGEMENT_SERVICE.submit_train_job(
             equipment_type=payload.equipment_type,
             dataset_id=payload.dataset_id,
             prepared_dataset_id=payload.prepared_dataset_id,
+            parent_model_bundle_id=payload.parent_model_bundle_id,
         )
     except ManagementError as exc:
         return _error(exc, request_id)
@@ -120,14 +118,9 @@ def list_models(
 
 
 @router.post("/models/rollback")
-def rollback_model_api(
-    payload: RollbackRequest,
-    request: Request,
-    x_l2_management_token: str | None = Header(default=None, alias="X-L2-Management-Token"),
-):
+def rollback_model_api(payload: RollbackRequest, request: Request):
     request_id = _request_id(request)
     try:
-        _auth_write(x_l2_management_token)
         return MANAGEMENT_SERVICE.rollback(
             equipment_type=payload.equipment_type,
             target_model_bundle_id=payload.target_model_bundle_id,
@@ -146,14 +139,9 @@ def get_model(model_bundle_id: str, request: Request):
 
 
 @router.post("/models/{model_bundle_id}/activate")
-def activate_model_api(
-    model_bundle_id: str,
-    request: Request,
-    x_l2_management_token: str | None = Header(default=None, alias="X-L2-Management-Token"),
-):
+def activate_model_api(model_bundle_id: str, request: Request):
     request_id = _request_id(request)
     try:
-        _auth_write(x_l2_management_token)
         return MANAGEMENT_SERVICE.activate(model_bundle_id)
     except ManagementError as exc:
         return _error(exc, request_id)
@@ -175,14 +163,84 @@ def get_events(
 
 
 @router.post("/bootstrap")
-def bootstrap_models(
-    request: Request,
-    x_l2_management_token: str | None = Header(default=None, alias="X-L2-Management-Token"),
-):
+def bootstrap_models(request: Request):
     """一次性登记本地可信模型包（不激活）。"""
     request_id = _request_id(request)
     try:
-        _auth_write(x_l2_management_token)
         return MANAGEMENT_SERVICE.bootstrap_models()
+    except ManagementError as exc:
+        return _error(exc, request_id)
+
+
+@router.post("/equipment-onboarding/prepare")
+def prepare_equipment_onboarding(payload: OnboardingPrepareRequest, request: Request):
+    request_id = _request_id(request)
+    try:
+        body = ONBOARDING_SERVICE.prepare(
+            dataset_id=payload.dataset_id,
+            pd_revision_id=payload.pd_revision_id,
+            equipment_group_id=payload.equipment_group_id,
+            equipment_category=payload.equipment_category,
+        )
+        body["request_id"] = request_id
+        return body
+    except ManagementError as exc:
+        return _error(exc, request_id)
+    except KeyError as exc:
+        return _error(
+            ManagementError("PD_NOT_FOUND", f"PD 不存在：{exc}", status_code=404),
+            request_id,
+        )
+
+
+@router.get("/equipment-onboarding/{onboarding_id}")
+def get_equipment_onboarding(onboarding_id: str, request: Request):
+    request_id = _request_id(request)
+    try:
+        body = ONBOARDING_SERVICE.get(onboarding_id)
+        body["request_id"] = request_id
+        return body
+    except ManagementError as exc:
+        return _error(exc, request_id)
+
+
+@router.post("/equipment-onboarding/{onboarding_id}/validate")
+def validate_equipment_onboarding(
+    onboarding_id: str,
+    request: Request,
+    payload: OnboardingValidateRequest | None = None,
+):
+    request_id = _request_id(request)
+    try:
+        overrides = payload.model_dump(exclude_none=True) if payload else {}
+        body = ONBOARDING_SERVICE.validate(onboarding_id, overrides=overrides)
+        body["request_id"] = request_id
+        return body
+    except ManagementError as exc:
+        return _error(exc, request_id)
+
+
+@router.post("/equipment-onboarding/{onboarding_id}/confirm")
+def confirm_equipment_onboarding(
+    onboarding_id: str,
+    request: Request,
+    payload: OnboardingConfirmRequest | None = None,
+):
+    request_id = _request_id(request)
+    try:
+        data = payload.model_dump(exclude_none=True) if payload else {}
+        body = ONBOARDING_SERVICE.confirm(
+            onboarding_id,
+            overrides={
+                k: data[k]
+                for k in ("equipment_type", "display_name", "normal_label", "selected_feature_ids")
+                if k in data
+            },
+            continue_handoff=bool(data.get("continue_handoff", True)),
+            handoff_id=data.get("handoff_id"),
+            handoff_item_id=data.get("handoff_item_id"),
+        )
+        body["request_id"] = request_id
+        return body
     except ManagementError as exc:
         return _error(exc, request_id)

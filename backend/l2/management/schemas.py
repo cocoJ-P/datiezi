@@ -12,8 +12,9 @@ class TrainJobCreateRequest(BaseModel):
     dataset_id: str | None = Field(default=None, max_length=128)
     prepared_dataset_id: str | None = Field(default=None, max_length=128)
     training_config_id: str | None = Field(default=None, max_length=64)
+    parent_model_bundle_id: str | None = Field(default=None, max_length=64)
 
-    @field_validator("equipment_type", "dataset_id", "prepared_dataset_id")
+    @field_validator("equipment_type", "dataset_id", "prepared_dataset_id", "parent_model_bundle_id")
     @classmethod
     def strip_optional_ids(cls, value: str | None) -> str | None:
         if value is None:
@@ -52,3 +53,35 @@ class ManagementErrorBody(BaseModel):
     message: str
     details: dict[str, Any] = Field(default_factory=dict)
     request_id: str | None = None
+
+
+class OnboardingPrepareRequest(BaseModel):
+    dataset_id: str = Field(min_length=1, max_length=128)
+    pd_revision_id: str = Field(min_length=1, max_length=64)
+    equipment_group_id: str | None = Field(default=None, max_length=128)
+    equipment_category: str | None = Field(default=None, max_length=128)
+
+    @field_validator("dataset_id", "pd_revision_id", "equipment_group_id", "equipment_category")
+    @classmethod
+    def strip_text(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        text = value.strip()
+        return text or None
+
+
+class OnboardingConfirmRequest(BaseModel):
+    equipment_type: str | None = None
+    display_name: str | None = None
+    normal_label: str | None = None
+    selected_feature_ids: list[str] | None = None
+    handoff_id: str | None = None
+    handoff_item_id: str | None = None
+    continue_handoff: bool = True
+
+
+class OnboardingValidateRequest(BaseModel):
+    equipment_type: str | None = None
+    display_name: str | None = None
+    normal_label: str | None = None
+    selected_feature_ids: list[str] | None = None

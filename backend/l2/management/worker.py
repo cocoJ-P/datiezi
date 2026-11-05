@@ -1,4 +1,4 @@
-"""独立 Training Worker：轮询任务并调用 Training Core CLI。"""
+"""Training Worker：轮询任务并调用 Training Core CLI（可同进程后台线程）。"""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import logging
 import os
 import subprocess
 import sys
-import time
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -25,6 +25,9 @@ from l2.management.jobs import (
 from l2.management.registry import register_bundle
 
 LOG = logging.getLogger("l2.management.worker")
+
+_thread: threading.Thread | None = None
+_stop = threading.Event()
 
 
 def _now() -> str:
@@ -74,6 +77,10 @@ def _run_training_subprocess(job: dict, config_path: Path, python_exe: str) -> t
         source_type = training_meta.get("source_type")
         if source_type:
             cmd.extend(["--source-kind", str(source_type)])
+        parent_id = training_meta.get("parent_model_bundle_id")
+        if parent_id:
+            # 再训练仍走完整训练；仅把父模型编号写入产出谱系。
+            cmd.extend(["--parent-model-bundle-id", str(parent_id)])
     except json.JSONDecodeError:
         pass
     env = os.environ.copy()
@@ -127,6 +134,13 @@ def process_one_job(connection, config, job: dict) -> None:
     job_id = job["job_id"]
     log_path = Path(job["log_path"])
     _append_log(log_path, f"任务开始 job_id={job_id} dataset={job['dataset_id']}")
+    try:
+        training_meta = json.loads(job.get("training_config_json") or "{}")
+        train_mode = training_meta.get("train_mode") or "new"
+        parent_id = training_meta.get("parent_model_bundle_id")
+        _append_log(log_path, f"train_mode={train_mode} parent_model_bundle_id={parent_id or '-'}")
+    except json.JSONDecodeError:
+        _append_log(log_path, "train_mode=new parent_model_bundle_id=-")
     _append_log(log_path, f"features={job['features_path']}")
     _append_log(log_path, f"labels={job['labels_path']}")
     _append_log(log_path, f"config_hash={job['training_config_hash']}")
@@ -239,9 +253,7 @@ def process_one_job(connection, config, job: dict) -> None:
         LOG.exception("任务失败 job_id=%s", job_id)
 
 
-def run_worker(*, once: bool = False) -> None:
-    config = load_management_config()
-    init_db(config.db_path)
+def _recover_stale_jobs(config) -> None:
     connection = connect(config.db_path)
     try:
         interrupted = mark_stale_running_jobs(connection)
@@ -251,8 +263,16 @@ def run_worker(*, once: bool = False) -> None:
     finally:
         connection.close()
 
-    LOG.info("Training Worker 启动 db=%s", config.db_path)
-    while True:
+
+def run_worker(*, once: bool = False, stop_event: threading.Event | None = None) -> None:
+    """轮询领取训练任务。stop_event 用于同进程后台线程优雅停止。"""
+    config = load_management_config()
+    init_db(config.db_path)
+    _recover_stale_jobs(config)
+    stop = stop_event if stop_event is not None else threading.Event()
+
+    LOG.info("Training Worker 启动 db=%s once=%s", config.db_path, once)
+    while not stop.is_set():
         connection = connect(config.db_path)
         try:
             job = claim_next_job(connection, worker_pid=os.getpid())
@@ -262,7 +282,8 @@ def run_worker(*, once: bool = False) -> None:
             if once:
                 LOG.info("无排队任务，once 模式退出")
                 return
-            time.sleep(config.poll_interval_sec)
+            if stop.wait(config.poll_interval_sec):
+                break
             continue
 
         LOG.info("领取任务 %s", job["job_id"])
@@ -273,6 +294,30 @@ def run_worker(*, once: bool = False) -> None:
             connection.close()
         if once:
             return
+
+    LOG.info("Training Worker 已停止")
+
+
+def start_background_worker() -> None:
+    """在 FastAPI 同进程内启动 daemon 训练 Worker。已有存活线程时不重复启动。"""
+    global _thread
+    if _thread is not None and _thread.is_alive():
+        return
+    _stop.clear()
+
+    def _target() -> None:
+        try:
+            run_worker(once=False, stop_event=_stop)
+        except Exception:  # noqa: BLE001 - 后台线程不可拖垮主进程
+            LOG.exception("Training Worker 后台线程异常退出")
+
+    _thread = threading.Thread(target=_target, name="l2-training-worker", daemon=True)
+    _thread.start()
+    LOG.info("L2 training worker started (background thread)")
+
+
+def stop_background_worker() -> None:
+    _stop.set()
 
 
 def main(argv: list[str] | None = None) -> int:

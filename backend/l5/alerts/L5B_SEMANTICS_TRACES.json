@@ -1,0 +1,918 @@
+{
+  "catalog_version": "alert_rule_catalog_v1_1",
+  "alert_runs": [
+    {
+      "alert_run_id": "L5AR-d2b662b66266",
+      "status": "completed",
+      "formal_alert_total": 0,
+      "catalog_version": "alert_rule_catalog_v1_1",
+      "ids": [
+        "REC-DP-20260314-00021",
+        "REC-DP-20260314-00162"
+      ]
+    },
+    {
+      "alert_run_id": "L5AR-d2a21e1e1d29",
+      "status": "completed",
+      "formal_alert_total": 0,
+      "catalog_version": "alert_rule_catalog_v1_1",
+      "ids": [
+        "REC-MA-20260314-00008"
+      ]
+    }
+  ],
+  "vibration_audit_verdict": {
+    "xy_explicitly_rms": false,
+    "xy_measurement_type": "vibration_velocity (速度 mm/s); 非位移; 统计量 unresolved",
+    "max_equivalent_to_rms_or_xy": false,
+    "compare_when_statistic_unresolved": false,
+    "REC-DP-20260314-00021": "原 reference triggered 测量语义依据不足；v1_1 改为 indeterminate",
+    "REC-MA-20260314-00008": "原 reference triggered 测量语义依据不足；v1_1 改为 indeterminate"
+  },
+  "traces": [
+    {
+      "record_id": "REC-DP-20260314-00021",
+      "equipment_type": "high_pressure_descaling_pump",
+      "equipment_id": "DP-01",
+      "formal_alert_count": 0,
+      "reference_count": 4,
+      "status_summary": {
+        "indeterminate": 2,
+        "triggered": 0,
+        "within_limit": 2,
+        "rule_conflict": 0,
+        "formal": 0
+      },
+      "paths": [
+        {
+          "ped_field": "1X转频幅值(mm/s)",
+          "observed_value": 0.991,
+          "observed_unit": null,
+          "canonical_feature_id": "1X转频幅值(mm/s)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "BPFI幅值(g)",
+          "observed_value": 0.139,
+          "observed_unit": null,
+          "canonical_feature_id": "BPFI幅值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "BPFO幅值(g)",
+          "observed_value": 0.419,
+          "observed_unit": null,
+          "canonical_feature_id": "BPFO幅值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "BSF幅值(g)",
+          "observed_value": 0.369,
+          "observed_unit": null,
+          "canonical_feature_id": "BSF幅值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "X向振动(mm/s)",
+          "observed_value": 5.247,
+          "observed_unit": "mm/s",
+          "canonical_feature_id": "X向振动(mm/s)",
+          "measurement_kind": "vibration_velocity",
+          "statistic": "unresolved",
+          "dimension": "velocity",
+          "semantics_note": "L1 定义为 X向振动速度；未声明 RMS/峰值等统计量",
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03"
+          ],
+          "rule_evaluations": [
+            {
+              "rule_id": "YAML-DP-VIB-X-ALARM",
+              "rule_measurement_kind": "vibration_velocity",
+              "rule_statistic": "unresolved",
+              "applicability": "unresolved",
+              "comparison_holds": null,
+              "threshold": 4.5,
+              "operator": ">",
+              "evaluation_status": "indeterminate",
+              "formal": false,
+              "channel": "reference_semantics_unresolved",
+              "review_status": "needs_review"
+            }
+          ]
+        },
+        {
+          "ped_field": "Y向振动(mm/s)",
+          "observed_value": 6.862,
+          "observed_unit": "mm/s",
+          "canonical_feature_id": "Y向振动(mm/s)",
+          "measurement_kind": "vibration_velocity",
+          "statistic": "unresolved",
+          "dimension": "velocity",
+          "semantics_note": "L1 定义为 Y向振动速度；未声明 RMS/峰值等统计量",
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03"
+          ],
+          "rule_evaluations": [
+            {
+              "rule_id": "YAML-DP-VIB-Y-ALARM",
+              "rule_measurement_kind": "vibration_velocity",
+              "rule_statistic": "unresolved",
+              "applicability": "unresolved",
+              "comparison_holds": null,
+              "threshold": 4.5,
+              "operator": ">",
+              "evaluation_status": "indeterminate",
+              "formal": false,
+              "channel": "reference_semantics_unresolved",
+              "review_status": "needs_review"
+            }
+          ]
+        },
+        {
+          "ped_field": "包络谱峰值(g)",
+          "observed_value": 0.69,
+          "observed_unit": null,
+          "canonical_feature_id": "包络谱峰值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "振动均方根",
+          "observed_value": 6.108111533035395,
+          "observed_unit": "mm/s",
+          "canonical_feature_id": "振动均方根",
+          "measurement_kind": "vibration_velocity",
+          "statistic": "rms",
+          "dimension": "velocity",
+          "semantics_note": "L1 单独字段；原列无单位时需复核",
+          "metadata_gaps": [],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "最大振动(mm/s)",
+          "observed_value": 6.862,
+          "observed_unit": "mm/s",
+          "canonical_feature_id": "最大振动(mm/s)",
+          "measurement_kind": "vibration_velocity_max",
+          "statistic": "max",
+          "dimension": "velocity",
+          "semantics_note": "与 X/Y 分量及 RMS 不是同一统计定义，不得等价",
+          "metadata_gaps": [],
+          "rule_evaluations": [
+            {
+              "rule_id": "YAML-DP-VIB-MAX-ALARM",
+              "rule_measurement_kind": "vibration_velocity_max",
+              "rule_statistic": "max",
+              "applicability": "applicable",
+              "comparison_holds": false,
+              "threshold": 7.1,
+              "operator": ">",
+              "evaluation_status": "within_limit",
+              "formal": false,
+              "channel": "reference_unapproved_rule",
+              "review_status": "needs_review"
+            }
+          ]
+        },
+        {
+          "ped_field": "电机电流(A)",
+          "observed_value": 517.6,
+          "observed_unit": null,
+          "canonical_feature_id": "电机电流(A)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "转速(rpm)",
+          "observed_value": 2991.0,
+          "observed_unit": null,
+          "canonical_feature_id": "转速(rpm)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "转频(Hz)",
+          "observed_value": 49.85,
+          "observed_unit": null,
+          "canonical_feature_id": "转频(Hz)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "非驱动端轴承温度(°C)",
+          "observed_value": 55.8,
+          "observed_unit": "°C",
+          "canonical_feature_id": "非驱动端轴承温度(°C)",
+          "measurement_kind": "temperature",
+          "statistic": "point",
+          "dimension": "temperature",
+          "semantics_note": null,
+          "metadata_gaps": [],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "驱动端轴承温度(°C)",
+          "observed_value": 54.5,
+          "observed_unit": "°C",
+          "canonical_feature_id": "驱动端轴承温度(°C)",
+          "measurement_kind": "temperature",
+          "statistic": "point",
+          "dimension": "temperature",
+          "semantics_note": null,
+          "metadata_gaps": [],
+          "rule_evaluations": [
+            {
+              "rule_id": "YAML-DP-BEARING-TEMP-DE-ALARM",
+              "rule_measurement_kind": "temperature",
+              "rule_statistic": "point",
+              "applicability": "applicable",
+              "comparison_holds": false,
+              "threshold": 80.0,
+              "operator": ">",
+              "evaluation_status": "within_limit",
+              "formal": false,
+              "channel": "reference_unapproved_rule",
+              "review_status": "needs_review"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "record_id": "REC-DP-20260314-00162",
+      "equipment_type": "high_pressure_descaling_pump",
+      "equipment_id": "DP-02",
+      "formal_alert_count": 0,
+      "reference_count": 4,
+      "status_summary": {
+        "indeterminate": 2,
+        "triggered": 0,
+        "within_limit": 2,
+        "rule_conflict": 0,
+        "formal": 0
+      },
+      "paths": [
+        {
+          "ped_field": "1X转频幅值(mm/s)",
+          "observed_value": 0.776,
+          "observed_unit": null,
+          "canonical_feature_id": "1X转频幅值(mm/s)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "BPFI幅值(g)",
+          "observed_value": 0.015,
+          "observed_unit": null,
+          "canonical_feature_id": "BPFI幅值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "BPFO幅值(g)",
+          "observed_value": 0.047,
+          "observed_unit": null,
+          "canonical_feature_id": "BPFO幅值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "BSF幅值(g)",
+          "observed_value": 0.045,
+          "observed_unit": null,
+          "canonical_feature_id": "BSF幅值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "X向振动(mm/s)",
+          "observed_value": 3.221,
+          "observed_unit": "mm/s",
+          "canonical_feature_id": "X向振动(mm/s)",
+          "measurement_kind": "vibration_velocity",
+          "statistic": "unresolved",
+          "dimension": "velocity",
+          "semantics_note": "L1 定义为 X向振动速度；未声明 RMS/峰值等统计量",
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03"
+          ],
+          "rule_evaluations": [
+            {
+              "rule_id": "YAML-DP-VIB-X-ALARM",
+              "rule_measurement_kind": "vibration_velocity",
+              "rule_statistic": "unresolved",
+              "applicability": "unresolved",
+              "comparison_holds": null,
+              "threshold": 4.5,
+              "operator": ">",
+              "evaluation_status": "indeterminate",
+              "formal": false,
+              "channel": "reference_semantics_unresolved",
+              "review_status": "needs_review"
+            }
+          ]
+        },
+        {
+          "ped_field": "Y向振动(mm/s)",
+          "observed_value": 4.31,
+          "observed_unit": "mm/s",
+          "canonical_feature_id": "Y向振动(mm/s)",
+          "measurement_kind": "vibration_velocity",
+          "statistic": "unresolved",
+          "dimension": "velocity",
+          "semantics_note": "L1 定义为 Y向振动速度；未声明 RMS/峰值等统计量",
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03"
+          ],
+          "rule_evaluations": [
+            {
+              "rule_id": "YAML-DP-VIB-Y-ALARM",
+              "rule_measurement_kind": "vibration_velocity",
+              "rule_statistic": "unresolved",
+              "applicability": "unresolved",
+              "comparison_holds": null,
+              "threshold": 4.5,
+              "operator": ">",
+              "evaluation_status": "indeterminate",
+              "formal": false,
+              "channel": "reference_semantics_unresolved",
+              "review_status": "needs_review"
+            }
+          ]
+        },
+        {
+          "ped_field": "包络谱峰值(g)",
+          "observed_value": 0.666,
+          "observed_unit": null,
+          "canonical_feature_id": "包络谱峰值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "振动均方根",
+          "observed_value": 3.804664308450878,
+          "observed_unit": "mm/s",
+          "canonical_feature_id": "振动均方根",
+          "measurement_kind": "vibration_velocity",
+          "statistic": "rms",
+          "dimension": "velocity",
+          "semantics_note": "L1 单独字段；原列无单位时需复核",
+          "metadata_gaps": [],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "最大振动(mm/s)",
+          "observed_value": 4.31,
+          "observed_unit": "mm/s",
+          "canonical_feature_id": "最大振动(mm/s)",
+          "measurement_kind": "vibration_velocity_max",
+          "statistic": "max",
+          "dimension": "velocity",
+          "semantics_note": "与 X/Y 分量及 RMS 不是同一统计定义，不得等价",
+          "metadata_gaps": [],
+          "rule_evaluations": [
+            {
+              "rule_id": "YAML-DP-VIB-MAX-ALARM",
+              "rule_measurement_kind": "vibration_velocity_max",
+              "rule_statistic": "max",
+              "applicability": "applicable",
+              "comparison_holds": false,
+              "threshold": 7.1,
+              "operator": ">",
+              "evaluation_status": "within_limit",
+              "formal": false,
+              "channel": "reference_unapproved_rule",
+              "review_status": "needs_review"
+            }
+          ]
+        },
+        {
+          "ped_field": "电机电流(A)",
+          "observed_value": 512.0,
+          "observed_unit": null,
+          "canonical_feature_id": "电机电流(A)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "转速(rpm)",
+          "observed_value": 2981.5,
+          "observed_unit": null,
+          "canonical_feature_id": "转速(rpm)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "转频(Hz)",
+          "observed_value": 49.69,
+          "observed_unit": null,
+          "canonical_feature_id": "转频(Hz)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "非驱动端轴承温度(°C)",
+          "observed_value": 51.5,
+          "observed_unit": "°C",
+          "canonical_feature_id": "非驱动端轴承温度(°C)",
+          "measurement_kind": "temperature",
+          "statistic": "point",
+          "dimension": "temperature",
+          "semantics_note": null,
+          "metadata_gaps": [],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "驱动端轴承温度(°C)",
+          "observed_value": 52.5,
+          "observed_unit": "°C",
+          "canonical_feature_id": "驱动端轴承温度(°C)",
+          "measurement_kind": "temperature",
+          "statistic": "point",
+          "dimension": "temperature",
+          "semantics_note": null,
+          "metadata_gaps": [],
+          "rule_evaluations": [
+            {
+              "rule_id": "YAML-DP-BEARING-TEMP-DE-ALARM",
+              "rule_measurement_kind": "temperature",
+              "rule_statistic": "point",
+              "applicability": "applicable",
+              "comparison_holds": false,
+              "threshold": 80.0,
+              "operator": ">",
+              "evaluation_status": "within_limit",
+              "formal": false,
+              "channel": "reference_unapproved_rule",
+              "review_status": "needs_review"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "record_id": "REC-MA-20260314-00008",
+      "equipment_type": "main_mill_motor",
+      "equipment_id": "MM-01",
+      "formal_alert_count": 0,
+      "reference_count": 12,
+      "status_summary": {
+        "indeterminate": 6,
+        "triggered": 0,
+        "within_limit": 0,
+        "rule_conflict": 6,
+        "formal": 0
+      },
+      "paths": [
+        {
+          "ped_field": "1X转频幅值(mm/s)",
+          "observed_value": 0.0,
+          "observed_unit": null,
+          "canonical_feature_id": "1X转频幅值(mm/s)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "BPFI幅值(g)",
+          "observed_value": 0.0,
+          "observed_unit": null,
+          "canonical_feature_id": "BPFI幅值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "BPFO幅值(g)",
+          "observed_value": 1.007,
+          "observed_unit": null,
+          "canonical_feature_id": "BPFO幅值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "BSF幅值(g)",
+          "observed_value": 0.0,
+          "observed_unit": null,
+          "canonical_feature_id": "BSF幅值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "X向振动(mm/s)",
+          "observed_value": 7.958,
+          "observed_unit": "mm/s",
+          "canonical_feature_id": "X向振动(mm/s)",
+          "measurement_kind": "vibration_velocity",
+          "statistic": "unresolved",
+          "dimension": "velocity",
+          "semantics_note": "L1 定义为 X向振动速度；未声明 RMS/峰值等统计量",
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03"
+          ],
+          "rule_evaluations": [
+            {
+              "rule_id": "KB03-MM-VIB-XY-ALARM",
+              "rule_measurement_kind": "vibration_velocity",
+              "rule_statistic": "unresolved",
+              "applicability": "unresolved",
+              "comparison_holds": null,
+              "threshold": 7.1,
+              "operator": ">",
+              "evaluation_status": "indeterminate",
+              "formal": false,
+              "channel": "reference_semantics_unresolved",
+              "review_status": "needs_review"
+            },
+            {
+              "rule_id": "KB03-MM-VIB-XY-DANGER",
+              "rule_measurement_kind": "vibration_velocity",
+              "rule_statistic": "unresolved",
+              "applicability": "unresolved",
+              "comparison_holds": null,
+              "threshold": 11.2,
+              "operator": ">",
+              "evaluation_status": "indeterminate",
+              "formal": false,
+              "channel": "reference_semantics_unresolved",
+              "review_status": "needs_review"
+            },
+            {
+              "rule_id": "YAML-MM-VIB-X-ALARM",
+              "rule_measurement_kind": "vibration_velocity",
+              "rule_statistic": "unresolved",
+              "applicability": "unresolved",
+              "comparison_holds": null,
+              "threshold": 7.1,
+              "operator": ">",
+              "evaluation_status": "indeterminate",
+              "formal": false,
+              "channel": "reference_semantics_unresolved",
+              "review_status": "needs_review"
+            }
+          ]
+        },
+        {
+          "ped_field": "Y向振动(mm/s)",
+          "observed_value": 6.324,
+          "observed_unit": "mm/s",
+          "canonical_feature_id": "Y向振动(mm/s)",
+          "measurement_kind": "vibration_velocity",
+          "statistic": "unresolved",
+          "dimension": "velocity",
+          "semantics_note": "L1 定义为 Y向振动速度；未声明 RMS/峰值等统计量",
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03"
+          ],
+          "rule_evaluations": [
+            {
+              "rule_id": "KB03-MM-VIB-XY-ALARM",
+              "rule_measurement_kind": "vibration_velocity",
+              "rule_statistic": "unresolved",
+              "applicability": "unresolved",
+              "comparison_holds": null,
+              "threshold": 7.1,
+              "operator": ">",
+              "evaluation_status": "indeterminate",
+              "formal": false,
+              "channel": "reference_semantics_unresolved",
+              "review_status": "needs_review"
+            },
+            {
+              "rule_id": "KB03-MM-VIB-XY-DANGER",
+              "rule_measurement_kind": "vibration_velocity",
+              "rule_statistic": "unresolved",
+              "applicability": "unresolved",
+              "comparison_holds": null,
+              "threshold": 11.2,
+              "operator": ">",
+              "evaluation_status": "indeterminate",
+              "formal": false,
+              "channel": "reference_semantics_unresolved",
+              "review_status": "needs_review"
+            },
+            {
+              "rule_id": "YAML-MM-VIB-Y-ALARM",
+              "rule_measurement_kind": "vibration_velocity",
+              "rule_statistic": "unresolved",
+              "applicability": "unresolved",
+              "comparison_holds": null,
+              "threshold": 7.1,
+              "operator": ">",
+              "evaluation_status": "indeterminate",
+              "formal": false,
+              "channel": "reference_semantics_unresolved",
+              "review_status": "needs_review"
+            }
+          ]
+        },
+        {
+          "ped_field": "包络谱峰值(g)",
+          "observed_value": 1.003,
+          "observed_unit": null,
+          "canonical_feature_id": "包络谱峰值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "啮合频率幅值(g)",
+          "observed_value": 0.0,
+          "observed_unit": null,
+          "canonical_feature_id": "啮合频率幅值(g)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "电机电流(A)",
+          "observed_value": 925.5,
+          "observed_unit": null,
+          "canonical_feature_id": "电机电流(A)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "转速(rpm)",
+          "observed_value": 1505.7,
+          "observed_unit": null,
+          "canonical_feature_id": "转速(rpm)",
+          "measurement_kind": null,
+          "statistic": null,
+          "dimension": null,
+          "semantics_note": null,
+          "metadata_gaps": [
+            "statistic_unresolved_in_L1_Schema_and_KB03",
+            "measurement_kind_missing"
+          ],
+          "rule_evaluations": []
+        },
+        {
+          "ped_field": "非驱动端轴承温度(°C)",
+          "observed_value": 63.5,
+          "observed_unit": "°C",
+          "canonical_feature_id": "非驱动端轴承温度(°C)",
+          "measurement_kind": "temperature",
+          "statistic": "point",
+          "dimension": "temperature",
+          "semantics_note": null,
+          "metadata_gaps": [],
+          "rule_evaluations": [
+            {
+              "rule_id": "KB03-MM-BEARING-TEMP-ALARM",
+              "rule_measurement_kind": "temperature",
+              "rule_statistic": "point",
+              "applicability": "applicable",
+              "comparison_holds": false,
+              "threshold": 75.0,
+              "operator": ">",
+              "evaluation_status": "rule_conflict",
+              "formal": false,
+              "channel": "blocked_rule_conflict",
+              "review_status": "needs_review"
+            },
+            {
+              "rule_id": "KB03-MM-BEARING-TEMP-DANGER",
+              "rule_measurement_kind": "temperature",
+              "rule_statistic": "point",
+              "applicability": "applicable",
+              "comparison_holds": false,
+              "threshold": 85.0,
+              "operator": ">",
+              "evaluation_status": "rule_conflict",
+              "formal": false,
+              "channel": "blocked_rule_conflict",
+              "review_status": "needs_review"
+            },
+            {
+              "rule_id": "YAML-MM-BEARING-TEMP-NDE-AS-ALARM",
+              "rule_measurement_kind": "temperature",
+              "rule_statistic": "point",
+              "applicability": "applicable",
+              "comparison_holds": false,
+              "threshold": 85.0,
+              "operator": ">",
+              "evaluation_status": "rule_conflict",
+              "formal": false,
+              "channel": "blocked_rule_conflict",
+              "review_status": "conflict"
+            }
+          ]
+        },
+        {
+          "ped_field": "驱动端轴承温度(°C)",
+          "observed_value": 69.2,
+          "observed_unit": "°C",
+          "canonical_feature_id": "驱动端轴承温度(°C)",
+          "measurement_kind": "temperature",
+          "statistic": "point",
+          "dimension": "temperature",
+          "semantics_note": null,
+          "metadata_gaps": [],
+          "rule_evaluations": [
+            {
+              "rule_id": "KB03-MM-BEARING-TEMP-ALARM",
+              "rule_measurement_kind": "temperature",
+              "rule_statistic": "point",
+              "applicability": "applicable",
+              "comparison_holds": false,
+              "threshold": 75.0,
+              "operator": ">",
+              "evaluation_status": "rule_conflict",
+              "formal": false,
+              "channel": "blocked_rule_conflict",
+              "review_status": "needs_review"
+            },
+            {
+              "rule_id": "KB03-MM-BEARING-TEMP-DANGER",
+              "rule_measurement_kind": "temperature",
+              "rule_statistic": "point",
+              "applicability": "applicable",
+              "comparison_holds": false,
+              "threshold": 85.0,
+              "operator": ">",
+              "evaluation_status": "rule_conflict",
+              "formal": false,
+              "channel": "blocked_rule_conflict",
+              "review_status": "needs_review"
+            },
+            {
+              "rule_id": "YAML-MM-BEARING-TEMP-DE-AS-ALARM",
+              "rule_measurement_kind": "temperature",
+              "rule_statistic": "point",
+              "applicability": "applicable",
+              "comparison_holds": false,
+              "threshold": 85.0,
+              "operator": ">",
+              "evaluation_status": "rule_conflict",
+              "formal": false,
+              "channel": "blocked_rule_conflict",
+              "review_status": "conflict"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

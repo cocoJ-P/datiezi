@@ -1,0 +1,59 @@
+{
+  "equipment_type": "eq_a387080507",
+  "random_seed": 42,
+  "split": {
+    "train": 0.7,
+    "calib": 0.15,
+    "test": 0.15
+  },
+  "binary_params": {
+    "n_estimators": 250,
+    "max_depth": 12,
+    "min_samples_leaf": 2,
+    "random_state": 42,
+    "n_jobs": -1,
+    "class_weight": "balanced_subsample"
+  },
+  "multiclass_params": {
+    "iterations": 350,
+    "depth": 5,
+    "learning_rate": 0.06,
+    "loss_function": "MultiClass",
+    "random_seed": 42,
+    "task_type": "CPU",
+    "verbose": false,
+    "allow_writing_files": false,
+    "classes_count": 4
+  },
+  "feature_columns": [
+    "1X转频幅值(mm/s)",
+    "驱动端轴承温度(°C)",
+    "非驱动端轴承温度(°C)",
+    "BPFI幅值(g)",
+    "BPFI频率(Hz)",
+    "BPFO幅值(g)",
+    "BPFO频率(Hz)",
+    "BSF幅值(g)",
+    "BSF频率(Hz)",
+    "包络谱峰值(g)",
+    "啮合频率幅值(g)",
+    "啮合频率(Hz)",
+    "电机电流(A)",
+    "转频(Hz)",
+    "转速(rpm)",
+    "最大振动(mm/s)",
+    "X向振动(mm/s)",
+    "Y向振动(mm/s)"
+  ],
+  "class_labels": [
+    "正常",
+    "润滑故障",
+    "轴承磨损",
+    "齿轮异常"
+  ],
+  "schema_version": "eq_a387080507_features_v1",
+  "dataset_id": "PED-3c9f350b9db3",
+  "dataset_revision_id": "rev-PD-905a4b0adefe",
+  "train_mode": "new",
+  "parent_model_bundle_id": null
+}

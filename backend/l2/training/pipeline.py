@@ -181,6 +181,8 @@ def run_training(
     predictions = pd.DataFrame(pred_rows)
 
     schema = feature_schema_from_spec(spec).to_dict()
+    parent_model_bundle_id = str(config.get("parent_model_bundle_id") or "").strip() or None
+    train_mode = "retrain" if parent_model_bundle_id else "new"
     training_config = {
         "equipment_type": equipment_type,
         "random_seed": random_seed,
@@ -192,6 +194,8 @@ def run_training(
         "schema_version": spec.schema_version,
         "dataset_id": dataset_id,
         "dataset_revision_id": dataset_revision_id,
+        "train_mode": train_mode,
+        "parent_model_bundle_id": parent_model_bundle_id,
     }
     bundle_path = save_model_bundle(
         Path(output_root) / equipment_type,

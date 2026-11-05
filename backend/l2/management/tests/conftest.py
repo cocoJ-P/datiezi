@@ -52,7 +52,6 @@ def tmp_mgmt(tmp_path: Path):
         },
         training_config_path=TRAINING_CONFIG,
         poll_interval_sec=0.1,
-        management_token="test-token",
         max_concurrent_training_jobs=1,
     )
     init_db(db_path)

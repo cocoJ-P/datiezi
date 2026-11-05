@@ -64,7 +64,6 @@ def multi_env(tmp_path: Path):
         },
         training_config_path=MILL_CFG,
         poll_interval_sec=0.1,
-        management_token="tok",
     )
     init_db(config.db_path)
     manager = ModelManager()

@@ -91,8 +91,8 @@ def decide(
         return _result(
             screening_result="ABNORMAL",
             preliminary_fault=top1_label,
-            status="l2_complete",
-            route="l2_complete",
+            status="l3_review_recommended",
+            route="l3_review_recommended",
             reason_codes=reason_codes,
             p_a=p_a_abnormal,
             p_b=p_b_abnormal,

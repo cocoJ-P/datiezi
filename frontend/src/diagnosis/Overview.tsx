@@ -1,38 +1,49 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import type { DiagnosisTabId } from "../events/diagnosisNav"
 import { L1ApiError, getDataset, runFullL1Pipeline } from "./l1/api"
 import { useL1Dataset } from "./l1/datasetContext"
 import type { PipelineStage } from "./l1/types"
+import {
+  getDiagnosisRoutingSummary,
+  getDiagnosisRun,
+  getDiagnosisWorkflow,
+  resumeL2Workflow,
+  type DiagnosisRoutingSummary,
+  type DiagnosisRunSummary,
+  type RoutingGroupSummary,
+  type WorkflowResponse,
+} from "./l2/api"
+import { saveL2HandoffFocus } from "./l2/handoffFocus"
+import { DiagnosticFlowCanvas } from "./overview/DiagnosticFlowCanvas"
+import {
+  aggregateRouting,
+  l1Passed,
+  progressFromRuns,
+  resolveFlowPhase,
+  resolveL2Main,
+  toneForL2,
+  type EquipmentItem,
+} from "./overview/flowModel"
+import { getAnalysisRunByDiagnosis, type AnalysisRunSummary } from "./l3/api"
+import { saveL3HandoffFocus } from "./overview/l3HandoffFocus"
 
-const LAYERS: { id: DiagnosisTabId; code: string; title: string; hint: string }[] = [
-  { id: "l1", code: "L1", title: "数据", hint: "接入 · 标准化 · 特征准备" },
-  { id: "l2", code: "L2", title: "调度", hint: "智能推理与任务编排" },
-  { id: "l3", code: "L3", title: "引擎", hint: "多引擎专业分析" },
-  { id: "l4", code: "L4", title: "证据", hint: "融合验证与不确定性" },
-  { id: "l5", code: "L5", title: "反馈", hint: "交付复核与知识回写" },
-]
+const L1_STEP_IDS = ["p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8"]
 
-const L1_STEPS: { id: string; label: string }[] = [
-  { id: "p0", label: "P0 接入" },
-  { id: "p1", label: "P1 区域" },
-  { id: "p2", label: "P2 分组" },
-  { id: "p3", label: "P3 映射" },
-  { id: "p4", label: "P4 标准化" },
-  { id: "p5", label: "P5 质量" },
-  { id: "p6", label: "P6 清洗" },
-  { id: "p7", label: "P7 特征" },
-  { id: "p8", label: "P8 发布" },
-]
-
-const L1_PASS = new Set(["completed", "completed_with_warnings", "partial"])
-
-function stagePassed(stages: PipelineStage[], stageId: string): boolean {
-  const stage = stages.find((item) => item.stage_id === stageId)
-  return Boolean(stage && L1_PASS.has(stage.status))
-}
-
-function l1Passed(stages: PipelineStage[]): boolean {
-  return L1_STEPS.every((step) => stagePassed(stages, step.id))
+function userMessage(raw: string | null | undefined, fallback: string): string {
+  if (!raw) return fallback
+  if (raw.includes("NO_ACTIVE_MODEL") || raw.includes("没有兼容") || raw.includes("暂无")) {
+    return "当前设备暂无可用诊断模型"
+  }
+  if (raw.includes("EQUIPMENT_CONFIG") || raw.includes("设备配置") || raw.includes("未确认") || raw.includes("新的设备")) {
+    return "检测到新的设备类别，请确认训练特征和故障标签"
+  }
+  if (raw.includes("DATASET_NOT_READY") || raw.includes("标签") || raw.includes("训练条件")) {
+    return "当前数据尚未满足诊断或训练条件"
+  }
+  if (raw.includes("SCHEMA")) {
+    return "当前数据与模型特征结构不兼容"
+  }
+  return raw
 }
 
 export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: DiagnosisTabId) => void }) {
@@ -43,7 +54,22 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
   const [notice, setNotice] = useState("")
   const [failed, setFailed] = useState(false)
   const [stages, setStages] = useState<PipelineStage[]>([])
+  const [workflow, setWorkflow] = useState<WorkflowResponse | null>(null)
+  const [runSummaries, setRunSummaries] = useState<Record<string, DiagnosisRunSummary>>({})
+  const [routingSummaries, setRoutingSummaries] = useState<DiagnosisRoutingSummary[]>([])
+  const [routingLoading, setRoutingLoading] = useState(false)
+  const [l3Runs, setL3Runs] = useState<Record<string, AnalysisRunSummary | null>>({})
+  const [reasonOpen, setReasonOpen] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
+
+  const l1Ok = l1Passed(stages, L1_STEP_IDS)
+  const handoff = workflow?.l2?.handoff
+  const l2Status = workflow?.l2?.status || handoff?.status
+  const equipmentItems = (handoff?.equipment_items || []) as EquipmentItem[]
+  const primaryItem = equipmentItems[0]
+  const l2Main = resolveL2Main(l2Status, l1Ok)
+  const phase = resolveFlowPhase(l1Ok, l2Main)
+  const l2Tone = toneForL2(l2Main)
 
   useEffect(() => {
     if (!selectedId) {
@@ -61,16 +87,158 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
     return () => controller.abort()
   }, [selectedId, notice])
 
+  useEffect(() => {
+    if (!selectedId || !l1Ok) {
+      setWorkflow(null)
+      return
+    }
+    let cancelled = false
+    const poll = async () => {
+      try {
+        let body = await getDiagnosisWorkflow(selectedId)
+        const st = body.l2?.status
+        if (!body.l2?.handoff || st === "waiting_for_l1") {
+          try {
+            await resumeL2Workflow(selectedId)
+            body = await getDiagnosisWorkflow(selectedId)
+          } catch {
+            /* 补偿失败时继续展示现有状态 */
+          }
+        }
+        if (cancelled) return
+        setWorkflow(body)
+      } catch {
+        /* 轮询失败不打断总览 */
+      }
+    }
+    void poll()
+    const timer = window.setInterval(() => void poll(), 2500)
+    return () => {
+      cancelled = true
+      window.clearInterval(timer)
+    }
+  }, [selectedId, l1Ok, notice])
+
+  useEffect(() => {
+    const runIds = equipmentItems.map((item) => item.diagnosis_run_id).filter(Boolean) as string[]
+    if (!runIds.length) {
+      setRunSummaries({})
+      return
+    }
+    let cancelled = false
+    Promise.all(
+      runIds.map(async (runId) => {
+        try {
+          return [runId, await getDiagnosisRun(runId)] as const
+        } catch {
+          return null
+        }
+      }),
+    ).then((rows) => {
+      if (cancelled) return
+      const next: Record<string, DiagnosisRunSummary> = {}
+      for (const row of rows) {
+        if (row) next[row[0]] = row[1]
+      }
+      setRunSummaries(next)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [equipmentItems])
+
+  useEffect(() => {
+    if (l2Main !== "已完成") {
+      setRoutingSummaries([])
+      setRoutingLoading(false)
+      return
+    }
+    const runIds = equipmentItems
+      .filter((item) => item.status === "completed" && item.diagnosis_run_id)
+      .map((item) => item.diagnosis_run_id as string)
+    if (!runIds.length) {
+      setRoutingSummaries([])
+      return
+    }
+    let cancelled = false
+    setRoutingLoading(true)
+    Promise.all(
+      runIds.map(async (runId) => {
+        try {
+          return await getDiagnosisRoutingSummary(runId)
+        } catch {
+          return null
+        }
+      }),
+    ).then((rows) => {
+      if (cancelled) return
+      setRoutingSummaries(rows.filter(Boolean) as DiagnosisRoutingSummary[])
+      setRoutingLoading(false)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [equipmentItems, l2Main])
+
+  useEffect(() => {
+    if (l2Main !== "已完成" || !routingSummaries.length) {
+      setL3Runs({})
+      return
+    }
+    const runIds = routingSummaries.map((item) => item.diagnosis_run_id)
+    let cancelled = false
+    async function pollL3() {
+      const next: Record<string, AnalysisRunSummary | null> = {}
+      await Promise.all(
+        runIds.map(async (runId) => {
+          try {
+            const body = await getAnalysisRunByDiagnosis(runId)
+            next[runId] = body.analysis_run
+          } catch {
+            next[runId] = null
+          }
+        }),
+      )
+      if (!cancelled) setL3Runs(next)
+    }
+    void pollL3()
+    const timer = window.setInterval(() => void pollL3(), 2500)
+    return () => {
+      cancelled = true
+      window.clearInterval(timer)
+    }
+  }, [routingSummaries, l2Main])
+
+  const progressText = useMemo(() => progressFromRuns(runSummaries, l2Main), [runSummaries, l2Main])
+  const routing = useMemo(() => (routingSummaries.length ? aggregateRouting(routingSummaries) : null), [routingSummaries])
+
+  const multiHint = useMemo(() => {
+    if (equipmentItems.length <= 1) return null
+    const done = equipmentItems.filter((item) => item.status === "completed").length
+    const pendingTrain = equipmentItems.filter((item) => item.status === "training_confirmation_required").length
+    return `${done}/${equipmentItems.length} 类设备已处理${pendingTrain ? `，${pendingTrain} 类等待训练` : ""}`
+  }, [equipmentItems])
+
+  const reasonText = useMemo(() => {
+    const parts = [handoff?.error_message, primaryItem?.message].filter(Boolean) as string[]
+    if (!parts.length) return "暂无更多说明。"
+    return [...new Set(parts.map((item) => userMessage(item, item)))].join("；")
+  }, [handoff?.error_message, primaryItem?.message])
+
   async function onFile(file: File | undefined) {
     if (!file) return
     setBusy(true)
     setFailed(false)
     setNotice("正在上传文件…")
+    setWorkflow(null)
+    setRunSummaries({})
+    setRoutingSummaries([])
+    setReasonOpen(false)
     try {
       const nextId = await addFile(file, { encoding, delimiter })
       const afterUpload = await getDataset(nextId)
       setStages(afterUpload.stages ?? [])
-      setNotice("上传完成，正在自动执行 L1 数据处理流水线…")
+      setNotice("上传完成，正在自动执行 L1…")
       const { prepare } = await runFullL1Pipeline(
         nextId,
         setNotice,
@@ -78,13 +246,19 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
       )
       const detail = await getDataset(nextId)
       setStages(detail.stages ?? [])
-      const ready = l1Passed(detail.stages ?? [])
+      const ready = l1Passed(detail.stages ?? [], L1_STEP_IDS)
       setFailed(!ready)
-      setNotice(
-        ready
-          ? `已完成 L1 准备（${prepare.status}）。版本 ${prepare.version_id || "—"}。点击下方 L1 进入技术诊断体系。`
-          : `L1 流水线已结束，状态 ${prepare.status}，尚未全部通过。可点击 L1 查看详情。`,
-      )
+      if (ready) {
+        setNotice(`L1 已完成（${prepare.version_id || "—"}）。正在自动衔接 L2…`)
+        try {
+          await resumeL2Workflow(nextId)
+          setWorkflow(await getDiagnosisWorkflow(nextId))
+        } catch {
+          /* Worker 会继续处理已入队任务 */
+        }
+      } else {
+        setNotice(`L1 未全部通过（${prepare.status}）。可进入 L1 查看步骤。`)
+      }
     } catch (error: unknown) {
       setFailed(true)
       setNotice(error instanceof L1ApiError || error instanceof Error ? error.message : "文件处理没有完成。")
@@ -94,14 +268,88 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
     }
   }
 
-  const l1Ok = l1Passed(stages)
+  function focusBase() {
+    const run = primaryItem?.diagnosis_run_id ? runSummaries[primaryItem.diagnosis_run_id] : undefined
+    return {
+      dataset_id: selectedId || undefined,
+      equipment_type: primaryItem?.equipment_type || undefined,
+      ped_id: primaryItem?.ped_id || undefined,
+      prepared_dataset_id: primaryItem?.ped_id || undefined,
+      dataset_revision_id: run?.dataset_revision_id || primaryItem?.ped_revision_id || undefined,
+      diagnosis_run_id: primaryItem?.diagnosis_run_id || undefined,
+    }
+  }
+
+  function openResults() {
+    saveL2HandoffFocus({ ...focusBase(), view: "diagnosis" })
+    onOpenLayer("l2")
+  }
+
+  function openTraining() {
+    saveL2HandoffFocus({
+      ...focusBase(),
+      view: "training",
+      reason: userMessage(primaryItem?.message, "当前设备暂无可用诊断模型"),
+    })
+    onOpenLayer("l2")
+  }
+
+  function openConfigure() {
+    const details = (primaryItem?.details || {}) as {
+      onboarding_id?: string
+      onboarding?: { display_name_candidate?: string }
+    }
+    saveL2HandoffFocus({
+      ...focusBase(),
+      view: "training",
+      onboarding_id: details.onboarding_id,
+      pd_revision_id: workflow?.l1?.pd_version_id || handoff?.pd_version_id || undefined,
+      handoff_id: handoff?.handoff_id,
+      handoff_item_id: primaryItem?.item_id,
+      equipment_category: primaryItem?.equipment_category || undefined,
+      reason: "检测到新的设备类别，请确认训练特征和故障标签。",
+    })
+    onOpenLayer("l2")
+  }
+
+  function retryL2() {
+    if (!selectedId) return
+    void resumeL2Workflow(selectedId)
+      .then(async () => setWorkflow(await getDiagnosisWorkflow(selectedId)))
+      .catch(() => setNotice("L2 重试未能启动，请稍后刷新。"))
+  }
+
+  function openL3(branch: RoutingGroupSummary, summary?: DiagnosisRoutingSummary) {
+    saveL3HandoffFocus({
+      contract_version: "l2_l3_handoff_v1",
+      equipment_type: branch.equipment_type,
+      equipment_id: branch.equipment_id,
+      equipment_group_id: branch.equipment_group_id,
+      display_name: branch.display_name,
+      record_ids: branch.l3_record_ids,
+      prepared_dataset_id: summary?.prepared_dataset_id,
+      dataset_revision_id: summary?.dataset_revision_id,
+      model_bundle_id: summary?.model_bundle_id,
+      diagnosis_run_id: summary?.diagnosis_run_id,
+      trigger_reason: "auto_review",
+      conflict_count: branch.conflict_count,
+      uncertain_count: branch.uncertain_count,
+      abnormal_count: branch.abnormal_count,
+      l3_review_count: branch.l3_review_count,
+      reason: "L2 分流建议进入 L3（ABNORMAL / CONFLICT / UNCERTAIN，auto_review）。",
+    })
+    onOpenLayer("l3")
+  }
 
   return (
     <section className="dx-control-overview" aria-label="诊断与控制总览">
       <header className="dx-control-head">
         <div>
-          <h3>数据接入</h3>
-          <p className="dx-control-meta">当前数据集：{filename || "尚未添加"}{status ? ` · ${status}` : ""}</p>
+          <h3>诊断与控制总览</h3>
+          <p className="dx-control-meta">
+            当前数据集：{filename || "尚未添加"}
+            {status ? ` · ${status}` : ""}
+          </p>
         </div>
         <div className="dx-control-upload">
           <select aria-label="文件编码" value={encoding} disabled={busy} onChange={(event) => setEncoding(event.target.value)}>
@@ -138,41 +386,44 @@ export function DiagnosticOverview({ onOpenLayer }: { onOpenLayer: (id: Diagnosi
         </p>
       ) : (
         <p className="dx-control-note" role="status">
-          添加 CSV/XLSX 后将自动执行 L1 数据处理 Pipeline（P0–P8）。
+          上传文件后将自动执行可完成的步骤。流程图按实际阶段展开：L1 数据治理 → L2 筛查 → 需复核对象分流到 L3。
         </p>
       )}
 
-      <ol className="dx-layer-flow" aria-label="L1 至 L5 诊断流程">
-        {LAYERS.map((layer) => {
-          const passed = layer.id === "l1" ? l1Ok : false
-          const tone = passed ? "is-pass" : "is-fail"
-          return (
-            <li key={layer.id} className="dx-layer-step">
-              <button type="button" className={`dx-layer-node ${tone}`} onClick={() => onOpenLayer(layer.id)}>
-                <span className="dx-layer-code">{layer.code}</span>
-                <strong>{layer.title}</strong>
-                <small>{layer.hint}</small>
-                <em>{passed ? "已完成" : "未完成"}</em>
-              </button>
-              {layer.id === "l1" ? (
-                <ul className="dx-l1-checklist" aria-label="L1 Pipeline P0–P8">
-                  {L1_STEPS.map((step) => {
-                    const done = stagePassed(stages, step.id)
-                    return (
-                      <li key={step.id} className={done ? "is-done" : undefined}>
-                        <span className="dx-l1-check" aria-hidden="true">
-                          {done ? "✓" : ""}
-                        </span>
-                        <span>{step.label}</span>
-                      </li>
-                    )
-                  })}
-                </ul>
-              ) : null}
-            </li>
-          )
-        })}
-      </ol>
+      <DiagnosticFlowCanvas
+        phase={phase}
+        stages={stages}
+        l1Ok={l1Ok}
+        l1Busy={busy || Boolean(stages.length && !l1Ok && !failed)}
+        l2Main={l2Main}
+        l2Tone={l2Tone}
+        progressText={progressText}
+        multiHint={multiHint}
+        routing={routing}
+        routingLoading={routingLoading}
+        summaries={routingSummaries}
+        l3Runs={l3Runs}
+        reasonText={reasonText}
+        reasonOpen={reasonOpen}
+        actions={{
+          showViewResults: l2Main === "已完成",
+          showGoTrain: l2Main === "待训练" || l2Status === "model_activation_required",
+          showConfigure: l2Main === "需要首次配置",
+          showViewReason:
+            l2Main === "需要处理" || l2Main === "执行失败" || l2Main === "待训练" || l2Main === "需要首次配置",
+          showRetry: l2Main === "执行失败",
+          showEnterL2: l2Main === "需要处理" && l2Status !== "model_activation_required",
+          showEnterL1: !l1Ok && stages.length > 0,
+        }}
+        onOpenResults={openResults}
+        onOpenTraining={openTraining}
+        onOpenConfigure={openConfigure}
+        onOpenReason={() => setReasonOpen(true)}
+        onRetry={retryL2}
+        onEnterL2={() => onOpenLayer("l2")}
+        onEnterL1={() => onOpenLayer("l1")}
+        onEnterL3={openL3}
+      />
     </section>
   )
 }

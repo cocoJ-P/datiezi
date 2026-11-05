@@ -1,0 +1,18 @@
+equipment_type: high_pressure_descaling_pump
+template_version: spectral_patterns_v1
+
+patterns:
+  轴承磨损:
+    description: 典型轴承故障可能伴随轴承特征频率及谐波成分增强。
+    related_features:
+      - BPFO幅值(g)
+      - BPFI幅值(g)
+      - BSF幅值(g)
+      - 包络谱峰值(g)
+
+  转子不平衡:
+    description: 典型转子不平衡通常表现为1X转频相关振动成分增强。
+    related_features:
+      - 1X转频幅值(mm/s)
+      - X向振动(mm/s)
+      - Y向振动(mm/s)

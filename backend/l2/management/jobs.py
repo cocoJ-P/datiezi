@@ -36,6 +36,25 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _parse_training_config(raw: str | None) -> dict[str, Any]:
+    try:
+        payload = json.loads(raw or "{}")
+    except json.JSONDecodeError:
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def enrich_job(row: dict[str, Any]) -> dict[str, Any]:
+    """把 training_config_json 中的谱系字段提升到任务响应顶层。"""
+    out = dict(row)
+    cfg = _parse_training_config(out.get("training_config_json"))
+    train_mode = cfg.get("train_mode")
+    out["train_mode"] = train_mode if train_mode in {"new", "retrain"} else "new"
+    parent = cfg.get("parent_model_bundle_id")
+    out["parent_model_bundle_id"] = parent if parent else None
+    return out
+
+
 def create_training_job(
     connection: sqlite3.Connection,
     config: ManagementConfig,
@@ -43,6 +62,7 @@ def create_training_job(
     equipment_type: str,
     dataset_id: str,
     prepared_dataset_id: str | None = None,
+    parent_model_bundle_id: str | None = None,
 ) -> dict[str, Any]:
     source_type = "legacy_csv"
     prepared_meta: dict[str, Any] | None = None
@@ -97,6 +117,8 @@ def create_training_job(
     created_at = _now()
     log_path = str((config.logs_root / f"{job_id}.log").resolve())
     config.logs_root.mkdir(parents=True, exist_ok=True)
+    parent_id = (parent_model_bundle_id or "").strip() or None
+    train_mode = "retrain" if parent_id else "new"
     connection.execute(
         """
         INSERT INTO training_jobs (
@@ -121,6 +143,8 @@ def create_training_job(
                     "l1_prepared_version_id": None
                     if prepared_meta is None
                     else prepared_meta.get("l1_prepared_version_id"),
+                    "train_mode": train_mode,
+                    "parent_model_bundle_id": parent_id,
                 },
                 ensure_ascii=False,
             ),
@@ -148,7 +172,7 @@ def get_job(connection: sqlite3.Connection, job_id: str) -> dict[str, Any]:
     row = connection.execute("SELECT * FROM training_jobs WHERE job_id = ?", (job_id,)).fetchone()
     if row is None:
         raise KeyError(job_id)
-    return dict(row)
+    return enrich_job(dict(row))
 
 
 def list_jobs(
@@ -175,7 +199,12 @@ def list_jobs(
             "SELECT * FROM training_jobs ORDER BY created_at DESC LIMIT ? OFFSET ?",
             (limit, offset),
         ).fetchall()
-    return {"total": total, "offset": offset, "limit": limit, "jobs": [dict(row) for row in rows]}
+    return {
+        "total": total,
+        "offset": offset,
+        "limit": limit,
+        "jobs": [enrich_job(dict(row)) for row in rows],
+    }
 
 
 def claim_next_job(connection: sqlite3.Connection, *, worker_pid: int) -> dict[str, Any] | None:

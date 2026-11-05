@@ -27,15 +27,15 @@ export const DIAGNOSIS_GROUPS = [
       {
         id: "l2",
         prefix: "L2",
-        label: "调度",
+        label: "筛查",
         crumb: "诊断技术体系 / L2",
-        title: "智能推理与调度",
-        summary: "任务编排 · 工具选择 · 推理轮次",
+        title: "设备状态筛查与初步故障诊断",
+        summary: "双分类器概率 · 模型管理 · 训练任务",
       },
       {
         id: "l3",
         prefix: "L3",
-        label: "引擎",
+        label: "诊断引擎",
         crumb: "诊断技术体系 / L3",
         title: "多引擎分析",
         summary: "物理规则 · 统计分析 · 机器学习 · 概率推断 · Transformer",
@@ -43,10 +43,10 @@ export const DIAGNOSIS_GROUPS = [
       {
         id: "l4",
         prefix: "L4",
-        label: "证据",
+        label: "根因",
         crumb: "诊断技术体系 / L4",
-        title: "诊断证据融合与验证",
-        summary: "支持证据 · 反证 · 物理一致性 · 不确定性",
+        title: "根因候选与潜在影响",
+        summary: "因果候选 · 验证条件 · 拓扑潜在影响（未确认）",
       },
       {
         id: "l5",

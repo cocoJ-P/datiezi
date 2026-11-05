@@ -1,0 +1,39 @@
+equipment_type: main_mill_motor
+rule_version: mill_thresholds_v1
+
+rules:
+  - rule_id: mill_vib_x_alarm
+    equipment_scope: main_mill_motor
+    parameter: X向振动(mm/s)
+    unit: mm/s
+    threshold: 7.1
+    threshold_type: upper_alarm
+    source_reference: ISO10816-class-ref-internal
+    rule_version: mill_thresholds_v1
+
+  - rule_id: mill_vib_y_alarm
+    equipment_scope: main_mill_motor
+    parameter: Y向振动(mm/s)
+    unit: mm/s
+    threshold: 7.1
+    threshold_type: upper_alarm
+    source_reference: ISO10816-class-ref-internal
+    rule_version: mill_thresholds_v1
+
+  - rule_id: mill_bearing_temp_de_alarm
+    equipment_scope: main_mill_motor
+    parameter: 驱动端轴承温度(°C)
+    unit: "°C"
+    threshold: 85
+    threshold_type: upper_alarm
+    source_reference: plant-bearing-temp-guideline
+    rule_version: mill_thresholds_v1
+
+  - rule_id: mill_bearing_temp_nde_alarm
+    equipment_scope: main_mill_motor
+    parameter: 非驱动端轴承温度(°C)
+    unit: "°C"
+    threshold: 85
+    threshold_type: upper_alarm
+    source_reference: plant-bearing-temp-guideline
+    rule_version: mill_thresholds_v1

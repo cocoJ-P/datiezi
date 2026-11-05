@@ -33,8 +33,22 @@ def _load_config() -> dict[str, Any]:
     return yaml.safe_load(_CONFIG.read_text(encoding="utf-8")) or {}
 
 
+def _load_runtime_mappings() -> list[dict[str, Any]]:
+    try:
+        from l2.equipment.registry import runtime_config_dir
+
+        path = runtime_config_dir() / "mappings.yaml"
+        if not path.is_file():
+            return []
+        payload = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        return list(payload.get("mappings") or [])
+    except Exception:  # noqa: BLE001
+        return []
+
+
 def _load_rules() -> list[dict[str, Any]]:
-    return list(_load_config().get("mappings") or [])
+    # 运行时映射优先（新设备 Onboarding 写入）
+    return list(_load_runtime_mappings()) + list(_load_config().get("mappings") or [])
 
 
 def load_feature_bridges(equipment_type: str) -> list[dict[str, Any]]:

@@ -1,0 +1,662 @@
+{
+  "model_id": "L5P-f037a960e2e1",
+  "targets": {
+    "故障位置": {
+      "by_equipment": {
+        "主轧机电机": {
+          "n_valid": 801,
+          "accuracy": 0.6392009987515606,
+          "macro_f1": 0.42122773222407356,
+          "n_classes": 5,
+          "label_support": {
+            "电机转子": 89,
+            "-": 400,
+            "电机绕组": 111,
+            "非驱动端轴承": 99,
+            "驱动端轴承": 102
+          },
+          "rare_labels_support_le_3": [],
+          "top_confusions": [
+            {
+              "true": "电机绕组",
+              "pred": "驱动端轴承",
+              "count": 33
+            },
+            {
+              "true": "驱动端轴承",
+              "pred": "电机绕组",
+              "count": 27
+            },
+            {
+              "true": "非驱动端轴承",
+              "pred": "驱动端轴承",
+              "count": 25
+            },
+            {
+              "true": "电机转子",
+              "pred": "电机绕组",
+              "count": 24
+            },
+            {
+              "true": "电机转子",
+              "pred": "驱动端轴承",
+              "count": 24
+            },
+            {
+              "true": "电机绕组",
+              "pred": "电机转子",
+              "count": 24
+            },
+            {
+              "true": "电机转子",
+              "pred": "非驱动端轴承",
+              "count": 23
+            },
+            {
+              "true": "驱动端轴承",
+              "pred": "非驱动端轴承",
+              "count": 23
+            }
+          ],
+          "train_val_gap_note": "see metrics fit_repro vs internal_val in bundle"
+        },
+        "主减速机/齿轮箱": {
+          "n_valid": 800,
+          "accuracy": 0.5275,
+          "macro_f1": 0.20945815914160487,
+          "n_classes": 9,
+          "label_support": {
+            "二级齿轮副": 50,
+            "中间轴": 58,
+            "-": 374,
+            "低速级轴承": 42,
+            "中间级轴承": 50,
+            "输入轴": 66,
+            "一级齿轮副": 59,
+            "高速级轴承": 47,
+            "输出轴": 54
+          },
+          "rare_labels_support_le_3": [],
+          "top_confusions": [
+            {
+              "true": "输入轴",
+              "pred": "低速级轴承",
+              "count": 19
+            },
+            {
+              "true": "一级齿轮副",
+              "pred": "高速级轴承",
+              "count": 16
+            },
+            {
+              "true": "输入轴",
+              "pred": "高速级轴承",
+              "count": 13
+            },
+            {
+              "true": "中间级轴承",
+              "pred": "高速级轴承",
+              "count": 12
+            },
+            {
+              "true": "中间轴",
+              "pred": "高速级轴承",
+              "count": 12
+            },
+            {
+              "true": "中间轴",
+              "pred": "低速级轴承",
+              "count": 12
+            },
+            {
+              "true": "高速级轴承",
+              "pred": "低速级轴承",
+              "count": 11
+            },
+            {
+              "true": "二级齿轮副",
+              "pred": "高速级轴承",
+              "count": 11
+            }
+          ],
+          "train_val_gap_note": "see metrics fit_repro vs internal_val in bundle"
+        },
+        "冷却水循环泵": {
+          "n_valid": 801,
+          "accuracy": 0.5980024968789014,
+          "macro_f1": 0.34822610115287783,
+          "n_classes": 6,
+          "label_support": {
+            "叶轮侧轴承": 90,
+            "泵轴": 83,
+            "-": 390,
+            "叶轮": 85,
+            "联轴器侧轴承": 75,
+            "机封": 78
+          },
+          "rare_labels_support_le_3": [],
+          "top_confusions": [
+            {
+              "true": "叶轮",
+              "pred": "叶轮侧轴承",
+              "count": 30
+            },
+            {
+              "true": "叶轮侧轴承",
+              "pred": "叶轮",
+              "count": 30
+            },
+            {
+              "true": "泵轴",
+              "pred": "叶轮",
+              "count": 26
+            },
+            {
+              "true": "泵轴",
+              "pred": "叶轮侧轴承",
+              "count": 23
+            },
+            {
+              "true": "叶轮",
+              "pred": "机封",
+              "count": 23
+            },
+            {
+              "true": "联轴器侧轴承",
+              "pred": "叶轮",
+              "count": 19
+            },
+            {
+              "true": "机封",
+              "pred": "叶轮",
+              "count": 17
+            },
+            {
+              "true": "机封",
+              "pred": "泵轴",
+              "count": 17
+            }
+          ],
+          "train_val_gap_note": "see metrics fit_repro vs internal_val in bundle"
+        },
+        "加热炉助燃风机": {
+          "n_valid": 795,
+          "accuracy": 0.9157232704402516,
+          "macro_f1": 0.6894719541228211,
+          "n_classes": 7,
+          "label_support": {
+            "转子": 213,
+            "-": 416,
+            "转子严重不平衡": 52,
+            "非驱动端轴承": 51,
+            "驱动端轴承": 34,
+            "非驱动端轴承严重磨损": 15,
+            "驱动端轴承严重磨损": 14
+          },
+          "rare_labels_support_le_3": [],
+          "top_confusions": [
+            {
+              "true": "驱动端轴承",
+              "pred": "非驱动端轴承",
+              "count": 24
+            },
+            {
+              "true": "非驱动端轴承",
+              "pred": "驱动端轴承",
+              "count": 16
+            },
+            {
+              "true": "非驱动端轴承严重磨损",
+              "pred": "驱动端轴承严重磨损",
+              "count": 10
+            },
+            {
+              "true": "转子",
+              "pred": "-",
+              "count": 9
+            },
+            {
+              "true": "驱动端轴承严重磨损",
+              "pred": "非驱动端轴承严重磨损",
+              "count": 4
+            },
+            {
+              "true": "-",
+              "pred": "转子",
+              "count": 2
+            },
+            {
+              "true": "驱动端轴承",
+              "pred": "转子",
+              "count": 1
+            },
+            {
+              "true": "非驱动端轴承严重磨损",
+              "pred": "转子严重不平衡",
+              "count": 1
+            }
+          ],
+          "train_val_gap_note": "see metrics fit_repro vs internal_val in bundle"
+        },
+        "高压除鳞泵": {
+          "n_valid": 802,
+          "accuracy": 0.8877805486284289,
+          "macro_f1": 0.7369331768974187,
+          "n_classes": 7,
+          "label_support": {
+            "驱动端轴承": 62,
+            "非驱动端轴承": 78,
+            "转子": 156,
+            "-": 396,
+            "驱动端轴承严重磨损": 31,
+            "转子严重不平衡": 56,
+            "非驱动端轴承严重磨损": 23
+          },
+          "rare_labels_support_le_3": [],
+          "top_confusions": [
+            {
+              "true": "非驱动端轴承",
+              "pred": "驱动端轴承",
+              "count": 43
+            },
+            {
+              "true": "驱动端轴承",
+              "pred": "非驱动端轴承",
+              "count": 24
+            },
+            {
+              "true": "非驱动端轴承严重磨损",
+              "pred": "驱动端轴承严重磨损",
+              "count": 13
+            },
+            {
+              "true": "驱动端轴承严重磨损",
+              "pred": "非驱动端轴承严重磨损",
+              "count": 8
+            },
+            {
+              "true": "非驱动端轴承严重磨损",
+              "pred": "转子严重不平衡",
+              "count": 1
+            },
+            {
+              "true": "驱动端轴承",
+              "pred": "-",
+              "count": 1
+            }
+          ],
+          "train_val_gap_note": "see metrics fit_repro vs internal_val in bundle"
+        },
+        "连铸机扇形段驱动电机": {
+          "n_valid": 798,
+          "accuracy": 0.9097744360902256,
+          "macro_f1": 0.7652523171394013,
+          "n_classes": 9,
+          "label_support": {
+            "转子严重不平衡": 39,
+            "-": 402,
+            "非驱动端轴承": 51,
+            "转子": 141,
+            "齿轮啮合区": 41,
+            "齿轮严重损伤": 43,
+            "非驱动端轴承严重磨损": 19,
+            "驱动端轴承": 41,
+            "驱动端轴承严重磨损": 21
+          },
+          "rare_labels_support_le_3": [],
+          "top_confusions": [
+            {
+              "true": "驱动端轴承",
+              "pred": "非驱动端轴承",
+              "count": 24
+            },
+            {
+              "true": "非驱动端轴承",
+              "pred": "驱动端轴承",
+              "count": 15
+            },
+            {
+              "true": "驱动端轴承严重磨损",
+              "pred": "非驱动端轴承严重磨损",
+              "count": 13
+            },
+            {
+              "true": "非驱动端轴承严重磨损",
+              "pred": "驱动端轴承严重磨损",
+              "count": 8
+            },
+            {
+              "true": "转子",
+              "pred": "-",
+              "count": 4
+            },
+            {
+              "true": "齿轮啮合区",
+              "pred": "转子",
+              "count": 2
+            },
+            {
+              "true": "-",
+              "pred": "转子",
+              "count": 2
+            },
+            {
+              "true": "非驱动端轴承",
+              "pred": "-",
+              "count": 1
+            }
+          ],
+          "train_val_gap_note": "see metrics fit_repro vs internal_val in bundle"
+        }
+      },
+      "summary": {
+        "mean_accuracy": 0.7463302917982281,
+        "mean_macro_f1": 0.5284282401130329,
+        "weakest_equipment": "主减速机/齿轮箱",
+        "patterns": [
+          "same_fault_different_component_locations_often_confused",
+          "similar_root_cause_templates_overlap",
+          "equipment_specific_phrasing_not_shared",
+          "majority_normal_dash_location_dominates"
+        ]
+      }
+    },
+    "根因分析": {
+      "by_equipment": {
+        "主轧机电机": {
+          "n_valid": 801,
+          "accuracy": 0.6916354556803995,
+          "macro_f1": 0.3395791978497371,
+          "n_classes": 14,
+          "label_support": {
+            "新换转子动平衡未达标，G2.5级以上": 22,
+            "润滑脂牌号错误（应使用SKF LGEP-2，实际混用LGEP-1）": 17,
+            "轴承温度持续高位（>80°C）伴随油脂流失": 21,
+            "设备运行正常，各项指标在限值以内": 400,
+            "其他原因待现场确认": 74,
+            "轴承室润滑油位低于下视孔，脂润滑补给不及时": 21,
+            "转子绕组绝缘老化导致局部质量偏移（少见但偶发）": 28,
+            "轴承内圈与轴颈配合松动（微动磨损），呈现内圈特征频率处明显峰值": 35,
+            "驱动端轴承滚道出现点蚀/剥落，疑似长期重载+润滑不足导致接触疲劳": 39,
+            "轴承外圈滚道磨损，外圈特征频率及其谐波主导包络谱": 31,
+            "非驱动端轴承保持架磨损断裂，伴随保持架兜孔间隙扩大": 40,
+            "联轴器两半不对中加重兼转子质量偏心，多阶1X相位变化": 28,
+            "润滑油乳化变质（含水），油液检测含水率>0.1%": 19,
+            "转子风扇叶片积灰不均（除尘风机侧），1X幅值持续上升": 26
+          },
+          "rare_labels_support_le_3": [],
+          "top_confusions": [
+            {
+              "true": "转子绕组绝缘老化导致局部质量偏移（少见但偶发）",
+              "pred": "新换转子动平衡未达标，G2.5级以上",
+              "count": 16
+            },
+            {
+              "true": "驱动端轴承滚道出现点蚀/剥落，疑似长期重载+润滑不足导致接触疲劳",
+              "pred": "轴承外圈滚道磨损，外圈特征频率及其谐波主导包络谱",
+              "count": 16
+            },
+            {
+              "true": "联轴器两半不对中加重兼转子质量偏心，多阶1X相位变化",
+              "pred": "新换转子动平衡未达标，G2.5级以上",
+              "count": 15
+            },
+            {
+              "true": "非驱动端轴承保持架磨损断裂，伴随保持架兜孔间隙扩大",
+              "pred": "轴承外圈滚道磨损，外圈特征频率及其谐波主导包络谱",
+              "count": 14
+            },
+            {
+              "true": "轴承内圈与轴颈配合松动（微动磨损），呈现内圈特征频率处明显峰值",
+              "pred": "非驱动端轴承保持架磨损断裂，伴随保持架兜孔间隙扩大",
+              "count": 14
+            },
+            {
+              "true": "轴承室润滑油位低于下视孔，脂润滑补给不及时",
+              "pred": "润滑脂牌号错误（应使用SKF LGEP-2，实际混用LGEP-1）",
+              "count": 10
+            },
+            {
+              "true": "轴承外圈滚道磨损，外圈特征频率及其谐波主导包络谱",
+              "pred": "非驱动端轴承保持架磨损断裂，伴随保持架兜孔间隙扩大",
+              "count": 10
+            },
+            {
+              "true": "轴承内圈与轴颈配合松动（微动磨损），呈现内圈特征频率处明显峰值",
+              "pred": "轴承外圈滚道磨损，外圈特征频率及其谐波主导包络谱",
+              "count": 10
+            }
+          ],
+          "train_val_gap_note": "see metrics fit_repro vs internal_val in bundle"
+        },
+        "主减速机/齿轮箱": {
+          "n_valid": 800,
+          "accuracy": 0.66375,
+          "macro_f1": 0.37033004714234,
+          "n_classes": 14,
+          "label_support": {
+            "油路堵塞（滤油器压差>0.5bar），润滑不足": 14,
+            "使用油品与设计不符（应使用320#工业齿轮油）": 18,
+            "设备运行正常，各项指标在限值以内": 374,
+            "低速级轴承保持架磨损，振动幅值游动": 55,
+            "高速轴转子动平衡超标，1X幅值随负荷增大": 67,
+            "齿轮断齿（1-2齿），啮合频率处出现明显调制+冲击": 24,
+            "中间轴轴承保持架断裂，伴随周期性冲击": 56,
+            "高速级轴承外圈剥落，特征频率96.8Hz幅值明显": 44,
+            "一级齿轮啮合齿面胶合，齿面温度与啮合频率边带同步上升": 18,
+            "齿轮箱润滑油温持续>80°C，润滑油氧化失效": 15,
+            "齿轮偏载（齿宽方向载荷分布不均），1X啮合边带突出": 23,
+            "输入轴弯曲（弯曲量0.08mm），2X分量渐显": 50,
+            "二级齿轮齿根裂纹扩展，啮合频率边带密集": 22,
+            "齿轮箱呼吸器堵塞导致内压升高，密封渗漏": 20
+          },
+          "rare_labels_support_le_3": [],
+          "top_confusions": [
+            {
+              "true": "高速轴转子动平衡超标，1X幅值随负荷增大",
+              "pred": "输入轴弯曲（弯曲量0.08mm），2X分量渐显",
+              "count": 34
+            },
+            {
+              "true": "输入轴弯曲（弯曲量0.08mm），2X分量渐显",
+              "pred": "高速轴转子动平衡超标，1X幅值随负荷增大",
+              "count": 22
+            },
+            {
+              "true": "低速级轴承保持架磨损，振动幅值游动",
+              "pred": "中间轴轴承保持架断裂，伴随周期性冲击",
+              "count": 21
+            },
+            {
+              "true": "低速级轴承保持架磨损，振动幅值游动",
+              "pred": "高速级轴承外圈剥落，特征频率96.8Hz幅值明显",
+              "count": 21
+            },
+            {
+              "true": "中间轴轴承保持架断裂，伴随周期性冲击",
+              "pred": "低速级轴承保持架磨损，振动幅值游动",
+              "count": 18
+            },
+            {
+              "true": "中间轴轴承保持架断裂，伴随周期性冲击",
+              "pred": "高速级轴承外圈剥落，特征频率96.8Hz幅值明显",
+              "count": 16
+            },
+            {
+              "true": "高速级轴承外圈剥落，特征频率96.8Hz幅值明显",
+              "pred": "低速级轴承保持架磨损，振动幅值游动",
+              "count": 12
+            },
+            {
+              "true": "齿轮偏载（齿宽方向载荷分布不均），1X啮合边带突出",
+              "pred": "二级齿轮齿根裂纹扩展，啮合频率边带密集",
+              "count": 10
+            }
+          ],
+          "train_val_gap_note": "see metrics fit_repro vs internal_val in bundle"
+        },
+        "冷却水循环泵": {
+          "n_valid": 801,
+          "accuracy": 0.7652933832709113,
+          "macro_f1": 0.5025037361787116,
+          "n_classes": 10,
+          "label_support": {
+            "其他原因待现场确认": 84,
+            "机封泄漏进水，轴承进水失效": 21,
+            "叶轮侧轴承外圈滚道剥落（受水流冲刷影响）": 74,
+            "设备运行正常，各项指标在限值以内": 390,
+            "联轴器侧轴承内圈点蚀，振动特征频率谐波丰富": 99,
+            "叶轮结垢不均（部分区域垢厚5mm+）": 35,
+            "轴承室润滑油乳化（含水），伴随温度异常": 29,
+            "叶轮与轴配合松动，1X幅值持续上升": 30,
+            "轴承脂润滑不足，运行温度持续>75°C": 22,
+            "叶轮局部气蚀，材质缺失导致质量偏心": 17
+          },
+          "rare_labels_support_le_3": [],
+          "top_confusions": [
+            {
+              "true": "联轴器侧轴承内圈点蚀，振动特征频率谐波丰富",
+              "pred": "叶轮侧轴承外圈滚道剥落（受水流冲刷影响）",
+              "count": 60
+            },
+            {
+              "true": "叶轮侧轴承外圈滚道剥落（受水流冲刷影响）",
+              "pred": "联轴器侧轴承内圈点蚀，振动特征频率谐波丰富",
+              "count": 29
+            },
+            {
+              "true": "叶轮结垢不均（部分区域垢厚5mm+）",
+              "pred": "叶轮与轴配合松动，1X幅值持续上升",
+              "count": 11
+            },
+            {
+              "true": "叶轮结垢不均（部分区域垢厚5mm+）",
+              "pred": "叶轮局部气蚀，材质缺失导致质量偏心",
+              "count": 10
+            },
+            {
+              "true": "轴承室润滑油乳化（含水），伴随温度异常",
+              "pred": "机封泄漏进水，轴承进水失效",
+              "count": 10
+            },
+            {
+              "true": "轴承室润滑油乳化（含水），伴随温度异常",
+              "pred": "轴承脂润滑不足，运行温度持续>75°C",
+              "count": 10
+            },
+            {
+              "true": "轴承脂润滑不足，运行温度持续>75°C",
+              "pred": "机封泄漏进水，轴承进水失效",
+              "count": 10
+            },
+            {
+              "true": "机封泄漏进水，轴承进水失效",
+              "pred": "轴承脂润滑不足，运行温度持续>75°C",
+              "count": 10
+            }
+          ],
+          "train_val_gap_note": "see metrics fit_repro vs internal_val in bundle"
+        },
+        "加热炉助燃风机": {
+          "n_valid": 795,
+          "accuracy": 0.9911949685534591,
+          "macro_f1": 0.9919852354062881,
+          "n_classes": 4,
+          "label_support": {
+            "早期磨损或轻微不平衡": 168,
+            "正常运行": 416,
+            "故障快速发展，存在失效风险": 81,
+            "故障特征明确，建议尽快检修": 130
+          },
+          "rare_labels_support_le_3": [],
+          "top_confusions": [
+            {
+              "true": "早期磨损或轻微不平衡",
+              "pred": "正常运行",
+              "count": 5
+            },
+            {
+              "true": "正常运行",
+              "pred": "早期磨损或轻微不平衡",
+              "count": 1
+            },
+            {
+              "true": "故障特征明确，建议尽快检修",
+              "pred": "早期磨损或轻微不平衡",
+              "count": 1
+            }
+          ],
+          "train_val_gap_note": "see metrics fit_repro vs internal_val in bundle"
+        },
+        "高压除鳞泵": {
+          "n_valid": 802,
+          "accuracy": 0.9987531172069826,
+          "macro_f1": 0.9982014169917484,
+          "n_classes": 4,
+          "label_support": {
+            "故障特征明确，建议尽快检修": 111,
+            "早期磨损或轻微不平衡": 185,
+            "正常运行": 396,
+            "故障快速发展，存在失效风险": 110
+          },
+          "rare_labels_support_le_3": [],
+          "top_confusions": [
+            {
+              "true": "早期磨损或轻微不平衡",
+              "pred": "故障特征明确，建议尽快检修",
+              "count": 1
+            }
+          ],
+          "train_val_gap_note": "see metrics fit_repro vs internal_val in bundle"
+        },
+        "连铸机扇形段驱动电机": {
+          "n_valid": 798,
+          "accuracy": 0.9924812030075187,
+          "macro_f1": 0.9919334426251492,
+          "n_classes": 4,
+          "label_support": {
+            "故障快速发展，存在失效风险": 122,
+            "正常运行": 402,
+            "早期磨损或轻微不平衡": 167,
+            "故障特征明确，建议尽快检修": 107
+          },
+          "rare_labels_support_le_3": [],
+          "top_confusions": [
+            {
+              "true": "早期磨损或轻微不平衡",
+              "pred": "正常运行",
+              "count": 2
+            },
+            {
+              "true": "正常运行",
+              "pred": "早期磨损或轻微不平衡",
+              "count": 2
+            },
+            {
+              "true": "故障特征明确，建议尽快检修",
+              "pred": "早期磨损或轻微不平衡",
+              "count": 2
+            }
+          ],
+          "train_val_gap_note": "see metrics fit_repro vs internal_val in bundle"
+        }
+      },
+      "summary": {
+        "mean_accuracy": 0.8505180212865452,
+        "mean_macro_f1": 0.6990888460323291,
+        "weakest_equipment": "主轧机电机",
+        "patterns": [
+          "same_fault_different_component_locations_often_confused",
+          "similar_root_cause_templates_overlap",
+          "equipment_specific_phrasing_not_shared",
+          "majority_normal_dash_location_dominates"
+        ]
+      }
+    }
+  },
+  "recommendation": [
+    "keep_L5P_v1_frozen",
+    "optional_experiments_on_branch_only",
+    "consider_class_weight_or_hierarchical_location"
+  ]
+}

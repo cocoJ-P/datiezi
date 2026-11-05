@@ -1,0 +1,37 @@
+{
+  "equipment_mapping_version": "l4_equipment_mapping_v1",
+  "note": "禁止将 MM-01 等资产编号凭名称相似自动标为 exact_asset。类型级映射仅作拓扑参考。",
+  "type_mappings": [
+    {
+      "equipment_type": "main_mill_motor",
+      "graph_node_id": "device-f803cb74ec718d83",
+      "graph_label": "棒线主轧机电机",
+      "mapping_level": "equipment_type",
+      "mapping_source": "kb05_graph_label_alignment",
+      "verification_status": "type_reference_verified",
+      "version": "l4_equipment_mapping_v1"
+    },
+    {
+      "equipment_type": "high_pressure_descaling_pump",
+      "graph_node_id": null,
+      "graph_label": null,
+      "mapping_level": "unresolved",
+      "mapping_source": "no_matching_device_in_graph_json",
+      "verification_status": "unresolved",
+      "version": "l4_equipment_mapping_v1",
+      "notes": "正式图谱无高压除鳞泵设备节点；不得借用冷却水泵节点。"
+    }
+  ],
+  "asset_mappings": [
+    {
+      "equipment_id": "MM-01",
+      "equipment_type": "main_mill_motor",
+      "graph_node_id": null,
+      "mapping_level": "unresolved",
+      "mapping_source": "explicit_unbound_pending_human_confirm",
+      "verification_status": "pending_human_confirm",
+      "version": "l4_equipment_mapping_v1",
+      "notes": "可回退使用 equipment_type 级拓扑参考，但不得声称 MM-01 等于图谱唯一物理节点。"
+    }
+  ]
+}

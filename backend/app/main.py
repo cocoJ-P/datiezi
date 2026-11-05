@@ -109,11 +109,116 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
         except Exception as exc:  # noqa: BLE001 - 启动阶段必须明确失败原因
             MODEL_MANAGER.mark_error(str(exc))
             raise RuntimeError(f"L2 模型加载失败：{exc}") from exc
+    import logging
+    import os
+
+    handoff_stop = None
+    training_stop = None
+    l3_stop = None
+    try:
+        from l2.handoff.database import init_db as init_handoff_db
+        from l2.handoff.orchestrator import ORCHESTRATOR
+        from l2.handoff.worker import start_background_worker, stop_background_worker
+
+        init_handoff_db()
+        ORCHESTRATOR.recover_pending()
+        _compensate_missing_handoffs()
+        start_background_worker()
+        handoff_stop = stop_background_worker
+    except Exception as exc:  # noqa: BLE001 - Handoff 启动失败不阻断主服务，但记录
+        logging.getLogger("app.main").exception("L2 handoff worker 启动失败：%s", exc)
+
+    try:
+        from l3.runtime.database import init_db as init_l3_db
+        from l3.runtime.jobs import compensate_missing_analysis_runs
+        from l3.runtime.worker import start_background_worker as start_l3_worker
+        from l3.runtime.worker import stop_background_worker as stop_l3_worker
+
+        init_l3_db()
+        if not bool(os.getenv("PYTEST_CURRENT_TEST")):
+            compensate_missing_analysis_runs()
+            start_l3_worker()
+            l3_stop = stop_l3_worker
+        else:
+            logging.getLogger("app.main").info("检测到 PYTEST_CURRENT_TEST，跳过 L3 Worker 自动启动")
+    except Exception as exc:  # noqa: BLE001 - L3 启动失败不阻断主服务
+        logging.getLogger("app.main").exception("L3 analysis worker 启动失败：%s", exc)
+
+    if l2_config.enabled:
+        try:
+            autostart_raw = (os.getenv("L2_TRAINING_WORKER_AUTOSTART") or "1").strip().lower()
+            autostart = autostart_raw not in {"0", "false", "no", "off"}
+            in_pytest = bool(os.getenv("PYTEST_CURRENT_TEST"))
+            if autostart and not in_pytest:
+                from l2.management.worker import (
+                    start_background_worker as start_training_worker,
+                    stop_background_worker as stop_training_worker,
+                )
+
+                start_training_worker()
+                training_stop = stop_training_worker
+            elif in_pytest:
+                logging.getLogger("app.main").info("检测到 PYTEST_CURRENT_TEST，跳过训练 Worker 自动启动")
+            else:
+                logging.getLogger("app.main").info("L2_TRAINING_WORKER_AUTOSTART=%s，跳过训练 Worker 自动启动", autostart_raw)
+        except Exception as exc:  # noqa: BLE001 - 训练 Worker 启动失败不阻断 API
+            logging.getLogger("app.main").exception("L2 training worker 启动失败：%s", exc)
+
     try:
         yield
     finally:
+        if training_stop is not None:
+            try:
+                training_stop()
+            except Exception:  # noqa: BLE001
+                pass
+        if l3_stop is not None:
+            try:
+                l3_stop()
+            except Exception:  # noqa: BLE001
+                pass
+        if handoff_stop is not None:
+            try:
+                handoff_stop()
+            except Exception:  # noqa: BLE001
+                pass
         MODEL_MANAGER.unload()
         shutdown_automatic_monitoring()
+
+
+def _compensate_missing_handoffs() -> None:
+    """扫描已成功 PD，补入尚未创建的 Handoff 任务。"""
+    try:
+        from app.services.l1_store import _connect
+        from l2.handoff.orchestrator import ORCHESTRATOR
+
+        connection = _connect()
+        try:
+            rows = connection.execute(
+                """
+                SELECT dataset_id, version_id, run_id, status
+                FROM prepare_runs
+                WHERE status IN ('completed', 'completed_with_warnings', 'partial')
+                  AND version_id IS NOT NULL AND version_id != ''
+                ORDER BY finished_at DESC
+                LIMIT 50
+                """
+            ).fetchall()
+        except Exception:
+            return
+        finally:
+            connection.close()
+        for row in rows:
+            ORCHESTRATOR.enqueue_after_prepare(
+                dataset_id=str(row["dataset_id"]),
+                pd_version_id=str(row["version_id"]),
+                prepare_run_id=str(row["run_id"]),
+                prepare_status=str(row["status"]),
+            )
+    except Exception:  # noqa: BLE001
+        import logging
+
+        logging.getLogger("app.main").exception("handoff compensation scan failed")
 
 
 app = FastAPI(
@@ -2006,8 +2111,22 @@ def monitoring_auto_status(
 
 register_l1_routes(app)
 
+from l2.handoff.router import router as l2_handoff_router
 from l2.inference.router import router as l2_router
 from l2.management.router import router as l2_management_router
+from l3.api.router import router as l3_router
+from l3.knowledge.api.router import router as l3_knowledge_router
+from l3.reasoning.api.router import router as l3_reasoning_router
+from l4.api.router import router as l4_router
+from l4.reasoning.api.router import router as l4_reasoning_router
+from l5.api.router import router as l5_router
 
 app.include_router(l2_router)
 app.include_router(l2_management_router)
+app.include_router(l2_handoff_router)
+app.include_router(l3_router)
+app.include_router(l3_knowledge_router)
+app.include_router(l3_reasoning_router)
+app.include_router(l4_router)
+app.include_router(l4_reasoning_router)
+app.include_router(l5_router)

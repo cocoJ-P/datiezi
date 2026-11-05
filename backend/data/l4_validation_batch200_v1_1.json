@@ -1,0 +1,22 @@
+{
+  "stats": {
+    "n": 200,
+    "succeeded": 200,
+    "bpfo_seal": 0,
+    "mesh_water": 0,
+    "wrong_appl": 0,
+    "bad_expand": 0,
+    "cause_specific": 1250,
+    "manif": 579,
+    "candidates_total": 706,
+    "unconfirmed": 200,
+    "propagation_unknown": 200
+  },
+  "l4_run_ids": [
+    "L4R-6819e31506c8"
+  ],
+  "elapsed_s": 6.793,
+  "idempotent_ok": true,
+  "old_l4_run_readable": true,
+  "old_l4_run_id": "L4R-6fe2de06f689"
+}
