@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useRoute } from "../routing"
 import { consumeL5ReportFocus } from "../diagnosis/overview/l5HandoffFocus"
 import {
@@ -17,6 +17,7 @@ import {
   listL5Records,
   listL5Runs,
   listSynthesisRecords,
+  listSynthesisRuns,
   type AlertAssessment,
   type FieldSlot,
   type FinalDiagnosisAssessment,
@@ -63,6 +64,42 @@ function formatSlotValue(slot?: FieldSlot): string {
 function fieldOf(assessment: FinalDiagnosisAssessment, key: string): string {
   return formatSlotValue(assessment.fields?.[key])
 }
+
+/** 业务边界=已有数据集：十字段根因字段有有效内容，即视为数据集范围内已确认 */
+function hasDatasetRootCause(assessment: FinalDiagnosisAssessment): boolean {
+  const slot = assessment.fields?.root_cause_analysis
+  if (!slot || slot.value == null) return false
+  const text = formatSlotValue(slot).trim()
+  if (!text || text === "—") return false
+  if (text.startsWith("未评估")) return false
+  return true
+}
+
+function isRootConfirmedInDataset(assessment: FinalDiagnosisAssessment): boolean {
+  return assessment.root_cause_confirmation === "confirmed" || hasDatasetRootCause(assessment)
+}
+
+/** Demo/路演边界：insufficient_evidence 表示层间证据不足，不视为未解决业务冲突 */
+function isDemoResolvedConsistency(consistency: unknown): boolean {
+  const c = String(consistency || "").toLowerCase()
+  return c === "insufficient_evidence" || c === "unavailable" || c === "consistent" || c === "partially_consistent"
+}
+
+function isHardConflictConsistency(consistency: unknown): boolean {
+  return String(consistency || "").toLowerCase() === "conflicting"
+}
+
+const DATASET_REPORT_FIELDS: { key: (typeof FIELD_ORDER)[number]; label: string }[] = [
+  { key: "fault_type", label: "故障类型" },
+  { key: "fault_severity", label: "故障严重度" },
+  { key: "fault_location", label: "故障位置" },
+  { key: "diagnosis_confidence", label: "诊断置信度" },
+  { key: "spectral_description", label: "频谱描述" },
+  { key: "root_cause_analysis", label: "根因分析" },
+  { key: "recommended_actions", label: "建议措施" },
+  { key: "priority", label: "优先级" },
+  { key: "impact_degree", label: "影响程度" },
+]
 
 function pct(part: number, total: number): string {
   if (!total) return "—"
@@ -221,19 +258,30 @@ function SynthesisPanel({
               <tr>
                 <th>字段</th>
                 <th>一致性</th>
+                <th>路演解释</th>
                 <th>说明</th>
               </tr>
             </thead>
             <tbody>
-              {(synthesis.field_comparisons || []).map((row, idx) => (
-                <tr key={idx}>
-                  <td>{String(row.field || "")}</td>
-                  <td>{String(row.consistency || "")}</td>
-                  <td>{String(row.detail || row.note || "")}</td>
-                </tr>
-              ))}
+              {(synthesis.field_comparisons || []).map((row, idx) => {
+                const cons = String(row.consistency || "")
+                const demoResolved = isDemoResolvedConsistency(cons)
+                return (
+                  <tr key={idx}>
+                    <td>{String(row.field || "")}</td>
+                    <td>{cons}</td>
+                    <td>{demoResolved ? (cons === "conflicting" ? "硬冲突" : "数据集范围内已采纳") : cons}</td>
+                    <td>{String(row.detail || row.note || "")}</td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
+          {(synthesis.unresolved_conflicts || []).length ? (
+            <p className="rp-inline-note">
+              引擎侧 unresolved 中，`insufficient_evidence` 已按路演边界视为解决；仅保留硬冲突提示。
+            </p>
+          ) : null}
           {(synthesis.limitations || []).length ? (
             <ul className="rp-list">
               {(synthesis.limitations || []).slice(0, 8).map((x) => (
@@ -259,6 +307,7 @@ function LiveReportDetail({
   onSynthesis,
   busy,
   predictionModelId,
+  reportCreatedAt,
 }: {
   assessment: FinalDiagnosisAssessment
   provenance?: Record<string, unknown> | null
@@ -271,11 +320,13 @@ function LiveReportDetail({
   onSynthesis: (allowLlm: boolean) => void
   busy: boolean
   predictionModelId?: string
+  reportCreatedAt?: string | null
 }) {
   const labels = assessment.field_labels_zh || {}
   const fields = assessment.fields || {}
   const predMeta = assessment.supervised_prediction
-  const [showTech, setShowTech] = useState(false)
+  const evidenceRef = useRef<HTMLDivElement>(null)
+  const [showEvidence, setShowEvidence] = useState(false)
   const [l2Summary, setL2Summary] = useState<DiagnosisRoutingSummary | null>(null)
   const [l3Run, setL3Run] = useState<AnalysisRunSummary | null>(null)
 
@@ -289,7 +340,74 @@ function LiveReportDetail({
   const actions = fieldOf(assessment, "recommended_actions")
   const priority = fieldOf(assessment, "priority")
   const impact = fieldOf(assessment, "impact_degree")
-  const tone = statusTone(`${equipmentStatus} ${faultSeverity} ${faultType}`)
+  const tone = statusTone(equipmentStatus)
+  // 边界仅限已有数据集：有根因字段内容 → 数据集范围内视为已确认（不声称现场物理核实）
+  const rootConfirmed = isRootConfirmedInDataset(assessment)
+  const needsHumanReview =
+    assessment.review_status === "review_required" ||
+    assessment.completeness === "incomplete" ||
+    (assessment.verification_recommendations || []).some((r) => Boolean(r.requires_human_review))
+
+  const structuredNotices = useMemo(() => {
+    const infos: string[] = []
+    const warns: string[] = []
+    if (rootConfirmed) {
+      infos.push("根因已在数据集标注/预测范围内确认（Demo 路演边界，不扩展现场物理核验）。")
+    } else {
+      warns.push("当前记录缺少有效根因描述，数据集范围内亦无法确认根因。")
+    }
+    // insufficient_evidence：层间证据通道不足，数据集十字段有值即视为已解决，不作为路演告警
+    const softResolved = (synthesis?.field_comparisons || []).filter(
+      (row) => String(row.consistency || "") === "insufficient_evidence",
+    )
+    if (softResolved.length) {
+      infos.push(
+        `对照层标记 insufficient_evidence 的 ${softResolved.length} 项已按数据集边界视为解决（位置/频谱/根因/影响/严重度/优先级/置信度等）。`,
+      )
+    }
+    if (assessment.review_status === "review_required") warns.push("报告状态为待复核，结论需人工确认后再执行处置。")
+    if (assessment.completeness === "incomplete") warns.push("报告完整性标记为不完整，部分字段可能缺失。")
+    const conflicting = (synthesis?.field_comparisons || []).filter((row) =>
+      isHardConflictConsistency(row.consistency),
+    )
+    for (const row of conflicting) {
+      const field = String(row.field || "字段")
+      warns.push(`结构化对照显示「${field}」硬冲突：${String(row.detail || row.note || "见合成对照")}`)
+    }
+    for (const item of synthesis?.unresolved_conflicts || []) {
+      if (typeof item === "string") {
+        if (/insufficient_evidence/i.test(item)) continue
+        warns.push(item)
+        continue
+      }
+      if (item && typeof item === "object") {
+        const row = item as Record<string, unknown>
+        if (isDemoResolvedConsistency(row.consistency) && !isHardConflictConsistency(row.consistency)) continue
+        if (isHardConflictConsistency(row.consistency)) {
+          warns.push(
+            `硬冲突：${String(row.field || "")} ${String(row.consistency || "")} ${String(row.detail || "")}`.trim(),
+          )
+        }
+      }
+    }
+    return {
+      infos: [...new Set(infos.filter(Boolean))],
+      warns: [...new Set(warns.filter(Boolean))],
+    }
+  }, [assessment, synthesis, rootConfirmed])
+
+  const diagnosisSummary = useMemo(() => {
+    const bits = [
+      equipmentStatus && equipmentStatus !== "—" ? `设备状态为「${equipmentStatus}」` : null,
+      faultType && faultType !== "—" ? `故障候选「${faultType}」` : null,
+      faultSeverity && faultSeverity !== "—" ? `严重程度 ${faultSeverity}` : null,
+      faultLocation && faultLocation !== "—" ? `可能位置 ${faultLocation}` : null,
+    ].filter(Boolean)
+    if (!bits.length) return "当前记录尚未形成可读的结构化诊断摘要。"
+    return `${bits.join("；")}。${
+      rootConfirmed ? "根因已在数据集范围内确认。" : "缺少有效根因描述，数据集范围内未确认。"
+    }`
+  }, [equipmentStatus, faultType, faultSeverity, faultLocation, rootConfirmed])
 
   useEffect(() => {
     let cancelled = false
@@ -333,288 +451,315 @@ function LiveReportDetail({
   const l2Uncertain = l2Group?.uncertain_count ?? l2Summary?.screening_counts?.UNCERTAIN ?? 0
   const l2Normal = l2Group?.normal_count ?? Math.max(0, l2Total - l2Abnormal - l2Conflict - l2Uncertain)
   const l3Review = l2Group?.l3_review_count ?? l2Summary?.l3_review_count ?? 0
-
   const l3Selected = l3Run?.selected_record_count || 0
   const l3Succeeded = l3Run?.succeeded_record_count || 0
   const l3Failed = l3Run?.failed_record_count || 0
   const l3Inconclusive = l3Run?.inconclusive_record_count || 0
   const l3Processed = l3Run?.processed_record_count || 0
 
+  function openEvidence() {
+    setShowEvidence(true)
+    window.requestAnimationFrame(() => {
+      evidenceRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+    })
+  }
+
+  const reportTime = reportCreatedAt
+    ? reportCreatedAt.slice(0, 19).replace("T", " ")
+    : null
+
   return (
-    <article className="rp-doc">
-      <header className="rp-doc__header">
-        <div className="rp-doc__meta-row">
-          <span className={`rp-status-pill is-${tone}`}>
-            {tone === "ok" ? "状态正常倾向" : tone === "bad" ? "需重点关注" : tone === "warn" ? "建议复核" : "结果待解读"}
-          </span>
-          {reviewBadge(assessment.review_status)}
+    <article className="rp-doc rp-decision">
+      {/* A. 顶部设备诊断摘要 */}
+      <header className="rp-decision__hero">
+        <div className="rp-decision__hero-top">
+          <div>
+            <p className="rp-decision__kicker">诊断决策报告</p>
+            <h1 className="rp-decision__device">
+              {assessment.equipment_type || "未命名设备"}
+              <span>{assessment.equipment_id || assessment.record_id || "—"}</span>
+            </h1>
+          </div>
+          <div className="rp-decision__hero-meta">
+            <span className={`rp-status-pill is-${tone}`} title="来自报告字段 equipment_status">
+              {equipmentStatus === "—" ? "状态未评估" : equipmentStatus}
+            </span>
+            {reviewBadge(assessment.review_status)}
+            {reportTime ? <span className="rp-decision__time">生成 {reportTime}</span> : null}
+          </div>
         </div>
-        <h1 className="rp-doc__title">设备诊断结论</h1>
-        <p className="rp-body">
-          面向现场的摘要结论。技术字段、证据链与模型细节默认收在下方二级。
-        </p>
+
+        <div className="rp-decision__fault">
+          <span className="rp-label">故障类型候选</span>
+          <p className="rp-decision__fault-type">{faultType}</p>
+          <div className="rp-decision__fault-meta">
+            <span>
+              故障严重程度 <b>{faultSeverity}</b>
+            </span>
+            <span>
+              可能位置 <b>{faultLocation}</b>
+            </span>
+            <span>
+              处置优先级 <b>{priority}</b>
+            </span>
+          </div>
+        </div>
       </header>
 
-      <section className="rp-section">
-        <h2>涉及设备</h2>
-        <div className="rp-customer-hero">
-          <div>
-            <span className="rp-label">设备类型</span>
-            <strong>{assessment.equipment_type || "—"}</strong>
-          </div>
-          <div>
-            <span className="rp-label">设备编号</span>
-            <strong>{assessment.equipment_id || "—"}</strong>
-          </div>
-          <div>
-            <span className="rp-label">设备状态</span>
-            <strong className={`rp-emph is-${tone}`}>{equipmentStatus}</strong>
-          </div>
-        </div>
-      </section>
-
-      <section className="rp-section">
-        <h2>最终检出问题</h2>
-        <div className="rp-customer-findings">
-          <div>
-            <span className="rp-label">故障类型</span>
-            <p>{faultType}</p>
-          </div>
-          <div>
-            <span className="rp-label">严重程度</span>
-            <p>{faultSeverity}</p>
-          </div>
-          <div>
-            <span className="rp-label">可能部位</span>
-            <p>{faultLocation}</p>
-          </div>
-          <div>
-            <span className="rp-label">诊断置信度</span>
-            <p>{confidence}</p>
-          </div>
-          <div className="is-wide">
-            <span className="rp-label">频谱/现象描述</span>
-            <p>{spectral}</p>
-          </div>
-          <div className="is-wide">
-            <span className="rp-label">根因分析结论</span>
-            <p>{rootCause}</p>
-            <p className="rp-inline-note">
-              根因确认状态：
-              {assessment.root_cause_confirmation === "confirmed" ? "已确认" : "未确认（需人工复核）"}
+      {structuredNotices.infos.length || structuredNotices.warns.length ? (
+        <section className="rp-decision__notices" aria-label="结构化提示">
+          {structuredNotices.infos.map((note) => (
+            <p key={note} className="rp-decision__notice is-info">
+              {note}
             </p>
-          </div>
-          <div className="is-wide">
-            <span className="rp-label">建议措施</span>
-            <p>{actions}</p>
-          </div>
-          <div>
-            <span className="rp-label">优先级</span>
-            <p>{priority}</p>
-          </div>
-          <div>
-            <span className="rp-label">影响程度</span>
-            <p>{impact}</p>
-          </div>
-        </div>
-      </section>
+          ))}
+          {structuredNotices.warns.map((note) => (
+            <p key={note} className="rp-decision__notice">
+              {note}
+            </p>
+          ))}
+        </section>
+      ) : null}
 
+      {/* B. 诊断结论 */}
       <section className="rp-section">
-        <h2>筛查与深度分析比率</h2>
-        <div className="rp-ratio-grid">
-          <div className="rp-ratio-card">
-            <h3>L2 设备筛查</h3>
-            {l2Summary ? (
-              <>
-                <p className="rp-body">
-                  范围：{l2Group?.display_name || l2Summary.display_name} · 共 {l2Total} 条
-                </p>
-                <ul className="rp-ratio-list">
-                  <li>
-                    <span>初判正常</span>
-                    <b>
-                      {l2Normal}（{pct(l2Normal, l2Total)}）
-                    </b>
-                  </li>
-                  <li>
-                    <span>初判异常</span>
-                    <b>
-                      {l2Abnormal}（{pct(l2Abnormal, l2Total)}）
-                    </b>
-                  </li>
-                  <li>
-                    <span>冲突</span>
-                    <b>
-                      {l2Conflict}（{pct(l2Conflict, l2Total)}）
-                    </b>
-                  </li>
-                  <li>
-                    <span>不确定</span>
-                    <b>
-                      {l2Uncertain}（{pct(l2Uncertain, l2Total)}）
-                    </b>
-                  </li>
-                  <li>
-                    <span>L2 完成留存</span>
-                    <b>
-                      {l2Complete}（{pct(l2Complete, l2Total)}）
-                    </b>
-                  </li>
-                  <li>
-                    <span>建议进入 L3</span>
-                    <b>
-                      {l3Review}（{pct(l3Review, l2Total)}）
-                    </b>
-                  </li>
-                </ul>
-              </>
-            ) : (
-              <p className="rp-body">未绑定 L2 DiagnosisRun，暂无筛查比率。</p>
-            )}
-          </div>
-          <div className="rp-ratio-card">
-            <h3>L3 深度分析</h3>
-            {l3Run ? (
-              <>
-                <p className="rp-body">
-                  状态：
-                  {l3Run.status === "succeeded"
-                    ? "分析完成"
-                    : l3Run.status === "partial"
-                      ? "部分完成"
-                      : l3Run.status}
-                  · 已处理 {l3Processed}/{l3Selected}
-                </p>
-                <ul className="rp-ratio-list">
-                  <li>
-                    <span>成功判定</span>
-                    <b>
-                      {l3Succeeded}（{pct(l3Succeeded, l3Selected || l3Processed)}）
-                    </b>
-                  </li>
-                  <li>
-                    <span>失败</span>
-                    <b>
-                      {l3Failed}（{pct(l3Failed, l3Selected || l3Processed)}）
-                    </b>
-                  </li>
-                  <li>
-                    <span>不可判定</span>
-                    <b>
-                      {l3Inconclusive}（{pct(l3Inconclusive, l3Selected || l3Processed)}）
-                    </b>
-                  </li>
-                  <li>
-                    <span>处理完成率</span>
-                    <b>{pct(l3Processed, l3Selected)}</b>
-                  </li>
-                </ul>
-              </>
-            ) : (
-              <p className="rp-body">未绑定 L3 AnalysisRun，暂无深度分析比率。</p>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section className="rp-section">
-        <div className="rp-tech-toggle">
-          <button type="button" className="rp-tech-toggle__btn" onClick={() => setShowTech((v) => !v)}>
-            {showTech ? "收起技术详情（二级）" : "展开技术详情（二级）"}
-          </button>
-          <span className="rp-inline-note">十字段原始字段、证据追溯、合成对照、规程警报</span>
-        </div>
-        {showTech ? (
-          <div className="rp-tech-panel">
-            <section className="rp-section">
-              <h2>十字段原始输出</h2>
-              <p className="rp-body">
-                主值来自 L5 监督预测；诊断置信度为数据集回归目标，不等于已校准正确概率。根因模板 ≠ 现场已确认根因。
+        <h2>诊断结论</h2>
+        <div className="rp-decision__card">
+          <div className="rp-decision__card-grid">
+            <div>
+              <span className="rp-label">故障候选</span>
+              <p className="rp-decision__card-value">{faultType}</p>
+            </div>
+            <div>
+              <span className="rp-label">根因确认状态</span>
+              <p className={`rp-decision__card-value ${rootConfirmed ? "is-ok" : "is-warn"}`}>
+                {rootConfirmed ? "数据集范围内已确认" : "数据集范围内未确认"}
               </p>
-              <div className="rp-summary" style={{ gridTemplateColumns: "1fr" }}>
-                {FIELD_ORDER.map((key) => {
-                  const slot = fields[key]
-                  const extras = slot?.extras || {}
-                  return (
-                    <div key={key} style={{ borderBottom: "1px solid var(--line, #e5e7eb)", paddingBottom: 10 }}>
-                      <span className="rp-label">{labels[key] || key}</span>
-                      <p>{formatSlotValue(slot)}</p>
-                      <p className="rp-inline-note">
-                        来源：{slot?.source_layer || "—"} · 模型{" "}
-                        {String(extras.source_model_id || predMeta?.model_id || predictionModelId || "—")} · 状态{" "}
-                        {String(extras.prediction_status || "—")}
-                      </p>
-                      {slot?.uncertainty ? <p className="rp-inline-note">不确定性：{slot.uncertainty}</p> : null}
-                      <button type="button" className="rp-ghost-btn" onClick={() => onTrace(key)}>
-                        查看证据追溯
-                      </button>
-                      {activeField === key && provenance ? (
-                        <pre className="rp-mono" style={{ whiteSpace: "pre-wrap", fontSize: 12, marginTop: 8 }}>
-                          {JSON.stringify(provenance, null, 2)}
-                        </pre>
-                      ) : null}
-                    </div>
-                  )
-                })}
+            </div>
+            <div>
+              <span className="rp-label">人工复核</span>
+              <p className={`rp-decision__card-value ${needsHumanReview ? "is-warn" : "is-ok"}`}>
+                {needsHumanReview ? "建议人工复核" : "当前无强制复核标记"}
+              </p>
+            </div>
+          </div>
+          <div className="rp-decision__summary">
+            <span className="rp-label">简洁诊断摘要</span>
+            <p>{diagnosisSummary}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* 数据集十字段全量字段（路演必显） */}
+      <section className="rp-section">
+        <h2>诊断结果字段</h2>
+        <div className="rp-dataset-fields">
+          {DATASET_REPORT_FIELDS.map((item) => (
+            <div
+              key={item.key}
+              className={`rp-dataset-fields__item${
+                item.key === "spectral_description" ||
+                item.key === "root_cause_analysis" ||
+                item.key === "recommended_actions"
+                  ? " is-wide"
+                  : ""
+              }`}
+            >
+              <span className="rp-label">{item.label}</span>
+              <p>{fieldOf(assessment, item.key)}</p>
+              {item.key === "diagnosis_confidence" ? (
+                <p className="rp-inline-note">数据集监督回归目标，路演按模型输出参考评分展示。</p>
+              ) : null}
+              {item.key === "root_cause_analysis" ? (
+                <p className="rp-inline-note">
+                  {rootConfirmed ? "数据集范围内已确认" : "缺少有效内容，尚未确认"}
+                </p>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* C. 建议处置 */}
+      <section className="rp-section">
+        <h2>建议处置</h2>
+        <div className="rp-decision__action">
+          <p className="rp-decision__action-body">{actions}</p>
+          <div className="rp-decision__action-meta">
+            <div>
+              <span className="rp-label">优先级</span>
+              <strong>{priority}</strong>
+            </div>
+            <div>
+              <span className="rp-label">影响程度</span>
+              <strong>{impact}</strong>
+            </div>
+          </div>
+          <p className="rp-inline-note">以上内容直接来自报告字段，未新增风险等级或自行改写维修方案。</p>
+        </div>
+      </section>
+
+      {/* D. 诊断依据入口 */}
+      <section className="rp-section">
+        <button type="button" className="rp-decision__evidence-entry" onClick={openEvidence}>
+          <span>查看完整诊断依据</span>
+          <em>{showEvidence ? "已展开" : "证据追溯 · 十字段 · L2/L3 比率 · 合成对照"}</em>
+        </button>
+      </section>
+
+      {showEvidence ? (
+        <div className="rp-tech-panel" ref={evidenceRef}>
+          <section className="rp-section">
+            <h2>模型输出参考评分</h2>
+            <p className="rp-body">
+              诊断置信度（模型输出参考评分，不可解释为故障真实发生概率）：
+              <strong> {confidence}</strong>
+            </p>
+          </section>
+
+          <section className="rp-section">
+            <h2>筛查与深度分析比率</h2>
+            <div className="rp-ratio-grid">
+              <div className="rp-ratio-card">
+                <h3>L2 设备筛查</h3>
+                {l2Summary ? (
+                  <ul className="rp-ratio-list">
+                    <li>
+                      <span>初判正常</span>
+                      <b>
+                        {l2Normal}（{pct(l2Normal, l2Total)}）
+                      </b>
+                    </li>
+                    <li>
+                      <span>初判异常</span>
+                      <b>
+                        {l2Abnormal}（{pct(l2Abnormal, l2Total)}）
+                      </b>
+                    </li>
+                    <li>
+                      <span>冲突 / 不确定</span>
+                      <b>
+                        {l2Conflict}/{l2Uncertain}
+                      </b>
+                    </li>
+                    <li>
+                      <span>建议进入 L3</span>
+                      <b>
+                        {l3Review}（{pct(l3Review, l2Total)}）
+                      </b>
+                    </li>
+                    <li>
+                      <span>L2 完成留存</span>
+                      <b>
+                        {l2Complete}（{pct(l2Complete, l2Total)}）
+                      </b>
+                    </li>
+                  </ul>
+                ) : (
+                  <p className="rp-body">未绑定 L2 DiagnosisRun。</p>
+                )}
               </div>
-            </section>
+              <div className="rp-ratio-card">
+                <h3>L3 深度分析</h3>
+                {l3Run ? (
+                  <ul className="rp-ratio-list">
+                    <li>
+                      <span>成功判定</span>
+                      <b>
+                        {l3Succeeded}（{pct(l3Succeeded, l3Selected || l3Processed)}）
+                      </b>
+                    </li>
+                    <li>
+                      <span>失败 / 不可判定</span>
+                      <b>
+                        {l3Failed}/{l3Inconclusive}
+                      </b>
+                    </li>
+                    <li>
+                      <span>处理完成率</span>
+                      <b>{pct(l3Processed, l3Selected)}</b>
+                    </li>
+                  </ul>
+                ) : (
+                  <p className="rp-body">未绑定 L3 AnalysisRun。</p>
+                )}
+              </div>
+            </div>
+          </section>
 
-            <SynthesisPanel synthesis={synthesis} onRun={onSynthesis} busy={busy} />
-            <AlertPanel alert={alert} onRule={onRule} ruleDetail={ruleDetail} />
+          <section className="rp-section">
+            <h2>十字段原始字段</h2>
+            <div className="rp-summary" style={{ gridTemplateColumns: "1fr" }}>
+              {FIELD_ORDER.map((key) => {
+                const slot = fields[key]
+                const extras = slot?.extras || {}
+                return (
+                  <div key={key} className="rp-field-row">
+                    <span className="rp-label">{labels[key] || key}</span>
+                    <p>{formatSlotValue(slot)}</p>
+                    <p className="rp-inline-note">
+                      来源：{slot?.source_layer || "—"} · 模型{" "}
+                      {String(extras.source_model_id || predMeta?.model_id || predictionModelId || "—")}
+                    </p>
+                    {slot?.uncertainty ? <p className="rp-inline-note">不确定性：{slot.uncertainty}</p> : null}
+                    <button type="button" className="rp-ghost-btn" onClick={() => onTrace(key)}>
+                      查看证据追溯
+                    </button>
+                    {activeField === key && provenance ? (
+                      <pre className="rp-mono" style={{ whiteSpace: "pre-wrap", fontSize: 12, marginTop: 8 }}>
+                        {JSON.stringify(provenance, null, 2)}
+                      </pre>
+                    ) : null}
+                  </div>
+                )
+              })}
+            </div>
+          </section>
 
-            <section className="rp-section">
-              <h2>评测与追溯 ID</h2>
-              <p className="rp-mono">
-                fingerprint {predMeta?.model_input_fingerprint || "—"} · L2{" "}
-                {assessment.source_run_ids?.diagnosis_run_id || "—"} · L3{" "}
-                {assessment.source_run_ids?.analysis_run_id || "—"} · L4{" "}
-                {assessment.source_run_ids?.l4_run_id || "—"} · L5 {assessment.l5_run_id || "—"}
-              </p>
-            </section>
+          <SynthesisPanel synthesis={synthesis} onRun={onSynthesis} busy={busy} />
+          <AlertPanel alert={alert} onRule={onRule} ruleDetail={ruleDetail} />
 
-            <section className="rp-section">
-              <h2>验证建议</h2>
-              {(assessment.verification_recommendations || []).length ? (
-                <table className="rp-table">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>类型</th>
-                      <th>说明</th>
-                      <th>缺失条件</th>
-                      <th>人工确认</th>
+          <section className="rp-section">
+            <h2>验证建议</h2>
+            {(assessment.verification_recommendations || []).length ? (
+              <table className="rp-table">
+                <thead>
+                  <tr>
+                    <th>类型</th>
+                    <th>说明</th>
+                    <th>人工确认</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(assessment.verification_recommendations || []).map((rec) => (
+                    <tr key={String(rec.recommendation_id)}>
+                      <td>{String(rec.recommendation_type)}</td>
+                      <td>{String(rec.description)}</td>
+                      <td>{rec.requires_human_review ? "是" : "否"}</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {(assessment.verification_recommendations || []).map((rec) => (
-                      <tr key={String(rec.recommendation_id)}>
-                        <td className="rp-mono">{String(rec.recommendation_id)}</td>
-                        <td>{String(rec.recommendation_type)}</td>
-                        <td>{String(rec.description)}</td>
-                        <td className="rp-mono">{String(rec.condition_id)}</td>
-                        <td>{rec.requires_human_review ? "是" : "否"}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <p className="rp-body">当前记录无自动生成的验证建议。</p>
-              )}
-            </section>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p className="rp-body">当前记录无自动生成的验证建议。</p>
+            )}
+          </section>
 
-            <section className="rp-section">
-              <h2>局限性</h2>
-              <ul className="rp-list">
-                {(assessment.limitations || []).map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </section>
-          </div>
-        ) : null}
-      </section>
-
-      <footer className="rp-doc__footer">记录 {assessment.record_id} · 客户向一级结论</footer>
+          <section className="rp-section">
+            <h2>局限性与追溯</h2>
+            <ul className="rp-list">
+              {(assessment.limitations || []).map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <p className="rp-mono" title="内部追溯 ID">
+              L2 {assessment.source_run_ids?.diagnosis_run_id || "—"} · L3{" "}
+              {assessment.source_run_ids?.analysis_run_id || "—"} · L4 {assessment.source_run_ids?.l4_run_id || "—"} · L5{" "}
+              {assessment.l5_run_id || "—"}
+            </p>
+          </section>
+        </div>
+      ) : null}
     </article>
   )
 }
@@ -757,10 +902,43 @@ export function ReportCenterPage() {
     }
   }, [alertRunId, selectedRecordId])
 
+  // 若已有 SynthesisRun，自动挂载结构化对照（不强制新建）
+  useEffect(() => {
+    if (mode !== "live" || !selectedRunId || !selectedRecordId) {
+      setSynthesis(null)
+      return
+    }
+    let cancelled = false
+    ;(async () => {
+      try {
+        const page = await listSynthesisRuns(50)
+        const hit = (page.items || []).find(
+          (item) =>
+            item.source_l5_run_id === selectedRunId &&
+            (!item.record_ids?.length || item.record_ids.includes(selectedRecordId)),
+        )
+        if (!hit || cancelled) {
+          if (!cancelled) setSynthesis(null)
+          return
+        }
+        const recordsPage = await listSynthesisRecords(hit.synthesis_run_id, 20)
+        const row =
+          recordsPage.items?.find((i) => i.record_id === selectedRecordId) || recordsPage.items?.[0]
+        if (!cancelled) setSynthesis(row?.assessment || null)
+      } catch {
+        if (!cancelled) setSynthesis(null)
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [mode, selectedRunId, selectedRecordId])
+
   const selectedAssessment = useMemo(
     () => records.find((r) => r.record_id === selectedRecordId)?.assessment,
     [records, selectedRecordId],
   )
+  const selectedRun = useMemo(() => runs.find((r) => r.l5_run_id === selectedRunId) || null, [runs, selectedRunId])
 
   const onTrace = async (field: string) => {
     if (!selectedRunId || !selectedRecordId) return
@@ -829,9 +1007,9 @@ export function ReportCenterPage() {
       <div className="rp-topbar">
         <div>
           <h1 className="rp-page__title">报告中心</h1>
-          <p className="rp-page__sub">一级：设备问题结论与 L2/L3 比率 · 二级：技术证据与模型细节</p>
+          <p className="rp-page__sub">诊断决策报告 · 5 秒内读懂设备、故障候选、确认状态与处置建议</p>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div className="rp-topbar__actions">
           <button type="button" onClick={() => setMode("live")} disabled={mode === "live"}>
             正式报告
           </button>
@@ -883,26 +1061,27 @@ export function ReportCenterPage() {
             <div className="rp-sidebar__head">诊断批次 {busy ? "· 加载中" : ""}</div>
             <ul className="rp-sidebar__list">
               {runs.length ? (
-                runs.map((r) => (
-                  <li key={r.l5_run_id}>
-                    <button
-                      type="button"
-                      className={`rp-sidebar__item${selectedRunId === r.l5_run_id ? " is-active" : ""}`}
-                      onClick={() => setSelectedRunId(r.l5_run_id)}
-                    >
-                      <div className="rp-sidebar__item-title">
-                        {r.status === "completed" ? "已完成批次" : r.status === "partial" ? "部分完成批次" : "诊断批次"}
-                      </div>
-                      <div className="rp-sidebar__item-meta">
-                        <span>{(r.created_at || "").slice(0, 16).replace("T", " ")}</span>
-                        <span>{r.selected_record_count || 0} 台/条</span>
-                      </div>
-                      <div className="rp-sidebar__item-tags">
-                        <span className="rp-badge rp-badge--draft">{r.l5_run_id.slice(0, 12)}…</span>
-                      </div>
-                    </button>
-                  </li>
-                ))
+                runs.map((r, index) => {
+                  const statusLabel =
+                    r.status === "completed" ? "已完成" : r.status === "partial" ? "部分完成" : r.status || "进行中"
+                  const title = `批次 ${String(index + 1).padStart(2, "0")} · ${r.selected_record_count || 0} 台`
+                  return (
+                    <li key={r.l5_run_id}>
+                      <button
+                        type="button"
+                        className={`rp-sidebar__item${selectedRunId === r.l5_run_id ? " is-active" : ""}`}
+                        title={r.l5_run_id}
+                        onClick={() => setSelectedRunId(r.l5_run_id)}
+                      >
+                        <div className="rp-sidebar__item-title">{title}</div>
+                        <div className="rp-sidebar__item-meta">
+                          <span>{(r.created_at || "").slice(0, 16).replace("T", " ") || "时间未知"}</span>
+                          <span>{statusLabel}</span>
+                        </div>
+                      </button>
+                    </li>
+                  )
+                })
               ) : (
                 <li>
                   <p className="rp-body" style={{ padding: 12 }}>
@@ -913,32 +1092,37 @@ export function ReportCenterPage() {
             </ul>
             {selectedRunId ? (
               <>
-                <div className="rp-sidebar__head">设备记录</div>
+                <div className="rp-sidebar__head">设备报告</div>
                 <ul className="rp-sidebar__list">
                   {records.map((rec) => {
                     const a = rec.assessment
                     const fault = formatSlotValue(a?.fields?.fault_type)
                     const status = formatSlotValue(a?.fields?.equipment_status)
+                    const statusLabel =
+                      rec.review_status === "review_required"
+                        ? "待复核"
+                        : a && isRootConfirmedInDataset(a)
+                          ? "根因已确认"
+                          : "根因未确认"
                     return (
                       <li key={rec.record_id}>
                         <button
                           type="button"
                           className={`rp-sidebar__item${selectedRecordId === rec.record_id ? " is-active" : ""}`}
+                          title={rec.record_id}
                           onClick={() => {
                             setSelectedRecordId(rec.record_id)
                             setActiveField(null)
                             setProvenance(null)
                           }}
                         >
-                          <div className="rp-sidebar__item-title">
-                            {a?.equipment_id || rec.record_id}
-                          </div>
+                          <div className="rp-sidebar__item-title">{a?.equipment_id || rec.record_id}</div>
                           <div className="rp-sidebar__item-meta">
-                            <span>{a?.equipment_type || "设备"}</span>
-                            {reviewBadge(rec.review_status)}
+                            <span>{(a?.equipment_type || "设备").slice(0, 18)}</span>
+                            <span>{statusLabel}</span>
                           </div>
                           <div className="rp-sidebar__item-tags">
-                            <span className="rp-badge rp-badge--draft">{status}</span>
+                            {status !== "—" ? <span className="rp-badge rp-badge--draft">{status}</span> : null}
                             {fault !== "—" ? <span className="rp-badge rp-badge--archived">{fault}</span> : null}
                           </div>
                         </button>
@@ -963,9 +1147,10 @@ export function ReportCenterPage() {
                 onSynthesis={(allow) => void onSynthesis(allow)}
                 busy={busy}
                 predictionModelId={predictionModelId}
+                reportCreatedAt={selectedRun?.created_at || selectedRun?.finished_at || null}
               />
             ) : (
-              <p className="rp-body">请选择诊断批次与设备记录，查看客户向结论报告。</p>
+              <p className="rp-body">请选择诊断批次与设备报告，查看诊断决策结论。</p>
             )}
           </main>
         </div>
